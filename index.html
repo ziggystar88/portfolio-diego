@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diego Manjarrés — AI Creative Producer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080808;
+      --card: #101010;
+      --card-hover: #141414;
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(124,58,255,0.3);
+      --accent: #7C3AFF;
+      --accent-glow: rgba(124,58,255,0.2);
+      --accent-light: #9d6aff;
+      --accent-dim: rgba(124,58,255,0.08);
+      --text: #f0f0f0;
+      --muted: #777;
+      --muted2: #444;
+      --green: #4ade80;
+      --radius: 20px;
+      --radius-sm: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(8,8,8,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--accent-light); }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover {
+      background: var(--accent-light) !important;
+      transform: translateY(-1px);
+    }
+
+    /* ── WRAPPER ── */
+    .wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 120px 32px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── CARD BASE ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .card:hover {
+      border-color: var(--border-hover);
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top left, var(--accent-dim) 0%, transparent 65%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .card:hover::after { opacity: 1; }
+
+    .label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(124,58,255,0.1);
+      border: 1px solid rgba(124,58,255,0.2);
+      color: var(--accent-light);
+      border-radius: 100px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+      font-family: 'DM Mono', monospace;
+    }
+    .tag-neutral {
+      background: rgba(255,255,255,0.04);
+      border-color: var(--border);
+      color: var(--muted);
+    }
+    .tags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    /* ════════════════════════════
+       SECTION — HERO
+    ════════════════════════════ */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .hero-main {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 52px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-main::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(124,58,255,0.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-available {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(74,222,128,0.08);
+      border: 1px solid rgba(74,222,128,0.2);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: var(--green);
+      margin-bottom: 24px;
+    }
+    .hero-available::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .hero-name {
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .hero-name span { color: var(--accent-light); }
+    .hero-role {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent-light);
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+    .hero-tagline {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 440px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      padding: 12px 28px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(124,58,255,0.35);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 12px 28px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-secondary:hover {
+      border-color: var(--border-hover);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* Hero side panel */
+    .hero-side {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .hero-contact {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      flex: 1;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-item:last-child { border-bottom: none; }
+    .contact-icon {
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(124,58,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .contact-text {
+      font-size: 11.5px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+    }
+    .contact-text a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .contact-text a:hover { color: var(--accent-light); }
+
+    .hero-stats {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .stat-num span { color: var(--accent-light); }
+    .stat-lbl {
+      font-size: 9px;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 4px;
+    }
+
+    /* ════════════════════════════
+       SECTION — REEL
+    ════════════════════════════ */
+    .reel-section {
+      margin-bottom: 14px;
+    }
+    .reel-wrapper {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+    }
+    .reel-header {
+      padding: 20px 28px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .reel-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .reel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(124,58,255,0.2);
+      border-radius: 100px;
+      padding: 4px 12px;
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      color: var(--accent-light);
+    }
+    /* Vimeo embed placeholder */
+    .reel-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .reel-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(124,58,255,0.08) 0%, transparent 70%);
+    }
+    .play-btn {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 0 40px rgba(124,58,255,0.4);
+      position: relative;
+      z-index: 1;
+    }
+    .reel-placeholder p {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      position: relative;
+      z-index: 1;
+    }
+    /* When Vimeo embed is active — replace .reel-placeholder with this */
+    .reel-embed {
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
+    .reel-embed iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ════════════════════════════
+       SECTION — SOBRE MÍ + STACK
+    ════════════════════════════ */
+    .about-stack {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .about-card p {
+      font-size: 13px;
+      color: #aaa;
+      line-height: 1.8;
+    }
+    .about-card p strong { color: #fff; }
+
+    .stack-card .stack-group {
+      margin-bottom: 16px;
+    }
+    .stack-group:last-child { margin-bottom: 0; }
+    .stack-group-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 8px;
+    }
+
+    /* ════════════════════════════
+       SECTION — PROYECTOS
+    ════════════════════════════ */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .section-title-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .section-title h2 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+    }
+    .section-title .line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.3s, transform 0.3s;
+      text-decoration: none;
+      display: block;
+    }
+    .project-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+    }
+    .project-thumb {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: #0d0d0d;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-thumb::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 40%, rgba(124,58,255,0.12) 0%, transparent 70%);
+    }
+    /* Subtle grid pattern */
+    .project-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(124,58,255,0.04) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(124,58,255,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .project-thumb--alike::before {
+      background: radial-gradient(ellipse at 70% 30%, rgba(59,130,246,0.12) 0%, rgba(124,58,255,0.08) 50%, transparent 75%);
+    }
+    .project-thumb--salvaje::before {
+      background: radial-gradient(ellipse at 30% 60%, rgba(236,72,153,0.1) 0%, rgba(124,58,255,0.08) 50%, transparent 75%);
+    }
+    .project-thumb-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: var(--muted2);
+      text-transform: uppercase;
+      position: absolute;
+      bottom: 12px;
+      left: 16px;
+      z-index: 2;
+    }
+    .project-body {
+      padding: 18px 20px;
+    }
+    .project-company {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: var(--accent-light);
+      margin-bottom: 4px;
+    }
+    .project-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .project-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .projects-grid--single {
+      grid-template-columns: 1fr;
+    }
+    /* Lumyn card — featured full width */
+    .project-card-lumyn {
+      background: linear-gradient(135deg, #0e0818 0%, #0d0d14 100%);
+      border-color: rgba(124,58,255,0.2);
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      min-height: 220px;
+    }
+    .lumyn-content {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .lumyn-name {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .lumyn-name span { color: var(--accent-light); }
+    .lumyn-tagline {
+      font-size: 12px;
+      color: #888;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+    .lumyn-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 20px;
+    }
+    .lumyn-visual {
+      background: #080812;
+      border-left: 1px solid rgba(124,58,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .lumyn-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(124,58,255,0.12) 0%, transparent 70%);
+    }
+    .lumyn-visual-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--muted2);
+      text-align: center;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      position: absolute;
+      bottom: 20px;
+    }
+
+    /* ════════════════════════════
+       SECTION — EXPERIENCIA
+    ════════════════════════════ */
+    .exp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .exp-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: border-color 0.3s;
+    }
+    .exp-card:hover { border-color: var(--border-hover); }
+    .exp-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+    .exp-company {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .exp-date {
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted2);
+      background: rgba(255,255,255,0.04);
+      border-radius: 6px;
+      padding: 3px 8px;
+      white-space: nowrap;
+    }
+    .exp-role {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: var(--accent-light);
+      margin-bottom: 12px;
+    }
+    .exp-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 12px;
+    }
+    .exp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .exp-list li {
+      font-size: 12px;
+      color: #777;
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .exp-list li::before {
+      content: '·';
+      position: absolute;
+      left: 2px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ════════════════════════════
+       FOOTER
+    ════════════════════════════ */
+    .footer {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer::before {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 400px; height: 200px;
+      background: radial-gradient(ellipse, rgba(124,58,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .footer-cta {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .footer-cta span { color: var(--accent-light); }
+    .footer-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .footer-contact-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .footer-contact-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-contact-item:hover { color: var(--accent-light); }
+    .footer-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 20px;
+    }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted2);
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 0.6s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up:nth-child(1) { animation-delay: 0.1s; }
+    .fade-up:nth-child(2) { animation-delay: 0.2s; }
+    .fade-up:nth-child(3) { animation-delay: 0.3s; }
+    .fade-up:nth-child(4) { animation-delay: 0.4s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .wrapper { padding: 80px 16px 60px; }
+
+      /* Hero — stack verticalmente */
+      .hero { grid-template-columns: 1fr; }
+      .hero-main { padding: 32px 24px; }
+      .hero-name { font-size: 36px; }
+
+      /* Hero side — contacto y stats uno debajo del otro */
+      .hero-side { flex-direction: column; gap: 14px; }
+      .hero-contact { min-width: unset; width: 100%; }
+      .hero-stats {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        padding: 16px;
+      }
+      .stat-num { font-size: 20px; }
+      .stat-lbl { font-size: 8px; }
+
+      /* Contact items — asegurar que no se corten */
+      .contact-item { gap: 10px; }
+      .contact-text {
+        font-size: 11px;
+        word-break: break-all;
+        min-width: 0;
+      }
+      .contact-icon {
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+      }
+
+      /* Resto del layout */
+      .about-stack { grid-template-columns: 1fr; }
+      .exp-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card-lumyn {
+        grid-column: span 1;
+        grid-template-columns: 1fr;
+      }
+      .lumyn-visual { display: none; }
+      .lumyn-content { padding: 24px; }
+
+      /* Footer */
+      .footer { padding: 32px 20px; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+      .footer-contact-row { flex-direction: column; gap: 12px; align-items: center; }
+
+      /* Reel embed */
+      .reel-embed iframe { min-height: 200px; }
+    }
+
+    @media (max-width: 420px) {
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .hero-actions { flex-direction: column; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <div class="nav-logo">Diego<span>.</span></div>
+    <ul class="nav-links">
+      <li><a href="#trabajo">Trabajo</a></li>
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#experiencia">Experiencia</a></li>
+      <li><a href="#contacto" class="nav-cta">Hablemos →</a></li>
+    </ul>
+  </nav>
+
+  <div class="wrapper">
+
+    <!-- ── HERO ── -->
+    <section class="hero fade-up">
+      <div class="hero-main">
+        <div class="hero-available">Disponible para nuevos proyectos</div>
+        <div class="hero-name">Diego<br/>Manjarrés<br/><span>Burgos.</span></div>
+        <div class="hero-role">AI Creative Producer · Art Director</div>
+        <p class="hero-tagline">Diseñador con 10+ años en agencias. Ahora en la intersección entre creatividad y tecnología IA — produciendo contenido que convierte y automatizando flujos de trabajo visuales.</p>
+        <div class="hero-actions">
+          <a href="#trabajo" class="btn-primary">Ver mi trabajo ↓</a>
+          <a href="cv_diego_v2.html" target="_blank" class="btn-secondary">Ver CV →</a>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="hero-contact">
+          <div class="label">Contacto</div>
+          <div class="contact-item">
+            <div class="contact-icon">✉</div>
+            <div class="contact-text"><a href="mailto:diego.manjarres88@gmail.com">diego.manjarres88@gmail.com</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">☎</div>
+            <div class="contact-text">+569 4512 8412</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div class="contact-text">Santiago, Chile</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">🇨🇱</div>
+            <div class="contact-text">Nacionalidad chilena</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">🌐</div>
+            <div class="contact-text"><a href="https://diegomanjarres.netlify.app" target="_blank">diegomanjarres.netlify.app</a></div>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-num">10<span>+</span></div>
+            <div class="stat-lbl">Años exp.</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num"><span>∞</span></div>
+            <div class="stat-lbl">Marcas</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">AI<span>✦</span></div>
+            <div class="stat-lbl">Stack</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">1<span>✦</span></div>
+            <div class="stat-lbl">Proyecto propio</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SHOWREEL ── -->
+    <section class="reel-section fade-up" id="trabajo">
+      <div class="reel-wrapper">
+        <div class="reel-header">
+          <div class="reel-title">Showreel</div>
+          <div class="reel-badge">▶ Portfolio 2024</div>
+        </div>
+        <!-- 
+          PARA ACTIVAR EL REEL:
+          1. Borra el bloque .reel-placeholder
+          2. Descomenta el bloque .reel-embed de abajo
+          3. Reemplaza VIMEO_VIDEO_ID con tu ID de Vimeo
+        -->
+        <div class="reel-embed">
+          <iframe src="https://player.vimeo.com/video/1176332413?autoplay=0&title=0&byline=0&portrait=0&color=7C3AFF&controls=1&dnt=1&transparent=0" allowfullscreen allow="autoplay; fullscreen; picture-in-picture"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SOBRE MÍ + STACK ── -->
+    <section class="about-stack fade-up" id="sobre-mi">
+      <div class="card about-card">
+        <div class="label">Sobre mí</div>
+        <p>
+          Soy diseñador gráfico y digital con <strong>más de 10 años en agencias de publicidad</strong>, especializado en producción de contenido para <strong>Meta Ads y redes sociales</strong>.<br/><br/>
+          Actualmente opero en la intersección entre diseño y tecnología IA — construyendo flujos automatizados, generando contenido con <strong>modelos de imagen y video generativa</strong>, y desarrollando herramientas con <strong>Claude Code, Lovable y OpenClaw</strong>.<br/><br/>
+          Fundador de <strong>Lumyn.studio</strong>, estudio boutique de contenido IA para marcas.
+        </p>
+      </div>
+      <div class="card stack-card">
+        <div class="label">Stack</div>
+        <div class="stack-group">
+          <div class="stack-group-label">IA & Generación</div>
+          <div class="tags-wrap">
+            <span class="tag">⚡ ComfyUI</span>
+            <span class="tag">🎨 Flux.1</span>
+            <span class="tag">🎬 Wan2.1</span>
+            <span class="tag">🧠 Google AI Studio</span>
+            <span class="tag">🖼 Midjourney</span>
+            <span class="tag">🤖 Higgsfield AI</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <div class="stack-group-label">Build & Automatización</div>
+          <div class="tags-wrap">
+            <span class="tag">💻 Claude Code</span>
+            <span class="tag">🔧 Lovable</span>
+            <span class="tag">🪝 OpenClaw</span>
+            <span class="tag">🌌 Antigravity</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <div class="stack-group-label">Diseño & Producción</div>
+          <div class="tags-wrap">
+            <span class="tag tag-neutral">Photoshop</span>
+            <span class="tag tag-neutral">Illustrator</span>
+            <span class="tag tag-neutral">After Effects</span>
+            <span class="tag tag-neutral">Premiere Pro</span>
+            <span class="tag tag-neutral">Figma</span>
+            <span class="tag tag-neutral">Canva</span>
+            <span class="tag tag-neutral">CapCut</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PROYECTOS ── -->
+    <section id="trabajo">
+      <div class="section-title">
+        <div class="section-title-dot"></div>
+        <h2>Proyectos seleccionados</h2>
+        <div class="line"></div>
+      </div>
+      <div class="projects-grid projects-grid--single">
+
+        <!-- Lumyn — featured -->
+        <div class="project-card project-card-lumyn project-card-lumyn--full">
+          <div class="lumyn-content">
+            <div>
+              <div class="label">Proyecto propio · 2024 — presente</div>
+              <div class="lumyn-name">Lumyn<span>.studio</span></div>
+              <p class="lumyn-tagline">Estudio boutique de contenido IA: product shots, virtual influencers y UGC sintético para marcas. Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1.</p>
+            </div>
+            <div class="lumyn-chips tags-wrap">
+              <span class="tag">ComfyUI</span>
+              <span class="tag">Flux.1</span>
+              <span class="tag">Wan2.1</span>
+              <span class="tag">Virtual Influencers</span>
+              <span class="tag">UGC Sintético</span>
+              <span class="tag">Claude Code</span>
+              <span class="tag">Lovable</span>
+            </div>
+          </div>
+          <div class="lumyn-visual">
+            <div class="lumyn-visual-text">AI Content Studio</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── EXPERIENCIA ── -->
+    <section id="experiencia">
+      <div class="section-title">
+        <div class="section-title-dot"></div>
+        <h2>Experiencia</h2>
+        <div class="line"></div>
+      </div>
+      <div class="exp-grid">
+        <div class="exp-card">
+          <div class="exp-top">
+            <div class="exp-company">Agencia Alike</div>
+            <div class="exp-date">Ago 2024 – Ene 2026</div>
+          </div>
+          <div class="exp-role">Paid Media Designer</div>
+          <div class="exp-divider"></div>
+          <ul class="exp-list">
+            <li>Producción de reels, carruseles y videos para Meta Ads con foco en conversión.</li>
+            <li>Integración de IA generativa (Google AI Studio) en flujos de producción.</li>
+            <li>Edición con After Effects, Premiere Pro, Photoshop e Illustrator.</li>
+          </ul>
+        </div>
+        <div class="exp-card">
+          <div class="exp-top">
+            <div class="exp-company">Agencia Salvaje</div>
+            <div class="exp-date">Ene 2020 – Sept 2022</div>
+          </div>
+          <div class="exp-role">Director de Arte</div>
+          <div class="exp-divider"></div>
+          <ul class="exp-list">
+            <li>Dirección creativa y supervisión de cuentas de redes sociales.</li>
+            <li>Marcas: American Express, Copec, Cruz Verde, Mahou.</li>
+            <li>Gestión del flujo creativo del equipo y aprobación de piezas finales.</li>
+          </ul>
+        </div>
+        <div class="exp-card">
+          <div class="exp-top">
+            <div class="exp-company">JVD Estudio</div>
+            <div class="exp-date">Sept 2018 – Nov 2019</div>
+          </div>
+          <div class="exp-role">Diseñador Digital</div>
+          <div class="exp-divider"></div>
+          <ul class="exp-list">
+            <li>Diseño digital y producción gráfica para redes sociales y campañas.</li>
+          </ul>
+        </div>
+        <div class="exp-card">
+          <div class="exp-top">
+            <div class="exp-company">Blokcom</div>
+            <div class="exp-date">Jul 2016 – Ago 2018</div>
+          </div>
+          <div class="exp-role">Diseñador Digital</div>
+          <div class="exp-divider"></div>
+          <ul class="exp-list">
+            <li>Producción de piezas digitales para estrategias de contenido y campañas.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOOTER / CONTACTO ── -->
+    <section class="footer fade-up" id="contacto">
+      <div class="footer-cta">¿Trabajamos <span>juntos?</span></div>
+      <p class="footer-sub">Disponible para roles dependientes y proyectos freelance en IA creativa y automatización de contenido.</p>
+      <div class="footer-contact-row">
+        <a href="mailto:diego.manjarres88@gmail.com" class="footer-contact-item">✉ diego.manjarres88@gmail.com</a>
+        <span class="footer-contact-item">☎ +569 4512 8412</span>
+        <span class="footer-contact-item">📍 Santiago, Chile</span>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <span>Diego Manjarrés Burgos · AI Creative Producer</span>
+        <span>© 2025</span>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Subtle scroll-triggered fade for cards
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.card, .exp-card, .project-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.3s';
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
