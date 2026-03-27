@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reporte — Lumyn.studio / diegomanjarres.netlify.app</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080808;
+      --card: #0f0f0f;
+      --card2: #141414;
+      --border: rgba(255,255,255,0.07);
+      --accent: #7C3AFF;
+      --accent-light: #9d6aff;
+      --accent-dim: rgba(124,58,255,0.1);
+      --green: #4ade80;
+      --yellow: #facc15;
+      --red: #f87171;
+      --text: #f0f0f0;
+      --muted: #888;
+      --muted2: #444;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.6;
+      padding: 40px 24px 80px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* ── HEADER ── */
+    .report-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 32px;
+      margin-bottom: 40px;
+    }
+    .report-meta {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+      border: 1px solid;
+    }
+    .badge-purple { color: var(--accent-light); border-color: rgba(124,58,255,0.4); background: var(--accent-dim); }
+    .badge-green  { color: var(--green);        border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.08); }
+    .badge-yellow { color: var(--yellow);       border-color: rgba(250,204,21,0.3); background: rgba(250,204,21,0.08); }
+    .badge-red    { color: var(--red);          border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.08); }
+
+    h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+    h1 span { color: var(--accent-light); }
+    .report-date { font-size: 13px; color: var(--muted); }
+
+    /* ── SCORE BAR ── */
+    .score-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 32px;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .score-big {
+      font-size: 64px;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--accent-light);
+      letter-spacing: -0.04em;
+    }
+    .score-label { font-size: 12px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .score-bars { flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 10px; }
+    .bar-row { display: flex; align-items: center; gap: 12px; font-size: 13px; }
+    .bar-name { width: 140px; color: var(--muted); }
+    .bar-track { flex: 1; height: 6px; background: var(--muted2); border-radius: 100px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 100px; }
+    .bar-val { width: 36px; text-align: right; font-weight: 600; font-size: 12px; }
+
+    /* ── SECTION ── */
+    section { margin-bottom: 48px; }
+    h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h2::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ── CARDS ── */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 22px;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: rgba(124,58,255,0.25); }
+    .card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .card-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+    .card-icon { font-size: 20px; margin-bottom: 10px; }
+
+    /* ── ISSUES ── */
+    .issue {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 22px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .issue-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+    .dot-red    { background: var(--red); box-shadow: 0 0 8px rgba(248,113,113,0.5); }
+    .dot-yellow { background: var(--yellow); box-shadow: 0 0 8px rgba(250,204,21,0.4); }
+    .dot-green  { background: var(--green); box-shadow: 0 0 8px rgba(74,222,128,0.4); }
+
+    .issue-body h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .issue-body p  { font-size: 13px; color: var(--muted); }
+    .issue-body code {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      background: rgba(255,255,255,0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent-light);
+    }
+
+    /* ── CHECKLIST ── */
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .checklist li .icon { flex-shrink: 0; margin-top: 1px; }
+    .checklist li.done { color: var(--text); }
+
+    /* ── TECH TABLE ── */
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      font-size: 13px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: rgba(255,255,255,0.02); }
+    td:first-child { font-weight: 600; }
+    td.muted { color: var(--muted); }
+
+    /* ── PRIORITY TABLE ── */
+    .priority-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 100px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="report-header">
+    <div class="report-meta">
+      <span class="badge badge-purple">Reporte técnico</span>
+      <span class="badge badge-green">Sitio activo</span>
+    </div>
+    <h1>Lumyn<span>.studio</span> · Portfolio Review</h1>
+    <p class="report-date">diegomanjarres.netlify.app &nbsp;·&nbsp; Generado el 27 de marzo de 2026 &nbsp;·&nbsp; Branch: claude/lumyn-studio-report-j1g7G</p>
+  </div>
+
+  <!-- SCORE -->
+  <div class="score-section">
+    <div>
+      <div class="score-big">78</div>
+      <div class="score-label">Score general /100</div>
+    </div>
+    <div class="score-bars">
+      <div class="bar-row">
+        <span class="bar-name">Diseño & UI</span>
+        <div class="bar-track"><div class="bar-fill" style="width:95%;background:#7C3AFF;"></div></div>
+        <span class="bar-val" style="color:#9d6aff">95</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-name">Responsive</span>
+        <div class="bar-track"><div class="bar-fill" style="width:88%;background:#7C3AFF;"></div></div>
+        <span class="bar-val" style="color:#9d6aff">88</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-name">Completitud de contenido</span>
+        <div class="bar-track"><div class="bar-fill" style="width:65%;background:#facc15;"></div></div>
+        <span class="bar-val" style="color:#facc15">65</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-name">SEO</span>
+        <div class="bar-track"><div class="bar-fill" style="width:30%;background:#f87171;"></div></div>
+        <span class="bar-val" style="color:#f87171">30</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-name">Performance</span>
+        <div class="bar-track"><div class="bar-fill" style="width:80%;background:#4ade80;"></div></div>
+        <span class="bar-val" style="color:#4ade80">80</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-name">Accesibilidad</span>
+        <div class="bar-track"><div class="bar-fill" style="width:72%;background:#facc15;"></div></div>
+        <span class="bar-val" style="color:#facc15">72</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STACK TÉCNICO -->
+  <section>
+    <h2>Stack técnico</h2>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+      <table>
+        <thead>
+          <tr>
+            <th>Capa</th>
+            <th>Tecnología</th>
+            <th>Observación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Markup</td>
+            <td>HTML5 puro</td>
+            <td class="muted">Sin framework, sin build step — máxima velocidad</td>
+          </tr>
+          <tr>
+            <td>Estilos</td>
+            <td>CSS3 vanilla + variables</td>
+            <td class="muted">Sistema de design tokens con <code>:root</code>, muy ordenado</td>
+          </tr>
+          <tr>
+            <td>JS</td>
+            <td>Vanilla JS</td>
+            <td class="muted">Solo animaciones con IntersectionObserver, sin dependencias</td>
+          </tr>
+          <tr>
+            <td>Tipografía</td>
+            <td>Google Fonts (Poppins + DM Mono)</td>
+            <td class="muted">Usa <code>preconnect</code> — buena práctica de carga</td>
+          </tr>
+          <tr>
+            <td>Video</td>
+            <td>Vimeo embed</td>
+            <td class="muted">ID 1176332413 — funcional, no auto-play</td>
+          </tr>
+          <tr>
+            <td>Hosting</td>
+            <td>Netlify</td>
+            <td class="muted">CD automático, dominio: diegomanjarres.netlify.app</td>
+          </tr>
+          <tr>
+            <td>Control de versiones</td>
+            <td>Git</td>
+            <td class="muted">Repo con rama <code>main</code> y ramas de trabajo</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ESTRUCTURA DEL SITIO -->
+  <section>
+    <h2>Estructura de páginas</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🏠</div>
+        <div class="card-title">index.html</div>
+        <div class="card-desc">Landing principal. 1,148 líneas. Secciones: Hero, Showreel, Sobre mí, Proyectos, Experiencia, Contacto.</div>
+      </div>
+      <div class="card" style="border-color:rgba(248,113,113,0.3);">
+        <div class="card-icon">⚠️</div>
+        <div class="card-title">cv_diego_v2.html</div>
+        <div class="card-desc" style="color:var(--red);">Contiene la página 404 de Netlify en lugar del CV real. El botón "Ver CV →" apunta a este archivo — los usuarios ven un error.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ISSUES CRÍTICOS -->
+  <section>
+    <h2>Issues críticos</h2>
+
+    <div class="issue">
+      <div class="issue-dot dot-red"></div>
+      <div class="issue-body">
+        <h3>CV page rota — 404 en lugar del CV</h3>
+        <p>El archivo <code>cv_diego_v2.html</code> contiene la plantilla 404 de Netlify, no el CV de Diego. El botón "Ver CV →" del hero lleva directo a este error. Es lo primero que un reclutador intentaría hacer.</p>
+      </div>
+    </div>
+
+    <div class="issue">
+      <div class="issue-dot dot-red"></div>
+      <div class="issue-body">
+        <h3>Sin meta description ni Open Graph</h3>
+        <p>Faltan <code>&lt;meta name="description"&gt;</code>, <code>og:title</code>, <code>og:image</code> y <code>og:description</code>. Sin esto, cuando compartes el link en WhatsApp, LinkedIn o Twitter no aparece preview ni descripción. Impacto directo en primeras impresiones.</p>
+      </div>
+    </div>
+
+    <div class="issue">
+      <div class="issue-dot dot-yellow"></div>
+      <div class="issue-body">
+        <h3>Sección "Proyectos" con un solo proyecto</h3>
+        <p>El grid está configurado para <code>repeat(3, 1fr)</code> pero solo existe la card de Lumyn.studio. El portafolio se ve incompleto. Si hay más proyectos, hay que agregarlos; si no los hay aún, el layout debería ajustarse a 1 columna featured.</p>
+      </div>
+    </div>
+
+    <div class="issue">
+      <div class="issue-dot dot-yellow"></div>
+      <div class="issue-body">
+        <h3>Sin imágenes reales en proyectos</h3>
+        <p>La card de Lumyn.studio usa un degradado CSS como placeholder con el texto "AI Content Studio". Siendo un AI Creative Studio, mostrar capturas del trabajo generado sería un impacto enorme.</p>
+      </div>
+    </div>
+
+    <div class="issue">
+      <div class="issue-dot dot-yellow"></div>
+      <div class="issue-body">
+        <h3>Nav mobile incompleta</h3>
+        <p>En mobile los nav links se ocultan con <code>display:none</code> pero no hay hamburger menu. El usuario mobile solo ve el logo y el CTA "Hablemos" — no puede navegar entre secciones directamente.</p>
+      </div>
+    </div>
+
+    <div class="issue">
+      <div class="issue-dot dot-green"></div>
+      <div class="issue-body">
+        <h3>Sin favicon</h3>
+        <p>No hay <code>&lt;link rel="icon"&gt;</code>. En tabs del navegador aparece el ícono genérico. Pequeño detalle de polish que suma.</p>
+      </div>
+    </div>
+
+    <div class="issue">
+      <div class="issue-dot dot-green"></div>
+      <div class="issue-body">
+        <h3>Sin analytics</h3>
+        <p>No hay Google Analytics, Plausible ni ningún sistema de tracking. No puedes saber cuántas visitas tiene el sitio ni de dónde vienen.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ ESTÁ BIEN -->
+  <section>
+    <h2>Lo que está muy bien</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🎨</div>
+        <div class="card-title">Diseño profesional</div>
+        <div class="card-desc">Dark theme con sistema de colores coherente, tipografía Poppins bien usada, jerarquía visual clara. Se siente premium.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Performance nativa</div>
+        <div class="card-desc">Sin framework, sin npm, sin build. Carga instantánea. Solo HTML/CSS/JS puro — exactamente lo que necesita un portfolio.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎬</div>
+        <div class="card-title">Showreel integrado</div>
+        <div class="card-desc">El embed de Vimeo del portfolio 2024 está bien implementado con color accent personalizado (#7C3AFF).</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📱</div>
+        <div class="card-title">Responsive sólido</div>
+        <div class="card-desc">Breakpoints en 768px y 420px. Grids que colapsan bien. Tipografía escalada correctamente en mobile.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">✨</div>
+        <div class="card-title">Animaciones suaves</div>
+        <div class="card-desc">IntersectionObserver para fade-in al hacer scroll. Transiciones CSS limpias. Hover states consistentes en toda la UI.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛠️</div>
+        <div class="card-title">Tech stack visible</div>
+        <div class="card-desc">La sección de herramientas (ComfyUI, Flux.1, Claude Code, etc.) está muy bien presentada — diferencia a Diego claramente.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAN DE ACCIÓN -->
+  <section>
+    <h2>Plan de acción recomendado</h2>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tarea</th>
+            <th>Prioridad</th>
+            <th>Esfuerzo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Reemplazar <code>cv_diego_v2.html</code> con el CV real</td>
+            <td><span class="priority-tag badge-red">Urgente</span></td>
+            <td class="muted">1–2 hrs</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Agregar <code>meta description</code> + Open Graph tags</td>
+            <td><span class="priority-tag badge-red">Urgente</span></td>
+            <td class="muted">30 min</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Agregar imagen(es) real(es) de trabajo en la card de Lumyn.studio</td>
+            <td><span class="priority-tag badge-yellow">Alta</span></td>
+            <td class="muted">2–4 hrs</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Implementar hamburger menu en mobile</td>
+            <td><span class="priority-tag badge-yellow">Alta</span></td>
+            <td class="muted">2 hrs</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Agregar 2–3 proyectos más o ajustar layout a featured-only</td>
+            <td><span class="priority-tag badge-yellow">Alta</span></td>
+            <td class="muted">3–6 hrs</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Agregar favicon (logo de Lumyn o inicial "D")</td>
+            <td><span class="priority-tag badge-green">Media</span></td>
+            <td class="muted">30 min</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Instalar Plausible o Google Analytics</td>
+            <td><span class="priority-tag badge-green">Media</span></td>
+            <td class="muted">30 min</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Agregar structured data (JSON-LD Person schema)</td>
+            <td><span class="priority-tag badge-green">Baja</span></td>
+            <td class="muted">1 hr</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECCIONES DEL SITIO -->
+  <section>
+    <h2>Estado de las secciones</h2>
+    <ul class="checklist">
+      <li class="done"><span class="icon">✅</span> <strong>Nav</strong> — Fija, blur, logo + links + CTA. Funcional.</li>
+      <li class="done"><span class="icon">✅</span> <strong>Hero</strong> — Nombre, rol, disponibilidad, botones de acción, contact card + stats card.</li>
+      <li class="done"><span class="icon">✅</span> <strong>Showreel</strong> — Vimeo embed Portfolio 2024. Bien integrado.</li>
+      <li class="done"><span class="icon">✅</span> <strong>Sobre mí</strong> — Texto biográfico + stack de herramientas por categoría.</li>
+      <li class="done"><span class="icon">⚠️</span> <strong>Proyectos</strong> — Solo 1 proyecto (Lumyn.studio). Sin imágenes reales. Grid incompleto.</li>
+      <li class="done"><span class="icon">✅</span> <strong>Experiencia</strong> — 4 posiciones (Alike, Salvaje, JVD, Blokcom) con fechas y bullets.</li>
+      <li class="done"><span class="icon">✅</span> <strong>Footer / Contacto</strong> — CTA "¿Trabajamos juntos?", email + teléfono + ubicación.</li>
+      <li><span class="icon">❌</span> <strong>CV page</strong> — Muestra 404 de Netlify. Bug crítico.</li>
+      <li><span class="icon">❌</span> <strong>Formulario de contacto</strong> — No implementado. Solo info estática.</li>
+      <li><span class="icon">❌</span> <strong>Blog / Cases</strong> — No implementado.</li>
+    </ul>
+  </section>
+
+  <!-- INFORMACIÓN DEL PROYECTO -->
+  <section>
+    <h2>Información del proyecto</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title" style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Propietario</div>
+        <div style="font-size:15px;font-weight:600;">Diego Manjarrés Burgos</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px;">AI Creative Producer · Art Director</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Contacto</div>
+        <div style="font-size:13px;color:var(--muted);">✉ diego.manjarres88@gmail.com</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px;">☎ +569 4512 8412</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px;">📍 Santiago, Chile</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Repositorio / Deploy</div>
+        <div style="font-size:13px;color:var(--muted);">Repo: ziggystar88/portfolio-diego</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px;">Deploy: Netlify (auto CD)</div>
+        <div style="font-size:13px;color:var(--accent-light);margin-top:4px;">diegomanjarres.netlify.app</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Reporte generado por Claude Code · Lumyn.studio portfolio audit</span>
+    <span>27 de marzo de 2026</span>
+  </footer>
+
+</body>
+</html>
