@@ -1,124 +1,437 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Page not found</title>
-    <style>
-      :root {
-        --colorRgbFacetsTeal600: 2 128 125;
-        --colorTealAction: var(--colorRgbFacetsTeal600);
-        --colorRgbFacetsNeutralLight200: 233 235 237;
-        --colorHr: var(--colorRgbFacetsNeutralLight200);
-        --colorRgbFacetsNeutralLight700: 53 58 62;
-        --colorGrayDarkest: var(--colorRgbFacetsNeutralLight700);
-        --colorGrayLighter: var(--colorRgbFacetsNeutralLight200);
-        --colorText: var(--colorGrayDarkest);
-        --effectShadowLightShallow: 0 1px 10px 0 rgb(53 58 62 / 6%),
-          0 2px 4px 0 rgb(53 58 62 / 8%);
-        --colorRgbFacetsNeutralDark900: 6 11 16;
-      }
-      body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
-          "Segoe UI Emoji", "Segoe UI Symbol";
-        background: white;
-        overflow: hidden;
-        margin: 0;
-        padding: 0;
-        line-height: 1.5;
-        color: rgb(var(--colorText));
-      }
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV — Diego Manjarrés Burgos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-      @media (prefers-color-scheme: dark) {
-        body {
-          background: rgb(var(--colorRgbFacetsNeutralDark900));
-        }
-      }
+    :root {
+      --accent: #7C3AFF;
+      --accent-light: #9d6aff;
+      --bg: #fafafa;
+      --text: #111;
+      --muted: #666;
+      --border: #e4e4e7;
+    }
 
-      h1 {
-        margin: 0;
-        font-size: 1.375rem;
-        line-height: 1;
-      }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+    }
 
-      h1 + p {
-        margin-top: 8px;
-      }
+    @media print {
+      body { background: #fff; }
+      .no-print { display: none !important; }
+      .page { box-shadow: none; margin: 0; border-radius: 0; }
+    }
 
-      .main {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        width: 100vw;
-      }
+    /* ── PRINT BUTTON ── */
+    .no-print {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-print { background: var(--accent); color: #fff; }
+    .btn-back  { background: #111; color: #fff; }
 
-      .card {
-        position: relative;
-        width: 75%;
-        max-width: 364px;
-        padding: 24px;
-        background: white;
-        border-radius: 8px;
-        box-shadow: var(--effectShadowLightShallow);
-        border: 1px solid rgb(var(--colorGrayLighter));
-      }
+    /* ── PAGE ── */
+    .page {
+      max-width: 760px;
+      margin: 48px auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
 
-      a {
-        margin: 0;
-        font-weight: 600;
-        color: rgb(var(--colorTealAction));
-        text-decoration-skip-ink: all;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 2px;
-        text-decoration-color: rgb(var(--colorTealAction) / 0.5);
-        transition: text-decoration-color 0.15s ease-in-out;
-      }
+    /* ── HEADER ── */
+    .cv-header {
+      background: #080808;
+      padding: 40px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cv-header::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(124,58,255,0.25) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cv-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .cv-name {
+      font-size: 30px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .cv-name span { color: var(--accent-light); }
+    .cv-role {
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      color: var(--accent-light);
+      letter-spacing: 0.06em;
+      margin-top: 6px;
+    }
+    .cv-contact-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      align-items: flex-end;
+    }
+    .cv-contact-list li {
+      font-size: 11.5px;
+      font-family: 'DM Mono', monospace;
+      color: #aaa;
+    }
+    .cv-contact-list a {
+      color: var(--accent-light);
+      text-decoration: none;
+    }
 
-      a:hover,
-      a:focus-visible {
-        text-decoration-color: rgb(var(--colorTealAction));
-      }
+    /* ── BODY ── */
+    .cv-body {
+      padding: 36px 48px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
 
-      p:last-of-type {
-        margin-bottom: 0;
-      }
+    /* ── SECTION ── */
+    .cv-section h2 {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-family: 'DM Mono', monospace;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cv-section h2::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
 
-      hr {
-        border: 0;
-        height: 1px;
-        background: rgb(var(--colorHr));
-        margin-top: 16px;
-        margin-bottom: 16px;
-      }
+    /* ── ABOUT ── */
+    .cv-about {
+      font-size: 13px;
+      color: #444;
+      line-height: 1.75;
+    }
+    .cv-about strong { color: var(--text); font-weight: 600; }
 
-      .your-site {
-        font-size: 0.875rem;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="main">
-      <div class="card">
-        <h1>Page not found</h1>
-        <p>
-          Looks like you’ve followed a broken link or entered a URL that doesn’t
-          exist on this site.
-        </p>
-        <hr />
-        <p class="your-site">
-          If this is your site, and you weren’t expecting a 404 for this path,
-          please visit Netlify’s
-          <a
-            href="https://answers.netlify.com/t/support-guide-i-ve-deployed-my-site-but-i-still-see-page-not-found/125?utm_source=404page&utm_campaign=community_tracking"
-            >“page not found” support guide</a
-          >
-          for troubleshooting tips.
-        </p>
+    /* ── EXPERIENCE ── */
+    .exp-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 16px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .exp-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .exp-company {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .exp-date {
+      font-size: 10.5px;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+    .exp-role-title {
+      font-size: 11.5px;
+      font-family: 'DM Mono', monospace;
+      color: var(--accent);
+      grid-column: 1;
+      margin-bottom: 8px;
+    }
+    .exp-bullets {
+      grid-column: 1 / -1;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .exp-bullets li {
+      font-size: 12.5px;
+      color: #555;
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.55;
+    }
+    .exp-bullets li::before {
+      content: '·';
+      position: absolute;
+      left: 2px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+    .skill-group-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      margin-bottom: 8px;
+    }
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .skill-list li {
+      font-size: 12px;
+      color: #444;
+      padding-left: 12px;
+      position: relative;
+    }
+    .skill-list li::before {
+      content: '·';
+      position: absolute;
+      left: 1px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ── EDUCATION & EXTRA ── */
+    .edu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+    .edu-item:last-child { margin-bottom: 0; }
+    .edu-title { font-size: 13px; font-weight: 600; }
+    .edu-sub { font-size: 12px; color: var(--muted); }
+    .edu-year { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--muted); white-space: nowrap; }
+
+    /* ── FOOTER ── */
+    .cv-footer {
+      text-align: center;
+      font-size: 10.5px;
+      font-family: 'DM Mono', monospace;
+      color: #bbb;
+      padding: 16px 48px 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .page { margin: 0; border-radius: 0; }
+      .cv-header { padding: 28px 24px; }
+      .cv-header-top { flex-direction: column; }
+      .cv-contact-list { align-items: flex-start; }
+      .cv-body { padding: 24px; gap: 24px; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botones (no imprimen) -->
+  <div class="no-print">
+    <a href="index.html" class="btn btn-back">← Volver</a>
+    <button class="btn btn-print" onclick="window.print()">⬇ Descargar PDF</button>
+  </div>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="cv-header">
+      <div class="cv-header-top">
+        <div>
+          <div class="cv-name">Diego Manjarrés<br/><span>Burgos.</span></div>
+          <div class="cv-role">AI Creative Producer · Art Director</div>
+        </div>
+        <ul class="cv-contact-list">
+          <li><a href="mailto:diego.manjarres88@gmail.com">diego.manjarres88@gmail.com</a></li>
+          <li>+569 4512 8412</li>
+          <li>Santiago, Chile</li>
+          <li><a href="https://diegomanjarres.netlify.app" target="_blank">diegomanjarres.netlify.app</a></li>
+        </ul>
       </div>
     </div>
-  </body>
+
+    <div class="cv-body">
+
+      <!-- PERFIL -->
+      <div class="cv-section">
+        <h2>Perfil profesional</h2>
+        <p class="cv-about">
+          Diseñador gráfico y digital con <strong>más de 10 años de experiencia en agencias de publicidad</strong>, especializado en producción de contenido para <strong>Meta Ads y redes sociales</strong>. Actualmente en la intersección entre diseño y tecnología IA — construyendo flujos automatizados, generando contenido con <strong>modelos de imagen y video generativa</strong> (ComfyUI, Flux.1, Wan2.1), y desarrollando herramientas con Claude Code y Lovable. Fundador de <strong>Lumyn.studio</strong>, estudio boutique de contenido IA para marcas.
+        </p>
+      </div>
+
+      <!-- EXPERIENCIA -->
+      <div class="cv-section">
+        <h2>Experiencia laboral</h2>
+
+        <div class="exp-item">
+          <div class="exp-company">Agencia Alike</div>
+          <div class="exp-date">Ago 2024 – Ene 2026</div>
+          <div class="exp-role-title">Paid Media Designer</div>
+          <ul class="exp-bullets">
+            <li>Producción de reels, carruseles y videos para Meta Ads con foco en conversión.</li>
+            <li>Integración de IA generativa (Google AI Studio) en flujos de producción.</li>
+            <li>Edición y post-producción con After Effects, Premiere Pro, Photoshop e Illustrator.</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-company">Agencia Salvaje</div>
+          <div class="exp-date">Ene 2020 – Sept 2022</div>
+          <div class="exp-role-title">Director de Arte</div>
+          <ul class="exp-bullets">
+            <li>Dirección creativa y supervisión del equipo de diseño para redes sociales.</li>
+            <li>Cuentas: American Express, Copec, Cruz Verde, Mahou.</li>
+            <li>Gestión del flujo creativo y aprobación de piezas finales.</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-company">JVD Estudio</div>
+          <div class="exp-date">Sept 2018 – Nov 2019</div>
+          <div class="exp-role-title">Diseñador Digital</div>
+          <ul class="exp-bullets">
+            <li>Diseño digital y producción gráfica para redes sociales y campañas publicitarias.</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-company">Blokcom</div>
+          <div class="exp-date">Jul 2016 – Ago 2018</div>
+          <div class="exp-role-title">Diseñador Digital</div>
+          <ul class="exp-bullets">
+            <li>Producción de piezas digitales para estrategias de contenido y campañas.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- PROYECTO PROPIO -->
+      <div class="cv-section">
+        <h2>Proyecto propio</h2>
+        <div class="exp-item">
+          <div class="exp-company">Lumyn.studio</div>
+          <div class="exp-date">2024 – presente</div>
+          <div class="exp-role-title">Fundador · AI Creative Producer</div>
+          <ul class="exp-bullets">
+            <li>Estudio boutique de contenido IA: product shots, virtual influencers y UGC sintético para marcas.</li>
+            <li>Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1.</li>
+            <li>Desarrollo de herramientas internas con Claude Code y Lovable.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div class="cv-section">
+        <h2>Herramientas y habilidades</h2>
+        <div class="skills-grid">
+          <div>
+            <div class="skill-group-label">IA & Generación</div>
+            <ul class="skill-list">
+              <li>ComfyUI</li>
+              <li>Flux.1</li>
+              <li>Wan2.1</li>
+              <li>Google AI Studio</li>
+              <li>Midjourney</li>
+              <li>Higgsfield AI</li>
+            </ul>
+          </div>
+          <div>
+            <div class="skill-group-label">Build & Automatización</div>
+            <ul class="skill-list">
+              <li>Claude Code</li>
+              <li>Lovable</li>
+              <li>OpenClaw</li>
+              <li>Antigravity</li>
+            </ul>
+          </div>
+          <div>
+            <div class="skill-group-label">Diseño & Producción</div>
+            <ul class="skill-list">
+              <li>Adobe Photoshop</li>
+              <li>Adobe Illustrator</li>
+              <li>After Effects</li>
+              <li>Premiere Pro</li>
+              <li>Figma</li>
+              <li>Canva · CapCut</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDUCACIÓN -->
+      <div class="cv-section">
+        <h2>Educación</h2>
+        <div class="edu-item">
+          <div>
+            <div class="edu-title">Diseño Gráfico</div>
+            <div class="edu-sub">Formación universitaria</div>
+          </div>
+          <div class="edu-year">Chile</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="cv-footer">
+      Diego Manjarrés Burgos · AI Creative Producer · diegomanjarres.netlify.app
+    </div>
+
+  </div>
+
+</body>
 </html>

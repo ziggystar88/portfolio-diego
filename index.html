@@ -4,6 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Diego Manjarrés — AI Creative Producer</title>
+  <meta name="description" content="Diego Manjarrés Burgos — AI Creative Producer y Art Director con 10+ años en agencias. Fundador de Lumyn.studio, estudio boutique de contenido IA para marcas en Santiago, Chile." />
+  <meta name="author" content="Diego Manjarrés Burgos" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://diegomanjarres.netlify.app/" />
+  <meta property="og:title" content="Diego Manjarrés — AI Creative Producer" />
+  <meta property="og:description" content="10+ años en agencias. Fundador de Lumyn.studio — product shots, virtual influencers y UGC sintético para marcas con IA generativa." />
+  <meta property="og:image" content="https://diegomanjarres.netlify.app/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Diego Manjarrés — AI Creative Producer" />
+  <meta name="twitter:description" content="10+ años en agencias. Fundador de Lumyn.studio — contenido IA para marcas." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237C3AFF'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-weight='900' font-size='18' fill='white' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Diego Manjarrés Burgos",
+    "jobTitle": "AI Creative Producer",
+    "url": "https://diegomanjarres.netlify.app",
+    "email": "diego.manjarres88@gmail.com",
+    "telephone": "+56945128412",
+    "address": { "@type": "PostalAddress", "addressLocality": "Santiago", "addressCountry": "CL" },
+    "sameAs": ["https://diegomanjarres.netlify.app"]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -804,10 +828,65 @@
     .fade-up:nth-child(3) { animation-delay: 0.3s; }
     .fade-up:nth-child(4) { animation-delay: 0.4s; }
 
+    /* ── HAMBURGER ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--muted);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s, background 0.2s;
+    }
+    .nav-hamburger:hover span { background: #fff; }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: rgba(8,8,8,0.96);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .nav-mobile-overlay.open { display: flex; }
+    .nav-mobile-overlay a {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      transition: color 0.2s;
+    }
+    .nav-mobile-overlay a:hover { color: #fff; }
+    .nav-mobile-overlay .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      padding: 14px 36px;
+      border-radius: 100px;
+      font-size: 16px !important;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       nav { padding: 16px 20px; }
       .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
       .wrapper { padding: 80px 16px 60px; }
 
       /* Hero — stack verticalmente */
@@ -877,7 +956,18 @@
       <li><a href="#experiencia">Experiencia</a></li>
       <li><a href="#contacto" class="nav-cta">Hablemos →</a></li>
     </ul>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <!-- Mobile nav overlay -->
+  <div class="nav-mobile-overlay" id="mobileNav">
+    <a href="#trabajo" class="nav-mobile-link">Trabajo</a>
+    <a href="#sobre-mi" class="nav-mobile-link">Sobre mí</a>
+    <a href="#experiencia" class="nav-mobile-link">Experiencia</a>
+    <a href="#contacto" class="nav-cta nav-mobile-link">Hablemos →</a>
+  </div>
 
   <div class="wrapper">
 
@@ -939,7 +1029,7 @@
     </section>
 
     <!-- ── SHOWREEL ── -->
-    <section class="reel-section fade-up" id="trabajo">
+    <section class="reel-section fade-up" id="showreel">
       <div class="reel-wrapper">
         <div class="reel-header">
           <div class="reel-title">Showreel</div>
@@ -1110,13 +1200,27 @@
       <div class="footer-divider"></div>
       <div class="footer-bottom">
         <span>Diego Manjarrés Burgos · AI Creative Producer</span>
-        <span>© 2025</span>
+        <span>© 2026</span>
       </div>
     </section>
 
   </div>
 
   <script>
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileNav.classList.remove('open');
+      });
+    });
+
     // Smooth scroll for nav links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
