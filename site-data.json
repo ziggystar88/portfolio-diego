@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "title": "Diego Manjarrés — AI Creative Producer",
+    "lang": "es",
+    "url": "https://diegomanjarres.netlify.app"
+  },
+  "hero": {
+    "available": true,
+    "availableLabel": "Disponible para nuevos proyectos",
+    "name": "Diego Manjarrés Burgos",
+    "role": "AI Creative Producer · Art Director",
+    "tagline": "Diseñador con 10+ años en agencias. Ahora en la intersección entre creatividad y tecnología IA — produciendo contenido que convierte y automatizando flujos de trabajo visuales.",
+    "cta": {
+      "primary": { "label": "Ver mi trabajo ↓", "href": "#trabajo" },
+      "secondary": { "label": "Ver CV →", "href": "cv_diego_v2.html", "download": true }
+    }
+  },
+  "contact": {
+    "email": "diego.manjarres88@gmail.com",
+    "phone": "+569 4512 8412",
+    "location": "Santiago, Chile",
+    "nationality": "Chilena",
+    "website": "https://diegomanjarres.netlify.app"
+  },
+  "stats": [
+    { "value": "10+", "label": "Años exp." },
+    { "value": "∞",   "label": "Marcas" },
+    { "value": "AI✦", "label": "Stack" },
+    { "value": "1✦",  "label": "Proyecto propio" }
+  ],
+  "about": "Soy diseñador gráfico y digital con más de 10 años en agencias de publicidad, especializado en producción de contenido para Meta Ads y redes sociales. Actualmente opero en la intersección entre diseño y tecnología IA — hago vibecoding, genero contenido con modelos de imagen y video generativa, y construyo flujos con Claude Code, Lovable y OpenClaw. Uso ComfyUI (generación de imágenes y video con IA mediante nodos visuales) y n8n para crear agentes y flujos automatizados. Fundador de Lumyn.studio, estudio boutique de contenido IA para marcas.",
+  "stack": {
+    "ia_generacion": [
+      "ComfyUI",
+      "Flux.1",
+      "Wan2.1",
+      "Midjourney",
+      "Higgsfield AI"
+    ],
+    "build_automatizacion": [
+      "Claude Code",
+      "Lovable",
+      "OpenClaw",
+      "Antigravity",
+      "n8n"
+    ],
+    "diseno_produccion": [
+      "Photoshop",
+      "Illustrator",
+      "After Effects",
+      "Premiere Pro",
+      "Figma",
+      "Canva",
+      "CapCut"
+    ]
+  },
+  "showreel": {
+    "title": "Showreel",
+    "badge": "Portfolio 2026",
+    "vimeo_id": "1176332413",
+    "embed_url": "https://player.vimeo.com/video/1176332413?autoplay=0&title=0&byline=0&portrait=0&color=7C3AFF&controls=1&dnt=1&transparent=0"
+  },
+  "projects": [
+    {
+      "id": "lumyn",
+      "type": "proyecto_propio",
+      "name": "Lumyn.studio",
+      "year_start": 2026,
+      "year_end": null,
+      "tagline": "Estudio boutique de contenido IA: product shots, virtual influencers y UGC sintético para marcas. Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1.",
+      "tags": ["ComfyUI", "Flux.1", "Wan2.1", "Virtual Influencers", "UGC Sintético", "Claude Code", "Lovable"],
+      "featured": true
+    }
+  ],
+  "experience": [
+    {
+      "company": "Agencia Alike",
+      "role": "Paid Media Designer",
+      "period": { "start": "2024-08", "end": "2026-01" },
+      "period_label": "Ago 2024 – Ene 2026",
+      "highlights": [
+        "Producción de reels, carruseles y videos para Meta Ads con foco en conversión.",
+        "Integración de IA generativa (Google AI Studio) en flujos de producción.",
+        "Edición con After Effects, Premiere Pro, Photoshop e Illustrator."
+      ]
+    },
+    {
+      "company": "Agencia Salvaje",
+      "role": "Director de Arte",
+      "period": { "start": "2020-01", "end": "2022-09" },
+      "period_label": "Ene 2020 – Sept 2022",
+      "highlights": [
+        "Dirección creativa y supervisión de cuentas de redes sociales.",
+        "Marcas: American Express, Copec, Cruz Verde, Mahou.",
+        "Gestión del flujo creativo del equipo y aprobación de piezas finales."
+      ]
+    },
+    {
+      "company": "JVD Estudio",
+      "role": "Diseñador Digital",
+      "period": { "start": "2018-09", "end": "2019-11" },
+      "period_label": "Sept 2018 – Nov 2019",
+      "highlights": [
+        "Diseño digital y producción gráfica para redes sociales y campañas."
+      ]
+    },
+    {
+      "company": "Blokcom",
+      "role": "Diseñador Digital",
+      "period": { "start": "2016-07", "end": "2018-08" },
+      "period_label": "Jul 2016 – Ago 2018",
+      "highlights": [
+        "Producción de piezas digitales para estrategias de contenido y campañas."
+      ]
+    },
+    {
+      "company": "Otras agencias",
+      "role": "Diseñador Digital",
+      "period": { "start": "2014-01", "end": "2016-06" },
+      "period_label": "Ene 2014 – Jun 2016",
+      "agencies": ["Impryma Chile", "Media Trends", "Palco Comunic", "iCrossing Latinoamérica", "Blokcom"],
+      "highlights": []
+    }
+  ],
+  "footer": {
+    "cta_heading": "¿Trabajamos juntos?",
+    "cta_sub": "Si estás buscando alguien que entienda tanto de creatividad como de tecnología IA — hablemos.",
+    "copyright": "© 2025 Diego Manjarrés Burgos · AI Creative Producer"
+  },
+  "design_tokens": {
+    "colors": {
+      "bg": "#080808",
+      "card": "#101010",
+      "accent": "#7C3AFF",
+      "accent_light": "#9d6aff",
+      "text": "#f0f0f0",
+      "muted": "#777",
+      "green": "#4ade80"
+    },
+    "fonts": {
+      "heading": "Poppins",
+      "mono": "DM Mono"
+    },
+    "cursor_glow_palette": ["#7C3AED", "#A855F7", "#14B8A6", "#6366F1"]
+  }
+}
