@@ -6,432 +6,703 @@
   <title>CV — Diego Manjarrés Burgos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --accent: #7C3AFF;
-      --accent-light: #9d6aff;
-      --bg: #fafafa;
-      --text: #111;
-      --muted: #666;
-      --border: #e4e4e7;
+      --sidebar-bg:    #0c0920;
+      --sidebar-bg2:   #130e2a;
+      --accent:        #7C3AFF;
+      --accent-light:  #a07aff;
+      --accent-dim:    rgba(124,58,255,0.18);
+      --accent-dim2:   rgba(160,122,255,0.1);
+      --white:         #ffffff;
+      --text:          #111827;
+      --text-secondary:#374151;
+      --text-muted:    #6B7280;
+      --text-faint:    #9CA3AF;
+      --border:        #E5E7EB;
+      --border-light:  #F3F4F6;
+      --surface:       #F9FAFB;
+      --green:         #10B981;
+      --green-dim:     rgba(16,185,129,0.12);
+      --green-border:  rgba(16,185,129,0.3);
     }
 
     body {
-      background: var(--bg);
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #EEEEF2;
       color: var(--text);
-      font-family: 'Poppins', sans-serif;
-      line-height: 1.6;
+      font-size: 12px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
-    @media print {
-      body { background: #fff; }
-      .no-print { display: none !important; }
-      .page { box-shadow: none; margin: 0; border-radius: 0; }
-    }
-
-    /* ── PRINT BUTTON ── */
-    .no-print {
-      position: fixed;
-      top: 24px;
-      right: 24px;
-      z-index: 10;
-      display: flex;
-      gap: 10px;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border-radius: 100px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      border: none;
-      font-family: 'Poppins', sans-serif;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
-    .btn-print { background: var(--accent); color: #fff; }
-    .btn-back  { background: #111; color: #fff; }
-
-    /* ── PAGE ── */
+    /* ─── PAGE ─── */
     .page {
-      max-width: 760px;
-      margin: 48px auto;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      width: 794px;
+      height: 1123px;
+      margin: 36px auto;
+      background: var(--white);
+      display: grid;
+      grid-template-columns: 205px 1fr;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06), 0 8px 32px rgba(0,0,0,0.10), 0 24px 64px rgba(0,0,0,0.06);
+      border-radius: 4px;
       overflow: hidden;
     }
 
-    /* ── HEADER ── */
-    .cv-header {
-      background: #080808;
-      padding: 40px 48px;
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      background: var(--sidebar-bg);
+      padding: 24px 20px 24px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
       position: relative;
       overflow: hidden;
     }
-    .cv-header::before {
+    .sidebar::after {
       content: '';
       position: absolute;
-      top: -80px; right: -80px;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(124,58,255,0.25) 0%, transparent 65%);
-      pointer-events: none;
+      top: 0; right: 0;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--accent) 0%, transparent 60%);
+      opacity: 0.4;
     }
-    .cv-header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-    .cv-name {
-      font-size: 30px;
+
+    /* Identity */
+    .identity { display: flex; flex-direction: column; gap: 8px; }
+
+    .name {
+      font-size: 22px;
       font-weight: 800;
-      color: #fff;
+      color: var(--white);
       letter-spacing: -0.03em;
       line-height: 1.1;
     }
-    .cv-name span { color: var(--accent-light); }
-    .cv-role {
-      font-size: 12px;
-      font-family: 'DM Mono', monospace;
-      color: var(--accent-light);
-      letter-spacing: 0.06em;
-      margin-top: 6px;
+    .name-accent { color: var(--accent-light); }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
     }
-    .cv-contact-list {
-      list-style: none;
+    .role-line {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      line-height: 1.6;
+    }
+    .role-sep {
+      color: rgba(255,255,255,0.2);
+      margin: 0 6px;
+    }
+
+    .avail {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--green-dim);
+      border: 1px solid var(--green-border);
+      border-radius: 100px;
+      padding: 4px 10px 4px 8px;
+      width: fit-content;
+    }
+    .avail-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+      animation: glow 2s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+      50%      { box-shadow: 0 0 0 4px rgba(16,185,129,0); }
+    }
+    .avail-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--green);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* Contact */
+    .contact-list {
       display: flex;
       flex-direction: column;
       gap: 5px;
-      align-items: flex-end;
     }
-    .cv-contact-list li {
-      font-size: 11.5px;
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 9.5px;
+      color: rgba(255,255,255,0.55);
       font-family: 'DM Mono', monospace;
-      color: #aaa;
+      word-break: break-all;
+      line-height: 1.3;
     }
-    .cv-contact-list a {
+    .contact-item a {
       color: var(--accent-light);
       text-decoration: none;
     }
+    .contact-icon {
+      width: 17px; height: 17px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 9px;
+    }
 
-    /* ── BODY ── */
-    .cv-body {
-      padding: 36px 48px 48px;
+    /* Sidebar section */
+    .s-section { display: flex; flex-direction: column; gap: 8px; }
+    .s-section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    /* Skill group */
+    .s-group { display: flex; flex-direction: column; gap: 4px; }
+    .s-group-label {
+      font-size: 8px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.28);
+      margin-bottom: 1px;
+    }
+    .s-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+    }
+    .s-pill {
+      background: rgba(124,58,255,0.15);
+      border: 1px solid rgba(124,58,255,0.25);
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 8.5px;
+      color: var(--accent-light);
+      white-space: nowrap;
+    }
+    .s-pill.neutral {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Lang */
+    .lang-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+    .lang-name { font-size: 10.5px; color: rgba(255,255,255,0.7); }
+    .lang-level {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      color: var(--accent-light);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Info rows */
+    .info-row { display: flex; flex-direction: column; gap: 1px; margin-bottom: 5px; }
+    .info-row:last-child { margin-bottom: 0; }
+    .info-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 7.5px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.22);
+    }
+    .info-val {
+      font-size: 10px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ─── MAIN ─── */
+    .main {
+      padding: 26px 34px 26px 30px;
       display: flex;
       flex-direction: column;
-      gap: 32px;
+      gap: 20px;
+      overflow: hidden;
     }
 
-    /* ── SECTION ── */
-    .cv-section h2 {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-family: 'DM Mono', monospace;
-      margin-bottom: 16px;
+    /* Section */
+    .m-section { display: flex; flex-direction: column; gap: 11px; }
+
+    .m-section-title {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
     }
-    .cv-section h2::after {
+    .m-section-title::after {
       content: '';
       flex: 1;
       height: 1px;
       background: var(--border);
     }
 
-    /* ── ABOUT ── */
-    .cv-about {
-      font-size: 13px;
-      color: #444;
-      line-height: 1.75;
+    /* Tagline */
+    .tagline {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      padding: 9px 13px;
+      background: var(--surface);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 5px 5px 0;
     }
-    .cv-about strong { color: var(--text); font-weight: 600; }
 
-    /* ── EXPERIENCE ── */
-    .exp-item {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 4px 16px;
-      margin-bottom: 20px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border);
+    /* Project box */
+    .project-card {
+      background: linear-gradient(135deg, #f8f5ff 0%, #fdfcff 100%);
+      border: 1px solid rgba(124,58,255,0.14);
+      border-radius: 7px;
+      padding: 11px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
-    .exp-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-    .exp-company {
-      font-size: 15px;
+    .project-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .project-name {
+      font-size: 12.5px;
       font-weight: 700;
       color: var(--text);
+      letter-spacing: -0.01em;
     }
-    .exp-date {
-      font-size: 10.5px;
+    .project-meta {
       font-family: 'DM Mono', monospace;
-      color: var(--muted);
-      white-space: nowrap;
-      padding-top: 2px;
-    }
-    .exp-role-title {
-      font-size: 11.5px;
-      font-family: 'DM Mono', monospace;
+      font-size: 8.5px;
       color: var(--accent);
-      grid-column: 1;
-      margin-bottom: 8px;
+      white-space: nowrap;
+      background: var(--accent-dim);
+      padding: 2px 7px;
+      border-radius: 100px;
     }
-    .exp-bullets {
-      grid-column: 1 / -1;
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .exp-bullets li {
-      font-size: 12.5px;
-      color: #555;
-      padding-left: 14px;
-      position: relative;
+    .project-desc {
+      font-size: 11px;
+      color: var(--text-secondary);
       line-height: 1.55;
     }
-    .exp-bullets li::before {
-      content: '·';
-      position: absolute;
-      left: 2px;
+    .project-desc a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .m-tags { display: flex; flex-wrap: wrap; gap: 3px; }
+    .m-tag {
+      background: var(--accent-dim2);
       color: var(--accent);
-      font-weight: 700;
+      border: 1px solid rgba(124,58,255,0.15);
+      border-radius: 3px;
+      padding: 1px 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 8.5px;
     }
 
-    /* ── SKILLS ── */
-    .skills-grid {
+    /* Experience */
+    .exp-list { display: flex; flex-direction: column; gap: 0; }
+
+    .exp-item {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 16px;
+      grid-template-columns: 9px 1fr;
+      gap: 0 12px;
+      position: relative;
+      padding-bottom: 16px;
     }
-    .skill-group-label {
-      font-size: 9px;
+    .exp-item:last-child { padding-bottom: 0; }
+
+    /* Timeline track */
+    .exp-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 4px;
+    }
+    .exp-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      box-shadow: 0 0 0 2px rgba(124,58,255,0.12);
+    }
+    .exp-item:last-child .exp-dot {
+      background: var(--border);
+      box-shadow: none;
+    }
+    .exp-line {
+      flex: 1;
+      width: 1px;
+      background: var(--border);
+      margin-top: 5px;
+    }
+    .exp-item:last-child .exp-line { display: none; }
+
+    /* Content */
+    .exp-content { display: flex; flex-direction: column; gap: 2px; }
+    .exp-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .exp-company {
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      margin-bottom: 8px;
+      color: var(--text);
+      letter-spacing: -0.01em;
     }
-    .skill-list {
+    .exp-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      color: var(--text-faint);
+      white-space: nowrap;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+      border-radius: 100px;
+      margin-top: 1px;
+    }
+    .exp-role {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.01em;
+    }
+    .exp-bullets {
+      margin-top: 3px;
+      padding-left: 0;
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
     }
-    .skill-list li {
-      font-size: 12px;
-      color: #444;
-      padding-left: 12px;
+    .exp-bullets li {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      padding-left: 11px;
       position: relative;
     }
-    .skill-list li::before {
-      content: '·';
+    .exp-bullets li::before {
+      content: '';
       position: absolute;
-      left: 1px;
-      color: var(--accent);
-      font-weight: 700;
+      left: 0; top: 7px;
+      width: 4px; height: 1px;
+      background: var(--accent-light);
     }
 
-    /* ── EDUCATION & EXTRA ── */
-    .edu-item {
+    /* Competencias */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+    }
+    .comp-item {
       display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 16px;
-      margin-bottom: 8px;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 6px 10px;
     }
-    .edu-item:last-child { margin-bottom: 0; }
-    .edu-title { font-size: 13px; font-weight: 600; }
-    .edu-sub { font-size: 12px; color: var(--muted); }
-    .edu-year { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--muted); white-space: nowrap; }
-
-    /* ── FOOTER ── */
-    .cv-footer {
-      text-align: center;
-      font-size: 10.5px;
-      font-family: 'DM Mono', monospace;
-      color: #bbb;
-      padding: 16px 48px 24px;
-      border-top: 1px solid var(--border);
+    .comp-item::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
     }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      .page { margin: 0; border-radius: 0; }
-      .cv-header { padding: 28px 24px; }
-      .cv-header-top { flex-direction: column; }
-      .cv-contact-list { align-items: flex-start; }
-      .cv-body { padding: 24px; gap: 24px; }
-      .skills-grid { grid-template-columns: 1fr 1fr; }
+    /* Sidebar distribución vertical */
+    .sidebar { justify-content: space-between; }
+
+    /* ─── PRINT ─── */
+    @media print {
+      body { background: white; }
+      .page {
+        margin: 0; border-radius: 0;
+        box-shadow: none;
+        width: 100%;
+        min-height: unset;
+      }
+      @page { size: A4; margin: 0; }
     }
   </style>
 </head>
 <body>
+<div class="page">
 
-  <!-- Botones (no imprimen) -->
-  <div class="no-print">
-    <a href="index.html" class="btn btn-back">← Volver</a>
-    <button class="btn btn-print" onclick="window.print()">⬇ Descargar PDF</button>
-  </div>
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar">
 
-  <div class="page">
-
-    <!-- HEADER -->
-    <div class="cv-header">
-      <div class="cv-header-top">
-        <div>
-          <div class="cv-name">Diego Manjarrés<br/><span>Burgos.</span></div>
-          <div class="cv-role">AI Creative Producer · Art Director</div>
-        </div>
-        <ul class="cv-contact-list">
-          <li><a href="mailto:diego.manjarres88@gmail.com">diego.manjarres88@gmail.com</a></li>
-          <li>+569 4512 8412</li>
-          <li>Santiago, Chile</li>
-          <li><a href="https://diegomanjarres.netlify.app" target="_blank">diegomanjarres.netlify.app</a></li>
-        </ul>
+    <!-- Identity -->
+    <div class="identity">
+      <div class="name">Diego<br><span class="name-accent">Manjarrés.</span></div>
+      <div class="role-badge">
+        <span class="role-line">AI Creative Producer</span>
+        <span class="role-sep">·</span>
+        <span class="role-line">Art Director</span>
+      </div>
+      <div class="avail">
+        <span class="avail-dot"></span>
+        <span class="avail-text">Disponible</span>
       </div>
     </div>
 
-    <div class="cv-body">
-
-      <!-- PERFIL -->
-      <div class="cv-section">
-        <h2>Perfil profesional</h2>
-        <p class="cv-about">
-          Diseñador gráfico y digital con <strong>más de 10 años de experiencia en agencias de publicidad</strong>, especializado en producción de contenido para <strong>Meta Ads y redes sociales</strong>. Actualmente en la intersección entre diseño y tecnología IA — construyendo flujos automatizados, generando contenido con <strong>modelos de imagen y video generativa</strong> (ComfyUI, Flux.1, Wan2.1), y desarrollando herramientas con Claude Code y Lovable. Fundador de <strong>Lumyn.studio</strong>, estudio boutique de contenido IA para marcas.
-        </p>
-      </div>
-
-      <!-- EXPERIENCIA -->
-      <div class="cv-section">
-        <h2>Experiencia laboral</h2>
-
-        <div class="exp-item">
-          <div class="exp-company">Agencia Alike</div>
-          <div class="exp-date">Ago 2024 – Ene 2026</div>
-          <div class="exp-role-title">Paid Media Designer</div>
-          <ul class="exp-bullets">
-            <li>Producción de reels, carruseles y videos para Meta Ads con foco en conversión.</li>
-            <li>Integración de IA generativa (Google AI Studio) en flujos de producción.</li>
-            <li>Edición y post-producción con After Effects, Premiere Pro, Photoshop e Illustrator.</li>
-          </ul>
+    <!-- Contacto -->
+    <div class="s-section">
+      <div class="s-section-title">Contacto</div>
+      <div class="contact-list">
+        <div class="contact-item">
+          <div class="contact-icon">✉</div>
+          <a href="mailto:diego.manjarres88@gmail.com">diego.manjarres88<br>@gmail.com</a>
         </div>
-
-        <div class="exp-item">
-          <div class="exp-company">Agencia Salvaje</div>
-          <div class="exp-date">Ene 2020 – Sept 2022</div>
-          <div class="exp-role-title">Director de Arte</div>
-          <ul class="exp-bullets">
-            <li>Dirección creativa y supervisión del equipo de diseño para redes sociales.</li>
-            <li>Cuentas: American Express, Copec, Cruz Verde, Mahou.</li>
-            <li>Gestión del flujo creativo y aprobación de piezas finales.</li>
-          </ul>
+        <div class="contact-item">
+          <div class="contact-icon">📱</div>
+          +569 4512 8412
         </div>
-
-        <div class="exp-item">
-          <div class="exp-company">JVD Estudio</div>
-          <div class="exp-date">Sept 2018 – Nov 2019</div>
-          <div class="exp-role-title">Diseñador Digital</div>
-          <ul class="exp-bullets">
-            <li>Diseño digital y producción gráfica para redes sociales y campañas publicitarias.</li>
-          </ul>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          Santiago, Chile
         </div>
-
-        <div class="exp-item">
-          <div class="exp-company">Blokcom</div>
-          <div class="exp-date">Jul 2016 – Ago 2018</div>
-          <div class="exp-role-title">Diseñador Digital</div>
-          <ul class="exp-bullets">
-            <li>Producción de piezas digitales para estrategias de contenido y campañas.</li>
-          </ul>
+        <div class="contact-item">
+          <div class="contact-icon">🌐</div>
+          <a href="https://diegomanjarres.netlify.app">diegomanjarres.netlify.app</a>
         </div>
       </div>
-
-      <!-- PROYECTO PROPIO -->
-      <div class="cv-section">
-        <h2>Proyecto propio</h2>
-        <div class="exp-item">
-          <div class="exp-company">Lumyn.studio</div>
-          <div class="exp-date">2024 – presente</div>
-          <div class="exp-role-title">Fundador · AI Creative Producer</div>
-          <ul class="exp-bullets">
-            <li>Estudio boutique de contenido IA: product shots, virtual influencers y UGC sintético para marcas.</li>
-            <li>Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1.</li>
-            <li>Desarrollo de herramientas internas con Claude Code y Lovable.</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- SKILLS -->
-      <div class="cv-section">
-        <h2>Herramientas y habilidades</h2>
-        <div class="skills-grid">
-          <div>
-            <div class="skill-group-label">IA & Generación</div>
-            <ul class="skill-list">
-              <li>ComfyUI</li>
-              <li>Flux.1</li>
-              <li>Wan2.1</li>
-              <li>Google AI Studio</li>
-              <li>Midjourney</li>
-              <li>Higgsfield AI</li>
-            </ul>
-          </div>
-          <div>
-            <div class="skill-group-label">Build & Automatización</div>
-            <ul class="skill-list">
-              <li>Claude Code</li>
-              <li>Lovable</li>
-              <li>OpenClaw</li>
-              <li>Antigravity</li>
-            </ul>
-          </div>
-          <div>
-            <div class="skill-group-label">Diseño & Producción</div>
-            <ul class="skill-list">
-              <li>Adobe Photoshop</li>
-              <li>Adobe Illustrator</li>
-              <li>After Effects</li>
-              <li>Premiere Pro</li>
-              <li>Figma</li>
-              <li>Canva · CapCut</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- EDUCACIÓN -->
-      <div class="cv-section">
-        <h2>Educación</h2>
-        <div class="edu-item">
-          <div>
-            <div class="edu-title">Diseño Gráfico</div>
-            <div class="edu-sub">Formación universitaria</div>
-          </div>
-          <div class="edu-year">Chile</div>
-        </div>
-      </div>
-
     </div>
 
-    <div class="cv-footer">
-      Diego Manjarrés Burgos · AI Creative Producer · diegomanjarres.netlify.app
+    <!-- Stack IA -->
+    <div class="s-section">
+      <div class="s-section-title">Stack IA</div>
+      <div class="s-group">
+        <div class="s-group-label">Generación</div>
+        <div class="s-pills">
+          <span class="s-pill">ComfyUI</span>
+          <span class="s-pill">Flux.1</span>
+          <span class="s-pill">Wan2.1</span>
+          <span class="s-pill">Midjourney</span>
+          <span class="s-pill">Higgsfield AI</span>
+          <span class="s-pill">Google AI Studio</span>
+        </div>
+      </div>
+      <div class="s-group">
+        <div class="s-group-label">Build / Auto.</div>
+        <div class="s-pills">
+          <span class="s-pill">Claude Code</span>
+          <span class="s-pill">n8n</span>
+          <span class="s-pill">Lovable</span>
+          <span class="s-pill">OpenClaw</span>
+          <span class="s-pill">Antigravity</span>
+        </div>
+      </div>
     </div>
 
-  </div>
+    <!-- Diseño & Producción -->
+    <div class="s-section">
+      <div class="s-section-title">Diseño &amp; Producción</div>
+      <div class="s-pills">
+        <span class="s-pill neutral">Photoshop</span>
+        <span class="s-pill neutral">Illustrator</span>
+        <span class="s-pill neutral">After Effects</span>
+        <span class="s-pill neutral">Premiere Pro</span>
+        <span class="s-pill neutral">Figma</span>
+        <span class="s-pill neutral">Canva</span>
+        <span class="s-pill neutral">CapCut</span>
+        <span class="s-pill neutral">HTML / CSS</span>
+      </div>
+    </div>
 
+    <!-- Idiomas -->
+    <div class="s-section">
+      <div class="s-section-title">Idiomas</div>
+      <div class="lang-row">
+        <span class="lang-name">Español</span>
+        <span class="lang-level">Nativo</span>
+      </div>
+      <div class="lang-row">
+        <span class="lang-name">Inglés</span>
+        <span class="lang-level">Avanzado</span>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="s-section">
+      <div class="s-section-title">Info</div>
+      <div class="info-row">
+        <span class="info-label">Ubicación</span>
+        <span class="info-val">Santiago, Chile</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Nacionalidad</span>
+        <span class="info-val">Chilena</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Modalidad</span>
+        <span class="info-val">Remoto / Híbrido</span>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ══ MAIN ══ -->
+  <main class="main">
+
+    <!-- Perfil Profesional -->
+    <div class="m-section">
+      <div class="m-section-title">Perfil Profesional</div>
+      <div class="tagline">
+        Diseñador gráfico y digital con más de 10 años en agencias de publicidad, especializado en producción de contenido para Meta Ads y redes sociales. Actualmente opero en la intersección entre diseño y tecnología IA: genero contenido con modelos de imagen y video generativa, construyo flujos con Claude Code y Lovable, y uso ComfyUI y n8n para automatizar pipelines de producción visual. Fundador de Lumyn.studio, estudio boutique de contenido IA para marcas.
+      </div>
+    </div>
+
+    <!-- Competencias clave -->
+    <div class="m-section">
+      <div class="m-section-title">Competencias clave</div>
+      <div class="comp-grid">
+        <div class="comp-item">Producción contenido IA</div>
+        <div class="comp-item">Meta Ads &amp; Paid Media</div>
+        <div class="comp-item">Dirección de Arte</div>
+        <div class="comp-item">Automatización de flujos</div>
+        <div class="comp-item">Virtual Influencers &amp; UGC</div>
+        <div class="comp-item">Motion &amp; Video editing</div>
+      </div>
+    </div>
+
+    <!-- Proyecto propio -->
+    <div class="m-section">
+      <div class="m-section-title">Proyecto propio</div>
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-name">Lumyn.studio</span>
+          <span class="project-meta">Fundador · 2026 – presente</span>
+        </div>
+        <div class="project-desc">
+          Estudio boutique de contenido IA para marcas: product shots fotorrealistas, virtual influencers y UGC sintético. Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1. Portfolio: <a href="https://diegomanjarres.netlify.app">diegomanjarres.netlify.app</a>
+        </div>
+        <div class="m-tags">
+          <span class="m-tag">ComfyUI</span>
+          <span class="m-tag">Flux.1</span>
+          <span class="m-tag">Wan2.1</span>
+          <span class="m-tag">Virtual Influencers</span>
+          <span class="m-tag">UGC Sintético</span>
+          <span class="m-tag">Claude Code</span>
+          <span class="m-tag">Lovable</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Experiencia -->
+    <div class="m-section">
+      <div class="m-section-title">Experiencia</div>
+      <div class="exp-list">
+
+        <div class="exp-item">
+          <div class="exp-track"><div class="exp-dot"></div><div class="exp-line"></div></div>
+          <div class="exp-content">
+            <div class="exp-top">
+              <span class="exp-company">Agencia Alike</span>
+              <span class="exp-period">Ago 2024 – Ene 2026</span>
+            </div>
+            <div class="exp-role">Paid Media Designer</div>
+            <ul class="exp-bullets">
+              <li>Producción de reels, carruseles y videos para Meta Ads con foco en conversión.</li>
+              <li>Integración de IA generativa (Google AI Studio) en flujos de producción.</li>
+              <li>Edición con After Effects, Premiere Pro, Photoshop e Illustrator.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-track"><div class="exp-dot"></div><div class="exp-line"></div></div>
+          <div class="exp-content">
+            <div class="exp-top">
+              <span class="exp-company">Agencia Salvaje</span>
+              <span class="exp-period">Ene 2020 – Sept 2022</span>
+            </div>
+            <div class="exp-role">Director de Arte</div>
+            <ul class="exp-bullets">
+              <li>Dirección creativa y supervisión de cuentas de redes sociales.</li>
+              <li>Marcas: American Express, Copec, Cruz Verde, Mahou.</li>
+              <li>Gestión del flujo creativo del equipo y aprobación de piezas finales.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-track"><div class="exp-dot"></div><div class="exp-line"></div></div>
+          <div class="exp-content">
+            <div class="exp-top">
+              <span class="exp-company">JVD Estudio</span>
+              <span class="exp-period">Sept 2018 – Nov 2019</span>
+            </div>
+            <div class="exp-role">Diseñador Digital</div>
+            <ul class="exp-bullets">
+              <li>Diseño digital y producción gráfica para redes sociales y campañas.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-track"><div class="exp-dot"></div><div class="exp-line"></div></div>
+          <div class="exp-content">
+            <div class="exp-top">
+              <span class="exp-company">Blokcom</span>
+              <span class="exp-period">Jul 2016 – Ago 2018</span>
+            </div>
+            <div class="exp-role">Diseñador Digital</div>
+            <ul class="exp-bullets">
+              <li>Producción de piezas digitales para estrategias de contenido y campañas.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-track"><div class="exp-dot"></div><div class="exp-line"></div></div>
+          <div class="exp-content">
+            <div class="exp-top">
+              <span class="exp-company">Experiencia anterior (2014–2016)</span>
+              <span class="exp-period">Ene 2014 – Jun 2016</span>
+            </div>
+            <div class="exp-role">Diseñador Digital</div>
+            <ul class="exp-bullets">
+              <li>Impryma Chile · Media Trends · Palco Comunic · iCrossing Latinoamérica</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
 </body>
 </html>
