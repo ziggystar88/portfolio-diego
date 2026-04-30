@@ -8,12 +8,13 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AFF'/><text x='16' y='22' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='18' fill='white'>D</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=DM+Mono:wght@400;500&family=Big+Shoulders+Display:wght@100;200;300;800;900&display=swap" rel="stylesheet" />
   <link rel="dns-prefetch" href="//player.vimeo.com" />
   <link rel="dns-prefetch" href="//vimeocdn.com" />
   <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; cursor: url('img/cursor.png') 8 8, auto; }
+    a, button, [role="button"], .filter-btn, .nav-cta-pill, .video-card { cursor: url('img/cursor.png') 8 8, pointer; }
 
     :root {
       --bg:           #080808;
@@ -29,6 +30,7 @@
       --muted:        #888;
       --muted2:       #555;
       --radius:       12px;
+      --green:        #4ADE80;
     }
 
     :focus-visible {
@@ -141,7 +143,11 @@
       background: none;
       border: none;
       cursor: pointer;
-      padding: 4px;
+      padding: 11px;
+      min-width: 44px;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
     }
     .nav-hamburger span {
       display: block;
@@ -214,58 +220,160 @@
       margin: 0 6px;
     }
 
-    /* ── FILTER PILLS ── */
-    .filters {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 40px;
+    /* ── LIGHTBOX ── */
+    .lb-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.96);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
-    .filter-btn {
+    .lb-overlay.open { display: flex; }
+    .lb-close {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 100px;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      z-index: 1001;
+      transition: background 0.2s;
+      line-height: 1;
+    }
+    .lb-close:hover { background: rgba(255,255,255,0.18); }
+    .lb-content {
+      position: relative;
+      width: 100%;
+      max-height: 92vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Landscape video (16:9) */
+    .lb-content.lb-landscape {
+      max-width: min(92vw, calc(92vh * 16/9));
+    }
+    .lb-content.lb-landscape .lb-ratio {
+      padding-bottom: 56.25%;
+    }
+    /* Portrait video/image (9:16) */
+    .lb-content.lb-portrait {
+      max-width: min(55vw, calc(92vh * 9/16));
+    }
+    .lb-content.lb-portrait .lb-ratio {
+      padding-bottom: 177.78%;
+    }
+    /* Square/logo (4:3) */
+    .lb-content.lb-square {
+      max-width: min(80vw, calc(92vh * 4/3));
+    }
+    .lb-content.lb-square .lb-ratio {
+      padding-bottom: 75%;
+    }
+    .lb-ratio {
+      position: relative;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+    .lb-ratio iframe,
+    .lb-ratio img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      object-fit: contain;
+    }
+    .lb-title {
+      position: absolute;
+      bottom: -32px;
+      left: 0;
       font-family: 'DM Mono', monospace;
       font-size: 11px;
-      font-weight: 500;
+      color: rgba(255,255,255,0.45);
       letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 8px 18px;
-      border-radius: 100px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.03);
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      white-space: nowrap;
-      user-select: none;
     }
-    .filter-btn:hover {
-      border-color: rgba(255,255,255,0.2);
+    /* Mobile: always full screen */
+    @media (max-width: 640px) {
+      .lb-content.lb-landscape,
+      .lb-content.lb-portrait,
+      .lb-content.lb-square { max-width: 100%; }
+      .lb-overlay { padding: 12px; }
+    }
+
+    /* ── WORK SECTIONS ── */
+    .work-section { margin-bottom: 96px; }
+    .work-section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      padding-bottom: 18px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .work-section-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--accent-light);
+      letter-spacing: 0.1em;
+      flex-shrink: 0;
+    }
+    .work-section-title {
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
       color: #fff;
-      background: rgba(255,255,255,0.06);
+      line-height: 1;
     }
-    .filter-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(124,58,255,0.35);
-    }
-    .filter-count {
-      display: inline-block;
-      background: rgba(255,255,255,0.15);
-      border-radius: 100px;
-      padding: 1px 7px;
-      font-size: 9px;
-      margin-left: 6px;
-      vertical-align: middle;
-    }
-    .filter-btn.active .filter-count {
-      background: rgba(255,255,255,0.25);
+    .work-section-count {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted2);
+      letter-spacing: 0.06em;
+      margin-left: auto;
     }
 
     /* ── VIDEO GRID ── */
     .video-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .grid-digital {
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .grid-logos {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    @media (max-width: 1280px) {
+      .video-grid    { grid-template-columns: repeat(3, 1fr); }
+      .grid-digital  { grid-template-columns: repeat(4, 1fr); }
+      .grid-logos    { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 960px) {
+      .video-grid    { grid-template-columns: repeat(2, 1fr); }
+      .grid-digital  { grid-template-columns: repeat(3, 1fr); }
+      .grid-logos    { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .video-grid, .grid-digital, .grid-logos { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .work-section  { margin-bottom: 60px; }
     }
 
     /* ── VIDEO CARD ── */
@@ -304,43 +412,266 @@
       border: none;
       display: block;
     }
-    /* Card info */
+    /* Card info — hidden: visual speaks for itself */
     .card-info {
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
+      display: none;
     }
     .card-brand {
       font-family: 'Poppins', sans-serif;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      color: #f0f0f0;
+      color: rgba(255,255,255,0.7);
       letter-spacing: -0.01em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      display: block;
     }
     .card-brand .variant {
       font-weight: 400;
       color: var(--muted);
       font-size: 11px;
-      margin-left: 4px;
     }
-    .card-tag {
+    .card-tag { display: none; }
+
+    /* ── IMAGE RATIO (for img cards) ── */
+    .img-ratio {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      background: #111;
+      overflow: hidden;
+    }
+    .img-ratio img {
+      position: absolute;
+      inset: 0;
+      width: calc(100% - 32px); height: calc(100% - 32px);
+      left: 16px; top: 16px;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+    .video-card:hover .img-ratio img { transform: scale(1.04); }
+
+    /* ── CARD FEATURED (ocupa 2 cols en el grid de videos) ── */
+    @media (min-width: 641px) {
+      .card-featured {
+        grid-column: span 2;
+      }
+      .card-featured .video-ratio {
+        padding-bottom: 42%;
+      }
+    }
+
+    /* ── VIMEO OVERFLOW FIX ── */
+    .video-card {
+      isolation: isolate;
+      clip-path: inset(0 round 12px);
+    }
+
+    /* ── CLICK INTERCEPT — block iframe/img from eating clicks ── */
+    .card-click-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      cursor: pointer;
+      background: transparent;
+    }
+    /* Hover hint: purple overlay glow */
+    .card-click-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(124,58,255,0);
+      transition: background 0.3s ease;
+      border-radius: inherit;
+    }
+    .video-card:hover .card-click-overlay::after {
+      background: rgba(124,58,255,0.18);
+    }
+
+    /* ── FOOTER SECTION ── */
+    .footer-section {
+      padding: 0;
+      position: relative;
+    }
+    .footer-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 20% 100%, rgba(124,58,255,0.7) 0%, rgba(124,58,255,0.25) 40%, transparent 65%),
+        radial-gradient(ellipse 45% 40% at 0% 80%, rgba(0,220,110,0.55) 0%, rgba(0,180,80,0.2) 45%, transparent 62%),
+        radial-gradient(ellipse 50% 35% at 85% 100%, rgba(157,106,255,0.4) 0%, transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .footer-section .wrapper,
+    .footer-section > * { position: relative; z-index: 1; }
+    .footer-section .wrapper { padding-top: 0; padding-bottom: 0; }
+    .footer-cta-block {
+      min-height: 550px;
+      position: relative;
+      background-image: url('img/contact-bg.png');
+      background-size: cover;
+      background-position: 68% center;
+      background-attachment: fixed;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      display: flex;
+      align-items: center;
+      isolation: isolate;
+    }
+    .footer-cta-block::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(8,8,8,0.90);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .footer-cta-inner {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 80px 64px;
+      text-align: center;
+    }
+    .footer-cta-inner .footer-contact-row { justify-content: center; }
+    .footer-cta-inner .footer-cta-tag { justify-content: center; }
+    .footer-cta-sub { margin-left: auto; margin-right: auto; }
+    @media (max-width: 860px) { .footer-cta-inner { padding: 72px 40px; } }
+    @media (max-width: 640px) {
+      .footer-cta-block { background-attachment: scroll; background-position: 75% center; }
+      .footer-cta-inner { padding: 64px 20px; }
+    }
+    .footer-cta-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer-cta-tag::before { content: ''; width: 22px; height: 1px; background: var(--accent-light); }
+    .footer-cta-title {
+      font-size: clamp(44px, 7.5vw, 104px);
+      font-weight: 900;
+      letter-spacing: -0.045em;
+      line-height: 0.88;
+      color: #fff;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+    }
+    .footer-cta-title span { color: var(--accent-light); }
+    .footer-cta-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      max-width: 460px;
+      line-height: 1.72;
+      margin-bottom: 36px;
+    }
+    .footer-cta-sub strong { color: #fff; }
+    .footer-contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 0;
+    }
+    .footer-contact-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-family: 'DM Mono', monospace;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-contact-item:hover { color: var(--accent-light); }
+    .footer-columns {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      padding: 56px 0;
+    }
+    .footer-col { padding-right: 48px; }
+    .footer-col + .footer-col { padding-left: 48px; padding-right: 0; }
+    .footer-col-title {
       font-family: 'DM Mono', monospace;
       font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--accent-light);
-      background: rgba(124,58,255,0.1);
-      border: 1px solid rgba(124,58,255,0.2);
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 20px;
+    }
+    .footer-brand-logo { max-width: 260px; width: 100%; height: auto; display: block; margin-bottom: 14px; }
+    .footer-brand-desc { font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.75; }
+    .footer-nav-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-nav-list a { font-size: 13px; color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.2s; }
+    .footer-nav-list a:hover { color: #fff; }
+    .footer-contact-list { display: flex; flex-direction: column; gap: 12px; }
+    .footer-contact-list .footer-contact-item { font-size: 12px; color: rgba(255,255,255,0.8); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: rgba(255,255,255,0.5);
+    }
+    .footer-claudecode {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted2);
+      text-decoration: none;
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .footer-claudecode strong { color: var(--muted); font-weight: 500; }
+    .footer-claudecode svg { opacity: 0.75; transition: opacity 0.2s; flex-shrink: 0; }
+    .footer-claudecode:hover { color: var(--accent-light); }
+    .footer-claudecode:hover strong { color: var(--accent-light); }
+    .footer-claudecode:hover svg { opacity: 1; }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
       border-radius: 100px;
-      padding: 3px 9px;
-      white-space: nowrap;
-      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.35);
+    }
+    @media (max-width: 860px) {
+      .footer-columns { grid-template-columns: 1fr 1fr; }
+      .footer-col { padding-right: 0 !important; padding-left: 0 !important; padding-bottom: 36px; border: none !important; }
+    }
+    @media (max-width: 640px) {
+      .footer-cta-inner .footer-contact-row { flex-direction: column; align-items: center; }
+      .footer-cta-title { font-size: clamp(40px, 12vw, 70px); }
+      .footer-columns { grid-template-columns: 1fr; }
+      .footer-col { border: none !important; }
+      .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+      .footer-contact-row { flex-direction: column; gap: 12px; }
     }
 
     /* ── EMPTY STATE ── */
@@ -358,39 +689,13 @@
       letter-spacing: 0.05em;
     }
 
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 32px;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
-    footer p {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--muted2);
-      letter-spacing: 0.06em;
-    }
-    footer a {
-      color: var(--accent-light);
-      text-decoration: none;
-    }
-    footer a:hover { text-decoration: underline; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 960px) {
-      .video-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-    }
+    /* ── RESPONSIVE NAV / WRAPPER ── */
     @media (max-width: 640px) {
       .wrapper { padding: 96px 16px 60px; }
-      .video-grid { grid-template-columns: 1fr; gap: 14px; }
       .nav-left-pill { gap: 16px; padding: 7px 14px 7px 12px; }
       .nav-links { display: none; }
       .nav-cta-pill { display: none; }
       .nav-hamburger { display: flex; }
-      .filters { gap: 6px; }
-      .filter-btn { font-size: 10px; padding: 7px 14px; }
     }
   </style>
 </head>
@@ -428,24 +733,19 @@
       <p class="subtitle">Meta Ads<span>·</span>AI Content Production</p>
     </header>
 
-    <!-- Filter pills -->
-    <div class="filters" role="group" aria-label="Filtrar por categoría">
-      <button class="filter-btn active" data-filter="all">All <span class="filter-count" id="count-all"></span></button>
-      <button class="filter-btn" data-filter="social-media">Social Media</button>
-      <button class="filter-btn" data-filter="branding">Branding</button>
-      <button class="filter-btn" data-filter="photography">Photography</button>
-      <button class="filter-btn" data-filter="print">Print</button>
-      <button class="filter-btn" data-filter="logos">Logos</button>
-      <button class="filter-btn" data-filter="ia-art">IA Art</button>
-    </div>
-
-    <!-- Video grid -->
-    <div class="video-grid" id="video-grid">
+    <!-- ══ SECCIÓN 1: VIDEOS ══ -->
+    <section class="work-section" id="sec-videos">
+      <div class="work-section-header">
+        <span class="work-section-num">01</span>
+        <h2 class="work-section-title">Videos</h2>
+        <span class="work-section-count">25 piezas</span>
+      </div>
+      <div class="video-grid" id="grid-videos">
 
       <!-- REEL -->
-      <div class="video-card" data-cat="reel">
+      <div class="video-card card-featured" data-cat="reel">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1176332413" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Portafolio Reel 2024"></iframe>
+          <iframe src="https://player.vimeo.com/video/1176332413?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Portafolio Reel 2024"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Portafolio Reel 2024</span>
@@ -456,7 +756,7 @@
       <!-- FASHION & LIFESTYLE -->
       <div class="video-card" data-cat="fashion">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180618670" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Patagua 1/5"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180618670?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Patagua 1/5"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Patagua <span class="variant">· 1/5</span></span>
@@ -465,7 +765,7 @@
       </div>
       <div class="video-card" data-cat="fashion">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180621440" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Patagua 2/5"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180621440?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Patagua 2/5"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Patagua <span class="variant">· 2/5</span></span>
@@ -474,7 +774,7 @@
       </div>
       <div class="video-card" data-cat="fashion">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180621458" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Patagua 3/5"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180621458?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Patagua 3/5"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Patagua <span class="variant">· 3/5</span></span>
@@ -483,7 +783,7 @@
       </div>
       <div class="video-card" data-cat="fashion">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180621477" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Patagua 4/5"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180621477?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Patagua 4/5"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Patagua <span class="variant">· 4/5</span></span>
@@ -492,7 +792,7 @@
       </div>
       <div class="video-card" data-cat="fashion">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180621490" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Patagua 5/5"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180621490?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Patagua 5/5"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Patagua <span class="variant">· 5/5</span></span>
@@ -501,7 +801,7 @@
       </div>
       <div class="video-card" data-cat="fashion">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180618644" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Passe"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180618644?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Passe"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Passe</span>
@@ -510,7 +810,7 @@
       </div>
       <div class="video-card" data-cat="fashion">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180617384" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Joyería Helmlinger"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180617384?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Joyería Helmlinger"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Joyería Helmlinger</span>
@@ -521,7 +821,7 @@
       <!-- FOOD & BEVERAGE -->
       <div class="video-card" data-cat="food">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180580101" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Grillo 1/3"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180580101?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Grillo 1/3"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Grillo <span class="variant">· 1/3</span></span>
@@ -530,7 +830,7 @@
       </div>
       <div class="video-card" data-cat="food">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180580151" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Grillo 2/3"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180580151?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Grillo 2/3"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Grillo <span class="variant">· 2/3</span></span>
@@ -539,7 +839,7 @@
       </div>
       <div class="video-card" data-cat="food">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180580266" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Grillo 3/3"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180580266?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Grillo 3/3"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Grillo <span class="variant">· 3/3</span></span>
@@ -548,7 +848,7 @@
       </div>
       <div class="video-card" data-cat="food">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180622009" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Simply Sweet"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180622009?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Simply Sweet"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Simply Sweet</span>
@@ -557,7 +857,7 @@
       </div>
       <div class="video-card" data-cat="food">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180618559" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Nubetta 1/3"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180618559?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Nubetta 1/3"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Nubetta <span class="variant">· 1/3</span></span>
@@ -566,7 +866,7 @@
       </div>
       <div class="video-card" data-cat="food">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180618584" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Nubetta 2/3"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180618584?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Nubetta 2/3"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Nubetta <span class="variant">· 2/3</span></span>
@@ -575,7 +875,7 @@
       </div>
       <div class="video-card" data-cat="food">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180618622" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Nubetta 3/3"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180618622?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Nubetta 3/3"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Nubetta <span class="variant">· 3/3</span></span>
@@ -586,7 +886,7 @@
       <!-- AUTOMOTIVE -->
       <div class="video-card" data-cat="automotive">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180580072" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Ducati"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180580072?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Ducati"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Ducati</span>
@@ -597,7 +897,7 @@
       <!-- REAL ESTATE & LIVING -->
       <div class="video-card" data-cat="realestate">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180621993" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Rocas de Maitencillo"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180621993?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Rocas de Maitencillo"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Rocas de Maitencillo</span>
@@ -606,7 +906,7 @@
       </div>
       <div class="video-card" data-cat="realestate">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180617499" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Micro 1/6"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180617499?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Micro 1/6"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Micro <span class="variant">· 1/6</span></span>
@@ -615,7 +915,7 @@
       </div>
       <div class="video-card" data-cat="realestate">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180617525" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Micro 2/6"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180617525?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Micro 2/6"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Micro <span class="variant">· 2/6</span></span>
@@ -624,7 +924,7 @@
       </div>
       <div class="video-card" data-cat="realestate">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180617829" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Micro 3/6"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180617829?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Micro 3/6"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Micro <span class="variant">· 3/6</span></span>
@@ -633,7 +933,7 @@
       </div>
       <div class="video-card" data-cat="realestate">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180617842" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Micro 4/6"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180617842?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Micro 4/6"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Micro <span class="variant">· 4/6</span></span>
@@ -642,7 +942,7 @@
       </div>
       <div class="video-card" data-cat="realestate">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180617873" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Micro 5/6"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180617873?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Micro 5/6"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Micro <span class="variant">· 5/6</span></span>
@@ -651,7 +951,7 @@
       </div>
       <div class="video-card" data-cat="realestate">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180617903" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Micro 6/6"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180617903?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Micro 6/6"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Micro <span class="variant">· 6/6</span></span>
@@ -662,7 +962,7 @@
       <!-- OTHER -->
       <div class="video-card" data-cat="other">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180622084" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Unibag"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180622084?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Unibag"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Unibag</span>
@@ -671,7 +971,7 @@
       </div>
       <div class="video-card" data-cat="other">
         <div class="video-ratio">
-          <iframe src="https://player.vimeo.com/video/1180617423" frameborder="0" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="Maat"></iframe>
+          <iframe src="https://player.vimeo.com/video/1180617423?title=0&byline=0&portrait=0&dnt=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" title="Maat"></iframe>
         </div>
         <div class="card-info">
           <span class="card-brand">Maat</span>
@@ -679,54 +979,402 @@
         </div>
       </div>
 
-      <!-- Empty state -->
-      <div class="empty-state" id="empty-state">
-        <p>// no videos in this category</p>
+      </div><!-- /grid-videos -->
+    </section><!-- /sec-videos -->
+
+    <!-- ══ SECCIÓN 2: DIGITAL ══ -->
+    <section class="work-section" id="sec-digital">
+      <div class="work-section-header">
+        <span class="work-section-num">02</span>
+        <h2 class="work-section-title">Digital</h2>
+        <span class="work-section-count">20 piezas</span>
+      </div>
+      <div class="video-grid grid-digital" id="grid-digital">
+
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/1-imagen-slide_1080x1920.png" alt="Content 1" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 1</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/2-imagen-slide_1080x1920.png" alt="Content 2" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 2</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/3-imagen-slide_1080x1920.png" alt="Content 3" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 3</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/4-imagen-slide_1080x1920.png" alt="Content 4" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 4</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/5-imagen-slide_1080x1920.png" alt="Content 5" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 5</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/6-imagen-slide_1080x1920.png" alt="Content 6" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 6</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/7-imagen-slide_1080x1920.png" alt="Content 7" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 7</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/8-imagen-slide_1080x1920.png" alt="Content 8" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 8</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/9-imagen-slide_1080x1920.png" alt="Content 9" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 9</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/10-imagen-slide_1080x1920.png" alt="Content 10" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 10</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/12-imagen-slide_1080x1920.png" alt="Content 11" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 11</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/13-imagen-slide_1080x1920.png" alt="Content 12" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 12</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/14-imagen-slide_1080x1920.png" alt="Content 13" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 13</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/15-imagen-slide_1080x1920.png" alt="Content 14" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 14</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/16-imagen-slide_1080x1920.png" alt="Content 15" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 15</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/17-imagen-slide_1080x1920.png" alt="Content 16" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 16</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/18-imagen-slide_1080x1920.png" alt="Content 17" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 17</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/19-imagen-slide_1080x1920.png" alt="Content 18" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 18</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/20-imagen-slide_1080x1920.png" alt="Content 19" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 19</span><span class="card-tag">Other</span></div>
+      </div>
+      <div class="video-card" data-cat="other">
+        <div class="img-ratio" style="padding-bottom:177.78%">
+          <img src="img/slides/21-imagen-slide_1080x1920.png" alt="Content 20" loading="lazy">
+        </div>
+        <div class="card-info"><span class="card-brand">Content 20</span><span class="card-tag">Other</span></div>
       </div>
 
-    </div><!-- /video-grid -->
+      </div><!-- /grid-digital -->
+    </section><!-- /sec-digital -->
+
+    <!-- ══ SECCIÓN 3: LOGOTIPOS ══ -->
+    <section class="work-section" id="sec-logos">
+      <div class="work-section-header">
+        <span class="work-section-num">03</span>
+        <h2 class="work-section-title">Logotipos</h2>
+        <span class="work-section-count">28 piezas</span>
+      </div>
+      <div class="video-grid grid-logos" id="grid-logos">
+
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/1.png" alt="Logo 1" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 1</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/2.png" alt="Logo 2" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 2</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/3.png" alt="Logo 3" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 3</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/4.png" alt="Logo 4" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 4</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/5.png" alt="Logo 5" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 5</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/6.png" alt="Logo 6" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 6</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/7.png" alt="Logo 7" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 7</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/8.png" alt="Logo 8" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 8</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/9.png" alt="Logo 9" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 9</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/10.png" alt="Logo 10" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 10</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/11.png" alt="Logo 11" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 11</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/12.png" alt="Logo 12" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 12</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/13.png" alt="Logo 13" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 13</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/14.png" alt="Logo 14" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 14</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/15.png" alt="Logo 15" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 15</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/16.png" alt="Logo 16" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 16</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/17.png" alt="Logo 17" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 17</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/18.png" alt="Logo 18" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 18</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/19.png" alt="Logo 19" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 19</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/20.png" alt="Logo 20" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 20</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/21.png" alt="Logo 21" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 21</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/22.png" alt="Logo 22" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 22</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/23.png" alt="Logo 23" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 23</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/24.png" alt="Logo 24" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 24</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/25.png" alt="Logo 25" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 25</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/26.png" alt="Logo 26" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 26</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/27.png" alt="Logo 27" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 27</span><span class="card-tag">Logos</span></div>
+      </div>
+      <div class="video-card" data-cat="logos">
+        <div class="img-ratio" style="padding-bottom:75%;background:#111">
+          <img src="img/logos/28.png" alt="Logo 28" loading="lazy" style="object-fit:contain;padding:20px">
+        </div>
+        <div class="card-info"><span class="card-brand">Logo 28</span><span class="card-tag">Logos</span></div>
+      </div>
+
+      </div><!-- /grid-logos -->
+    </section><!-- /sec-logos -->
 
   </main>
 
-  <footer>
-    <p>© 2025 <a href="index.html">Diego Manjarrés</a> — AI Creative Producer</p>
-  </footer>
+  <section class="footer-section" id="contacto">
+    <div class="wrapper">
+
+      <div class="footer-cta-block">
+        <div class="footer-cta-inner">
+          <div class="footer-cta-tag">Contacto</div>
+          <h2 class="footer-cta-title">¿Trabajamos <span>juntos?</span></h2>
+          <p class="footer-cta-sub">Si estás buscando alguien que entienda tanto de <strong>creatividad con tecnología IA</strong> — hablemos.</p>
+          <div class="footer-contact-row">
+            <a href="mailto:diego.manjarres88@gmail.com" class="btn-secondary">diego.manjarres88@gmail.com</a>
+            <a href="https://wa.me/56945128412" target="_blank" rel="noopener noreferrer" class="btn-secondary">+569 4512 8412</a>
+            <span class="btn-secondary">Santiago, Chile</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-columns">
+        <div class="footer-col">
+          <img src="img/logo-footer.png" alt="Diego Manjarrés" class="footer-brand-logo" />
+          <p class="footer-brand-desc">
+            <strong style="color:#fff;">AI Creative Producer · Art Director</strong><br>
+            Fundador de Lumyn.studio<br>
+            Santiago, Chile · Nacionalidad chilena
+          </p>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Navegación</div>
+          <ul class="footer-nav-list">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="work.html">Work</a></li>
+            <li><a href="index.html#sobre-mi">Sobre mí</a></li>
+            <li><a href="index.html#experiencia">Experiencia</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Contacto</div>
+          <div class="footer-contact-list">
+            <a href="mailto:diego.manjarres88@gmail.com" class="footer-contact-item">diego.manjarres88@gmail.com</a>
+            <a href="https://wa.me/56945128412" target="_blank" rel="noopener noreferrer" class="footer-contact-item">+569 4512 8412</a>
+            <span class="footer-contact-item">Santiago, Chile</span>
+            <a href="https://diegomanjarres.netlify.app" target="_blank" rel="noopener noreferrer" class="footer-contact-item">diegomanjarres.netlify.app</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">CV & Links</div>
+          <ul class="footer-nav-list">
+            <li><a href="cv_diego_v2.html" download>Descargar CV</a></li>
+            <li><a href="work.html">Ver trabajos</a></li>
+            <li><a href="https://wa.me/56945128412" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Diego Manjarrés Burgos · AI Creative Producer</span>
+        <a href="https://claude.ai/code" target="_blank" rel="noopener noreferrer" class="footer-claudecode">
+          <svg width="22" height="22" viewBox="0 0 1200 1200" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="Claude" role="img">
+            <path d="M 233.959793 800.214905 L 468.644287 668.536987 L 472.590637 657.100647 L 468.644287 650.738403 L 457.208069 650.738403 L 417.986633 648.322144 L 283.892639 644.69812 L 167.597321 639.865845 L 54.926208 633.825623 L 26.577238 627.785339 L 3.3e-05 592.751709 L 2.73832 575.27533 L 26.577238 559.248352 L 60.724873 562.228149 L 136.187973 567.382629 L 249.422867 575.194763 L 331.570496 580.026978 L 453.261841 592.671082 L 472.590637 592.671082 L 475.328857 584.859009 L 468.724915 580.026978 L 463.570557 575.194763 L 346.389313 495.785217 L 219.543671 411.865906 L 153.100723 363.543762 L 117.181267 339.060425 L 99.060455 316.107361 L 91.248367 266.01355 L 123.865784 230.093994 L 167.677887 233.073853 L 178.872513 236.053772 L 223.248367 270.201477 L 318.040283 343.570496 L 441.825592 434.738342 L 459.946411 449.798706 L 467.194672 444.64447 L 468.080597 441.020203 L 459.946411 427.409485 L 392.617493 305.718323 L 320.778564 181.932983 L 288.80542 130.630859 L 280.348999 99.865845 C 277.369171 87.221436 275.194641 76.590698 275.194641 63.624268 L 312.322174 13.20813 L 332.8591 6.604126 L 382.389313 13.20813 L 403.248352 31.328979 L 434.013519 101.71814 L 483.865753 212.537048 L 561.181274 363.221497 L 583.812134 407.919434 L 595.892639 449.315491 L 600.40271 461.959839 L 608.214783 461.959839 L 608.214783 454.711609 L 614.577271 369.825623 L 626.335632 265.61084 L 637.771851 131.516846 L 641.718201 93.745117 L 660.402832 48.483276 L 697.530334 24.000122 L 726.52356 37.852417 L 750.362549 72 L 747.060486 94.067139 L 732.886047 186.201416 L 705.100708 330.52356 L 686.979919 427.167847 L 697.530334 427.167847 L 709.61084 415.087341 L 758.496704 350.174561 L 840.644348 247.490051 L 876.885925 206.738342 L 919.167847 161.71814 L 946.308838 140.29541 L 997.61084 140.29541 L 1035.38269 196.429626 L 1018.469849 254.416199 L 965.637634 321.422852 L 921.825562 378.201538 L 859.006714 462.765259 L 819.785278 530.41626 L 823.409424 535.812073 L 832.75177 534.92627 L 974.657776 504.724915 L 1051.328979 490.872559 L 1142.818848 475.167786 L 1184.214844 494.496582 L 1188.724854 514.147644 L 1172.456421 554.335693 L 1074.604126 578.496765 L 959.838989 601.449829 L 788.939636 641.879272 L 786.845764 643.409485 L 789.261841 646.389343 L 866.255127 653.637634 L 899.194702 655.409424 L 979.812134 655.409424 L 1129.932861 666.604187 L 1169.154419 692.537109 L 1192.671265 724.268677 L 1188.724854 748.429688 L 1128.322144 779.194641 L 1046.818848 759.865845 L 856.590759 714.604126 L 791.355774 698.335754 L 782.335693 698.335754 L 782.335693 703.731567 L 836.69812 756.885986 L 936.322205 846.845581 L 1061.073975 962.81897 L 1067.436279 991.490112 L 1051.409424 1014.120911 L 1034.496704 1011.704712 L 924.885986 929.234924 L 882.604126 892.107544 L 786.845764 811.48999 L 780.483276 811.48999 L 780.483276 819.946289 L 802.550415 852.241699 L 919.087341 1027.409424 L 925.127625 1081.127686 L 916.671204 1098.604126 L 886.469849 1109.154419 L 853.288696 1103.114136 L 785.073914 1007.355835 L 714.684631 899.516785 L 657.906067 802.872498 L 650.979858 806.81897 L 617.476624 1167.704834 L 601.771851 1186.147705 L 565.530212 1200 L 535.328857 1177.046997 L 519.302124 1139.919556 L 535.328857 1066.550537 L 554.657776 970.792053 L 570.362488 894.68457 L 584.536926 800.134277 L 592.993347 768.724976 L 592.429626 766.630859 L 585.503479 767.516968 L 514.22821 865.369263 L 405.825531 1011.865906 L 320.053711 1103.677979 L 299.516815 1111.812256 L 263.919525 1093.369263 L 267.221497 1060.429688 L 287.114136 1031.114136 L 405.825531 880.107361 L 477.422913 786.52356 L 523.651062 732.483276 L 523.328918 724.671265 L 520.590698 724.671265 L 205.288605 929.395935 L 149.154434 936.644409 L 124.993355 914.01355 L 127.973183 876.885986 L 139.409409 864.80542 L 234.201385 799.570435 Z"/>
+          </svg>
+          Website creada con <strong>Claude Code</strong> + <strong>1humano</strong>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LIGHTBOX ── -->
+  <div class="lb-overlay" id="lb-overlay" role="dialog" aria-modal="true" aria-label="Vista previa">
+    <button class="lb-close" id="lb-close" aria-label="Cerrar">✕</button>
+    <div class="lb-content" id="lb-content">
+      <div class="lb-ratio" id="lb-ratio"></div>
+      <span class="lb-title" id="lb-title"></span>
+    </div>
+  </div>
 
   <script>
-    // ── FILTER ──────────────────────────────────────────────
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const cards      = document.querySelectorAll('.video-card');
-    const emptyState = document.getElementById('empty-state');
-
-    // Set total count on "All" button
-    document.getElementById('count-all').textContent = cards.length;
-
-    function applyFilter(filter) {
-      let visible = 0;
-
-      cards.forEach(card => {
-        const match = filter === 'all' || card.dataset.cat === filter;
-        if (match) {
-          card.classList.remove('hidden');
-          visible++;
-        } else {
-          card.classList.add('hidden');
-        }
-      });
-
-      emptyState.classList.toggle('visible', visible === 0);
-    }
-
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        applyFilter(btn.dataset.filter);
-      });
-    });
-
     // ── HAMBURGER ───────────────────────────────────────────
-    const hamburger   = document.querySelector('.nav-hamburger');
+    const hamburger    = document.querySelector('.nav-hamburger');
     const mobileDrawer = document.getElementById('mobile-drawer');
 
     hamburger.addEventListener('click', () => {
@@ -735,7 +1383,6 @@
       hamburger.setAttribute('aria-expanded', open);
     });
 
-    // Close drawer on link click
     mobileDrawer.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         hamburger.classList.remove('open');
@@ -743,6 +1390,89 @@
         hamburger.setAttribute('aria-expanded', false);
       });
     });
+
+    // ── LIGHTBOX ────────────────────────────────────────────
+    (function () {
+      const overlay  = document.getElementById('lb-overlay');
+      const content  = document.getElementById('lb-content');
+      const ratio    = document.getElementById('lb-ratio');
+      const titleEl  = document.getElementById('lb-title');
+      const closeBtn = document.getElementById('lb-close');
+
+      // Inject transparent click-intercept overlay into every card ratio wrapper
+      document.querySelectorAll('.video-ratio, .img-ratio').forEach(wrap => {
+        const div = document.createElement('div');
+        div.className = 'card-click-overlay';
+        wrap.appendChild(div);
+      });
+
+      function openLightbox(card) {
+        const iframe  = card.querySelector('iframe');
+        const img     = card.querySelector('img');
+        const brand   = card.querySelector('.card-brand');
+        const title   = brand ? brand.textContent.trim() : '';
+
+        ratio.innerHTML = '';
+        content.className = 'lb-content';
+
+        if (iframe) {
+          // Extract Vimeo ID and rebuild URL with autoplay
+          const match = iframe.src.match(/vimeo\.com\/video\/(\d+)/);
+          if (!match) return;
+          const videoId = match[1];
+          const newSrc = `https://player.vimeo.com/video/${videoId}?autoplay=1&title=0&byline=0&portrait=0&dnt=1&color=7C3AFF`;
+          const el = document.createElement('iframe');
+          el.src = newSrc;
+          el.allow = 'autoplay; fullscreen; picture-in-picture';
+          el.allowFullscreen = true;
+
+          // Detect aspect ratio from card's ratio wrapper
+          const ratioWrap = card.querySelector('.video-ratio, .img-ratio');
+          const pb = ratioWrap ? parseFloat(ratioWrap.style.paddingBottom || window.getComputedStyle(ratioWrap).paddingBottom) : 56.25;
+          if (pb > 100) {
+            content.classList.add('lb-portrait');
+          } else {
+            content.classList.add('lb-landscape');
+          }
+          ratio.appendChild(el);
+
+        } else if (img) {
+          const el = document.createElement('img');
+          el.src = img.src;
+          el.alt = img.alt || title;
+
+          const ratioWrap = card.querySelector('.img-ratio');
+          const pb = ratioWrap ? parseFloat(ratioWrap.style.paddingBottom || '75') : 75;
+          if (pb > 100) {
+            content.classList.add('lb-portrait');
+          } else if (pb >= 70 && pb <= 80) {
+            content.classList.add('lb-square');
+          } else {
+            content.classList.add('lb-landscape');
+          }
+          ratio.appendChild(el);
+        } else { return; }
+
+        titleEl.textContent = title;
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+        ratio.innerHTML = ''; // stop video playback
+      }
+
+      // Click on any card
+      document.querySelectorAll('.video-card').forEach(card => {
+        card.addEventListener('click', () => openLightbox(card));
+      });
+
+      closeBtn.addEventListener('click', closeLightbox);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) closeLightbox(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+    })();
   </script>
 
 </body>

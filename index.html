@@ -8,7 +8,10 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AFF'/><text x='16' y='22' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='18' fill='white'>D</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Big+Shoulders+Display:wght@100;200;300;800;900&family=Audiowide&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=DM+Mono:wght@400;500&family=Big+Shoulders+Display:wght@100;200;300;800;900&display=swap" rel="stylesheet" />
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <link rel="dns-prefetch" href="//player.vimeo.com" />
   <link rel="dns-prefetch" href="//vimeocdn.com" />
   <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
@@ -32,6 +35,12 @@
       --green:        #4ade80;
       --radius:       20px;
     }
+
+    /* Custom cursor */
+    *, *::before, *::after { cursor: url('img/cursor.png') 8 8, auto; }
+    a, button, [role="button"], .nav-cta, .btn-primary, .btn-secondary,
+    .slide-item, .slides-btn, .nav-hamburger, .lang-toggle,
+    .filter-btn, .video-card { cursor: url('img/cursor.png') 8 8, pointer; }
 
     :focus-visible {
       outline: 2px solid var(--accent-light);
@@ -273,6 +282,17 @@
       pointer-events: none;
       z-index: 0;
     }
+    /* Bottom fade — smooth transition to next section */
+    .hero-fade-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 160px;
+      background: linear-gradient(to bottom, transparent 0%, var(--bg) 100%);
+      z-index: 3;
+      pointer-events: none;
+    }
     /* grain texture overlay on hero */
     .hero::after {
       content: '';
@@ -364,14 +384,32 @@
     /* hover removido del título — sin efecto */
     .hero-word { cursor: default; }
 
-    /* Particles canvas */
-    #particles-canvas {
+    /* Hero video background */
+    .hero-bg-video {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
+      object-fit: contain;
+      object-position: center center;
+      background: #000;
       z-index: 0;
       pointer-events: none;
+    }
+    @media (max-width: 1024px) and (min-width: 641px) {
+      .hero-bg-video { object-fit: contain; object-position: center center; }
+    }
+
+    /* Mobile role text (replaces DM logo) */
+    .hero-role-mobile {
+      display: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-top: 10px;
+      margin-bottom: 24px;
     }
 
     /* bottom bar */
@@ -467,108 +505,6 @@
       50%       { opacity: 0.9;  transform: scaleY(0.55) translateY(4px); }
     }
 
-    /* ══════════════════════════════════════
-       HERO PORTRAIT — cycling images
-    ══════════════════════════════════════ */
-    .hero-portrait {
-      position: absolute;
-      right: 0;
-      top: 0;
-      /*
-        Desktop base: 62% width so the character has room to "enter"
-        The fade mask starts at 22% so the blend with the text area is soft
-      */
-      width: 62%;
-      height: 100%;
-      pointer-events: all;  /* Enable hover for liquid effect */
-      cursor: default;
-      z-index: 1;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 22%, black 40%);
-      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 22%, black 40%);
-    }
-    /* Bottom fade */
-    .hero-portrait::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 22%;
-      background: linear-gradient(to top, #080808 0%, transparent 100%);
-      z-index: 2;
-      pointer-events: none;
-    }
-    .portrait-slide {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: 62% center;
-      opacity: 0;
-      mix-blend-mode: screen;
-      transition: opacity 0.85s ease, filter 0.18s ease;
-      will-change: opacity, filter;
-    }
-    .portrait-slide.p-active {
-      opacity: 1;
-    }
-    /* ── Glitch cyberpunk hover ── */
-    @keyframes glitch-tear {
-      0%   { transform: translate(0); filter: none; clip-path: none; }
-      4%   { transform: translate(-4px, 1px); clip-path: inset(8% 0 88% 0); filter: hue-rotate(120deg) saturate(3) brightness(1.5); }
-      5%   { transform: translate(4px, -1px); clip-path: none; filter: none; }
-      10%  { transform: translate(0); }
-      14%  { transform: translateX(-3px); filter: drop-shadow(4px 0 0 rgba(255,0,100,0.9)) drop-shadow(-4px 0 0 rgba(0,220,255,0.9)); }
-      16%  { transform: translate(0); filter: none; }
-      30%  { transform: translate(0); }
-      34%  { transform: translate(5px); clip-path: inset(62% 0 18% 0); filter: brightness(2) contrast(1.4); }
-      36%  { transform: translate(0); clip-path: none; filter: none; }
-      54%  { filter: drop-shadow(-3px 0 0 rgba(255,0,80,0.85)) drop-shadow(3px 0 0 rgba(0,255,180,0.85)); transform: translateX(2px); }
-      57%  { filter: none; transform: translate(0); }
-      74%  { clip-path: inset(38% 0 48% 0); transform: translateX(-4px); filter: hue-rotate(210deg) saturate(2); }
-      76%  { clip-path: none; transform: translate(0); filter: none; }
-      100% { transform: translate(0); filter: none; clip-path: none; }
-    }
-    .hero-portrait.glitch-hover .portrait-slide.p-active {
-      animation: glitch-tear 1.4s steps(1) infinite;
-    }
-    .hero-portrait.glitch-hover .portrait-slide {
-      transition: opacity 0.07s steps(2);
-    }
-
-    /* Persona indicator dots */
-    .hero-persona-dots {
-      position: absolute;
-      bottom: 88px;
-      right: 64px;
-      display: flex;
-      gap: 8px;
-      z-index: 10;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 1s;
-    }
-    .persona-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.18);
-      cursor: pointer;
-      transition: background 0.3s, transform 0.3s;
-      border: none;
-      padding: 0;
-      /* Expand touch/click target without changing visual size */
-      position: relative;
-    }
-    .persona-dot::after {
-      content: '';
-      position: absolute;
-      inset: -12px;  /* 29px total hit area per dot */
-      border-radius: 50%;
-    }
-    .persona-dot.p-active {
-      background: var(--accent-light);
-      transform: scale(1.5);
-    }
 
     /* ══════════════════════════════════════
        SHARED BUTTONS
@@ -664,6 +600,7 @@
     }
     .stat-block {
       padding: 40px;
+      border: none;
     }
     .stat-block:first-child { padding-left: 0; }
     .stat-block:last-child  { padding-right: 0; }
@@ -675,26 +612,49 @@
       line-height: 1;
       margin-bottom: 10px;
     }
-    .stat-number .ac { color: var(--accent-light); }
+    /* Subtle float animation for accent symbols */
+    @keyframes floatSymbol {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%       { transform: translateY(-6px) scale(1.05); }
+    }
+    .stat-number .ac {
+      color: var(--accent-light);
+      display: inline-block;
+      margin-left: 4px;
+      animation: floatSymbol 3.5s ease-in-out infinite;
+    }
     .stat-desc {
       font-size: 12px;
       color: var(--muted);
       font-weight: 500;
       letter-spacing: 0.01em;
     }
+    /* Stats slide in from right on scroll */
+    .stat-block.reveal {
+      opacity: 0;
+      transform: translateX(60px);
+      transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.16,1,0.3,1);
+    }
+    .stat-block.reveal.revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .stats-grid .stat-block:nth-child(1).reveal { transition-delay: 0.05s; }
+    .stats-grid .stat-block:nth-child(2).reveal { transition-delay: 0.15s; }
+    .stats-grid .stat-block:nth-child(3).reveal { transition-delay: 0.25s; }
+    .stats-grid .stat-block:nth-child(4).reveal { transition-delay: 0.35s; }
 
     /* ══════════════════════════════════════
        SHOWREEL
     ══════════════════════════════════════ */
     .showreel-section {
       padding: 96px 0;
-      border-bottom: 1px solid var(--border);
     }
 
     /* ── Slides Carousel — auto-rotate + glow + lightbox ── */
     .slides-section {
       padding: 96px 0;
-      overflow: hidden;
+      overflow-x: clip;
     }
     .slides-header {
       display: flex;
@@ -709,19 +669,45 @@
       letter-spacing: -0.035em;
       color: #fff;
     }
-    /* hide prev/next buttons — replaced by auto-scroll */
-    .slides-controls { display: none; }
+    /* Carousel controls — centered below track */
+    .slides-controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .slides-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      flex-shrink: 0;
+    }
+    .slides-btn:hover {
+      background: rgba(124,58,255,0.3);
+      border-color: var(--accent-light);
+      transform: scale(1.08);
+    }
 
     .slides-track-wrap {
       width: 100%;
       overflow: hidden;
+      padding: 30px;
+      margin: -30px;
       -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
       mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
     }
     .slides-track {
       display: flex;
-      gap: 16px;
-      animation: slides-auto-scroll 38s linear infinite;
+      gap: 24px;
+      animation: slides-auto-scroll 15s linear infinite;
       will-change: transform;
     }
     .slides-track:hover {
@@ -732,41 +718,49 @@
       to   { transform: translateX(-50%); }
     }
 
-    /* Desktop: 16:9 landscape */
     .slide-item {
       flex-shrink: 0;
-      width: 320px;
-      aspect-ratio: 16/9;
+      width: 500px;
+      height: 330px;
       border-radius: 14px;
       overflow: hidden;
       border: 1px solid var(--border);
       background: var(--card);
       cursor: pointer;
       position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
     }
     .slide-item img {
       width: 100%; height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.35s ease;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .slide-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(124,58,255,0);
+      transition: background 0.35s ease;
+      pointer-events: none;
+      z-index: 1;
     }
     .slide-item:hover {
-      transform: scale(1.04);
-      box-shadow: 0 0 28px rgba(124,58,255,0.65), 0 0 60px rgba(124,58,255,0.25);
-      border-color: rgba(124,58,255,0.45);
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(124,58,255,0.4), 0 0 80px rgba(124,58,255,0.15);
+      border-color: var(--accent-light);
       z-index: 5;
     }
-    .slide-item:hover img { transform: scale(1.06); }
+    .slide-item:hover::after { background: rgba(124,58,255,0.18); }
+    .slide-item:hover img { transform: scale(1.08); }
 
-    /* Mobile: keep 9:16 vertical */
     @media (max-width: 640px) {
-      .slide-item { width: 180px; aspect-ratio: 9/16; }
+      .slide-item { width: 280px; height: 380px; }
       .slides-header { flex-direction: column; align-items: flex-start; }
-      .slides-track { animation-duration: 30s; }
+      .slides-track { gap: 16px; animation-duration: 20s; }
     }
     @media (max-width: 860px) and (min-width: 641px) {
-      .slide-item { width: 260px; }
+      .slide-item { width: 400px; height: 300px; }
     }
 
     /* ── Lightbox modal ── */
@@ -783,8 +777,11 @@
     }
     .slide-lightbox.open { display: flex; }
     .slide-lightbox-img {
+      display: block;
       max-width: 90vw;
       max-height: 90vh;
+      width: auto;
+      height: auto;
       border-radius: 14px;
       object-fit: contain;
       box-shadow: 0 20px 80px rgba(0,0,0,0.6);
@@ -917,17 +914,30 @@
     /* ══════════════════════════════════════
        QUOTES INTERSTITIAL
     ══════════════════════════════════════ */
-    /* ── Quotes: lava lamp purple animado ── */
+    /* ── Quotes: oval pill con verde/morado ── */
     .quotes-section {
-      padding: 122px 0;
+      padding: 72px 20px;
       position: relative;
+      overflow: visible;
+      background: transparent;
+    }
+    /* Oval container */
+    .quotes-oval-container {
+      max-width: 920px;
+      margin: 0 auto;
+      border-radius: 50% / 20%;
       overflow: hidden;
+      position: relative;
+      padding: 90px 80px;
       background: #08081a;
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
-      mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+      box-shadow:
+        0 0 0 1px rgba(124,58,255,0.22),
+        0 0 60px rgba(124,58,255,0.14),
+        0 0 100px rgba(74,222,128,0.07),
+        0 30px 80px rgba(0,0,0,0.4);
     }
     /* Grain noise overlay */
-    .quotes-section::after {
+    .quotes-oval-container::after {
       content: '';
       position: absolute;
       inset: 0;
@@ -946,22 +956,24 @@
       pointer-events: none;
       z-index: 0;
     }
+    /* Left blob → verde */
     .quotes-blob-1 {
-      width: 55vw; height: 55vw;
-      background: radial-gradient(circle, rgba(124,58,255,0.82) 0%, rgba(100,30,220,0.5) 45%, transparent 70%);
-      top: -20%; left: -10%;
+      width: 55%; height: 130%;
+      background: radial-gradient(circle, rgba(74,222,128,0.65) 0%, rgba(0,180,80,0.30) 45%, transparent 70%);
+      top: -15%; left: -8%;
       animation: lava1 11s ease-in-out infinite alternate;
     }
+    /* Right blob → morado */
     .quotes-blob-2 {
-      width: 45vw; height: 45vw;
-      background: radial-gradient(circle, rgba(157,106,255,0.7) 0%, rgba(124,58,255,0.35) 50%, transparent 72%);
-      bottom: -20%; right: -8%;
+      width: 50%; height: 130%;
+      background: radial-gradient(circle, rgba(157,106,255,0.65) 0%, rgba(124,58,255,0.30) 50%, transparent 72%);
+      top: -15%; right: -8%;
       animation: lava2 14s ease-in-out infinite alternate;
     }
     .quotes-blob-3 {
-      width: 35vw; height: 35vw;
-      background: radial-gradient(circle, rgba(180,80,255,0.55) 0%, transparent 68%);
-      top: 30%; left: 38%;
+      width: 35%; height: 80%;
+      background: radial-gradient(circle, rgba(100,50,200,0.35) 0%, transparent 68%);
+      top: 20%; left: 35%;
       animation: lava3 9s ease-in-out infinite alternate;
     }
     @keyframes lava1 {
@@ -997,13 +1009,14 @@
       background: rgba(8,8,26,0.55);
       z-index: 1;
     }
+    .quotes-oval-container .wrapper,
     .quotes-section .wrapper {
       position: relative;
       z-index: 2;
     }
     .quotes-inner {
       position: relative;
-      min-height: 220px;
+      min-height: 160px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1016,7 +1029,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 0 80px;
+      padding: 0 40px;
       transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
       will-change: transform, opacity;
     }
@@ -1024,12 +1037,17 @@
     .quote-slide.state-active { transform: translateX(0);     opacity: 1; pointer-events: auto; }
     .quote-slide.state-left   { transform: translateX(-60px); opacity: 0; pointer-events: none; }
     .quote-es {
-      font-size: clamp(16px, 2vw, 24px);
+      font-size: clamp(15px, 1.8vw, 21px);
       font-weight: 600;
-      color: rgba(255,255,255,0.88);
-      line-height: 1.45;
-      margin-bottom: 12px;
+      color: #fff;
+      line-height: 1.5;
+      margin-bottom: 14px;
       letter-spacing: -0.01em;
+      max-width: 680px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
     }
     .quote-attribution {
       font-family: 'DM Mono', monospace;
@@ -1037,6 +1055,21 @@
       color: var(--accent-light);
       letter-spacing: 0.18em;
       text-transform: uppercase;
+    }
+    .quotes-caption {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      text-align: center;
+      margin-top: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .quotes-caption::before {
+      content: '✦ ';
+      color: rgba(124,58,255,0.5);
     }
 
     /* ══════════════════════════════════════
@@ -1154,6 +1187,112 @@
       margin-bottom: 28px;
     }
     .lumyn-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    /* Cyberpunk project card */
+    .project-card-cyber {
+      background: linear-gradient(135deg, #100808 0%, #0e0d12 100%);
+      border: 1px solid rgba(255,70,40,0.2);
+      border-radius: var(--radius);
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.4s, box-shadow 0.4s;
+      position: relative;
+      margin-top: 24px;
+    }
+    .project-card-cyber:hover {
+      border-color: rgba(255,70,40,0.45);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 60px rgba(220,50,30,0.1);
+    }
+    .project-card-cyber::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(220,50,30,0.06) 0%, transparent 60%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .project-card-cyber:hover::after { opacity: 1; }
+    .cyber-visual {
+      grid-column: 2;
+      grid-row: 1;
+      background: #06050a;
+      border-left: 1px solid rgba(255,70,40,0.12);
+      overflow: hidden;
+      position: relative;
+      min-height: 260px;
+    }
+    .cyber-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      transition: transform 0.5s ease;
+      filter: brightness(0.85) saturate(1.2);
+    }
+    .project-card-cyber:hover .cyber-visual img {
+      transform: scale(1.04);
+      filter: brightness(0.95) saturate(1.3);
+    }
+    .cyber-visual-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,120,80,0.9);
+      background: rgba(0,0,0,0.65);
+      border: 1px solid rgba(255,70,40,0.3);
+      border-radius: 4px;
+      padding: 4px 8px;
+      backdrop-filter: blur(6px);
+    }
+    .cyber-content {
+      grid-column: 1;
+      grid-row: 1;
+      padding: 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .cyber-label { color: rgba(255,100,60,0.85); }
+    .cyber-name {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -0.035em;
+      color: #fff;
+      line-height: 1.05;
+      margin-bottom: 14px;
+    }
+    .cyber-name span { color: rgba(255,100,60,0.9); }
+    .cyber-btn {
+      display: inline-block;
+      padding: 11px 26px;
+      border-radius: 100px;
+      background: rgba(255,70,40,0.12);
+      border: 1px solid rgba(255,70,40,0.4);
+      color: rgba(255,120,80,1);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: background 0.25s, border-color 0.25s, color 0.25s, box-shadow 0.25s;
+    }
+    .project-card-cyber:hover .cyber-btn {
+      background: rgba(255,70,40,0.22);
+      border-color: rgba(255,70,40,0.7);
+      color: #fff;
+      box-shadow: 0 0 18px rgba(255,70,40,0.25);
+    }
+    @media (max-width: 860px) {
+      .project-card-cyber { grid-template-columns: 1fr; }
+      .cyber-visual { grid-column: 1; grid-row: 1; min-height: 180px; border-left: none; border-bottom: 1px solid rgba(255,70,40,0.12); }
+      .cyber-content { grid-column: 1; grid-row: 2; padding: 28px; }
+    }
 
     /* ══════════════════════════════════════
        EXPERIENCE — TIMELINE
@@ -1313,25 +1452,38 @@
     .footer-section .wrapper,
     .footer-section > * { position: relative; z-index: 1; }
 
-    /* Big CTA block — full viewport width background */
+    /* Big CTA block — full viewport width, parallax container */
     .footer-cta-block {
-      min-height: 550px;
+      min-height: 560px;
       position: relative;
-      background-image: url('img/contact-bg.png');
-      background-size: cover;
-      background-position: 68% center;
-      background-attachment: fixed;
+      overflow: hidden;
       width: 100vw;
       margin-left: calc(-50vw + 50%);
       display: flex;
       align-items: center;
       isolation: isolate;
     }
+    /* Parallax image layer */
+    .contact-parallax-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 130%;
+      top: -15%;
+      object-fit: cover;
+      object-position: 68% center;
+      will-change: transform;
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* Cinematic overlay: dark vignette + purple tint */
     .footer-cta-block::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(8,8,8,0.90);
+      background:
+        linear-gradient(to right, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.65) 55%, rgba(8,8,8,0.85) 100%),
+        linear-gradient(to bottom, rgba(8,8,8,0.4) 0%, transparent 30%, transparent 70%, rgba(8,8,8,0.6) 100%);
       z-index: 1;
       pointer-events: none;
     }
@@ -1355,15 +1507,13 @@
       margin-left: auto;
       margin-right: auto;
     }
-    @media (max-width: 1024px) {
-      .footer-cta-block { background-attachment: scroll; background-position: 72% center; }
-    }
     @media (max-width: 860px) {
       .footer-cta-inner { padding: 72px 40px; }
+      .contact-parallax-img { object-position: 72% center; }
     }
     @media (max-width: 640px) {
-      .footer-cta-block { background-attachment: scroll; background-position: 75% center; }
       .footer-cta-inner { padding: 64px 20px; }
+      .contact-parallax-img { object-position: 75% center; height: 140%; top: -20%; }
     }
     .footer-cta-tag {
       font-family: 'DM Mono', monospace;
@@ -1513,44 +1663,11 @@
     /* ══════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════ */
-    /* ──────────────────────────────────────
-       NOTEBOOK  1280 – 1440px
-       Problema: personaje pegado al borde derecho.
-       Fix: contenedor más ancho (72%) + object-position
-       desde la derecha → personaje entra hacia el centro.
-    ────────────────────────────────────── */
     @media (max-width: 1440px) {
-      .hero-portrait {
-        width: 72%;
-        -webkit-mask-image: linear-gradient(
-          to right,
-          transparent 0%,
-          rgba(0,0,0,0.35) 16%,
-          black 32%
-        );
-        mask-image: linear-gradient(
-          to right,
-          transparent 0%,
-          rgba(0,0,0,0.35) 16%,
-          black 32%
-        );
-      }
-      /* object-position: right top
-         → imagen anclada al borde derecho + arriba
-         → todo el espacio vacío (izquierda) queda fuera del viewport
-         → personaje aparece centrado visualmente */
-      .portrait-slide {
-        object-position: right 4%;
-      }
       .hero-title        { font-size: clamp(56px, 8.5vw, 140px); }
       .hero > div[style] { max-width: 60% !important; }
     }
 
-    /* ──────────────────────────────────────
-       TABLET LANDSCAPE  860 – 1024px
-       Portrait pasa a ser fondo difuso,
-       texto ocupa todo el ancho disponible.
-    ────────────────────────────────────── */
     @media (max-width: 1024px) {
       .wrapper { padding: 0 40px; }
       .hero    { padding: 0 40px 72px; }
@@ -1559,24 +1676,6 @@
       .exp-sidebar { padding-right: 40px; }
       .timeline { padding-left: 40px; }
       .timeline-line { left: 40px; }
-
-      .hero-portrait {
-        width: 80%;
-        opacity: 0.55;
-        -webkit-mask-image: linear-gradient(
-          to right,
-          transparent 0%,
-          rgba(0,0,0,0.2) 10%,
-          black 28%
-        );
-        mask-image: linear-gradient(
-          to right,
-          transparent 0%,
-          rgba(0,0,0,0.2) 10%,
-          black 28%
-        );
-      }
-      .portrait-slide   { object-position: right 5%; }
       .hero > div[style]{ max-width: 70% !important; }
       .hero-title       { font-size: clamp(52px, 9vw, 120px); }
     }
@@ -1626,16 +1725,10 @@
         min-width: 0;
         padding: 11px 22px;
       }
-      /* Mobile: personaje visible completo */
-      .hero-portrait {
-        width: 100%;
-        opacity: 0.58;
-        -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
-        mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
-      }
-      .portrait-slide { object-position: center top; }
-      /* Ocultar dots y scroll en mobile */
-      .hero-persona-dots { display: none; }
+      /* Mobile: video centrado, logo DM → texto */
+      .hero-bg-video { object-fit: cover; object-position: 72% center; }
+      .hero-logo-svg { display: none; }
+      .hero-role-mobile { display: block; }
       .hero-scroll { display: none; }
       .hero > div[style] { max-width: 100% !important; }
       .hero { padding: 0 20px 60px; }
@@ -1708,26 +1801,10 @@
   <!-- ── HERO ── -->
   <section class="hero" id="inicio" aria-label="Hero">
 
-    <!-- Portrait cycling (right side) -->
-    <div class="hero-portrait" aria-hidden="true">
-      <img class="portrait-slide p-active" src="img/hero-1.png" alt="" />
-      <img class="portrait-slide" src="img/hero-illustration-final.png" alt="" />
-      <img class="portrait-slide" src="img/hero-clay-final.png" alt="" />
-      <img class="portrait-slide" src="img/hero-cyberpunk-final.png" alt="" />
-      <img class="portrait-slide" src="img/hero-pixar-final.png" alt="" />
-    </div>
-
-    <!-- Persona dots -->
-    <div class="hero-persona-dots" aria-hidden="true">
-      <button class="persona-dot p-active" aria-label="Imagen 1 — Realista"></button>
-      <button class="persona-dot" aria-label="Imagen 2 — Ilustración"></button>
-      <button class="persona-dot" aria-label="Imagen 3 — Clay"></button>
-      <button class="persona-dot" aria-label="Imagen 4 — Cyberpunk"></button>
-      <button class="persona-dot" aria-label="Imagen 5 — Pixar"></button>
-    </div>
-
-    <!-- Particles canvas (Stranger Things style, behind portrait) -->
-    <canvas id="particles-canvas" aria-hidden="true"></canvas>
+    <!-- Video background -->
+    <video class="hero-bg-video" autoplay muted loop playsinline aria-hidden="true" poster="img/hero-poster.jpg">
+      <source src="video/hero-bg.mp4" type="video/mp4">
+    </video>
 
     <div style="position:relative;z-index:2">
     <h1 class="hero-title">
@@ -1737,7 +1814,10 @@
     </h1>
     <div class="hero-logo-svg">
       <!-- SVG replaced by PNG per brief -->
-      <img src="img/logo-dm.png" alt="DM since 1988" loading="lazy" />
+      <img src="img/logo-dm.png" alt="DM since 1988" loading="eager" />
+    </div>
+    <div class="hero-role-mobile">AI Creative Producer / Art Director</div>
+    <div class="hero-logo-svg" style="display:none"><!-- placeholder -->
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 942.16 266.5" aria-label="DM logo" role="img" style="display:none">
         <defs><style>.cls-1{fill:#fff}</style></defs>
         <g>
@@ -1782,6 +1862,7 @@
     </div>
     </div><!-- /z-index wrapper -->
     <div class="hero-scroll" aria-hidden="true">scroll</div>
+    <div class="hero-fade-bottom" aria-hidden="true"></div>
   </section>
 
   <!-- ── SHOWREEL ── -->
@@ -1806,11 +1887,7 @@
       <div class="slides-header reveal">
         <div>
           <div class="section-label" data-es="Contenido" data-en="Content">Contenido</div>
-          <h2 class="slides-title" data-es="Trabajos recientes" data-en="Recent Work">Trabajos recientes</h2>
-        </div>
-        <div class="slides-controls">
-          <button class="slides-btn" id="slides-prev" aria-label="Anterior">&#8592;</button>
-          <button class="slides-btn" id="slides-next" aria-label="Siguiente">&#8594;</button>
+          <h2 class="slides-title" data-es="Work" data-en="Work">Work</h2>
         </div>
       </div>
       <div class="slides-track-wrap reveal">
@@ -1836,6 +1913,13 @@
           <div class="slide-item"><img src="img/slides/20-imagen-slide_1080x1920.png" alt="Trabajo 20" loading="lazy" /></div>
           <div class="slide-item"><img src="img/slides/21-imagen-slide_1080x1920.png" alt="Trabajo 21" loading="lazy" /></div>
         </div>
+      </div>
+      <div class="slides-controls">
+        <button class="slides-btn" id="slides-prev" aria-label="Anterior">&#8592;</button>
+        <button class="slides-btn" id="slides-next" aria-label="Siguiente">&#8594;</button>
+      </div>
+      <div style="display:flex;justify-content:center;margin-top:40px;">
+        <a href="work.html" class="btn-secondary" data-es="Ver más Work" data-en="See more Work">Ver más Work</a>
       </div>
     </div>
   </section>
@@ -1916,25 +2000,28 @@
 
   <!-- ── QUOTES ── -->
   <section class="quotes-section" aria-live="polite" aria-atomic="true">
-    <!-- lava lamp blobs -->
-    <div class="quotes-blob quotes-blob-1" aria-hidden="true"></div>
-    <div class="quotes-blob quotes-blob-2" aria-hidden="true"></div>
-    <div class="quotes-blob quotes-blob-3" aria-hidden="true"></div>
-    <!-- particles canvas -->
-    <canvas id="quotes-particles-canvas" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;"></canvas>
-    <div class="quotes-overlay"></div>
-    <div class="wrapper">
-      <div class="quotes-inner" id="quotes-container">
-        <!-- populated by JS -->
+    <div class="quotes-oval-container">
+      <!-- lava lamp blobs -->
+      <div class="quotes-blob quotes-blob-1" aria-hidden="true"></div>
+      <div class="quotes-blob quotes-blob-2" aria-hidden="true"></div>
+      <div class="quotes-blob quotes-blob-3" aria-hidden="true"></div>
+      <!-- particles canvas -->
+      <canvas id="quotes-particles-canvas" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;"></canvas>
+      <div class="quotes-overlay"></div>
+      <div class="wrapper">
+        <div class="quotes-inner" id="quotes-container">
+          <!-- populated by JS -->
+        </div>
       </div>
     </div>
+    <p class="quotes-caption">Pasa el cursor sobre las partículas y cobran vida</p>
   </section>
 
   <!-- ── PROYECTOS ── -->
   <section class="projects-section" id="proyectos">
     <div class="wrapper">
       <div class="reveal" style="margin-bottom:48px">
-        <div class="section-label">Proyecto propio</div>
+        <div class="section-label">Proyectos propios</div>
       </div>
       <div class="project-card-lumyn reveal">
         <div class="lumyn-visual">
@@ -1963,6 +2050,26 @@
           </div>
         </div>
       </div>
+
+      <!-- Cyberpunk Motorcycle — web demo -->
+      <a href="https://cyberpunk-motorcycle.netlify.app/" target="_blank" rel="noopener noreferrer"
+         class="project-card-cyber reveal" style="text-decoration:none;display:grid;">
+        <div class="cyber-visual">
+          <img src="img/cyber-moto.jpg" alt="Cyberpunk Motorcycle — web demo" loading="lazy" />
+          <span class="cyber-visual-badge">Demo · Web de ejemplo</span>
+        </div>
+        <div class="cyber-content">
+          <div>
+            <div class="project-label cyber-label">Proyecto propio · 2025 — concepto</div>
+            <h3 class="cyber-name">Cyberpunk<br><span>Motorcycle</span></h3>
+            <p class="lumyn-tagline">Landing page de concepto para una marca ficticia de motos de alto rendimiento con estética cyberpunk. Desarrollada con Claude Code como demo de capacidades web — el producto no es real.</p>
+          </div>
+          <div>
+            <span class="cyber-btn">Ir a la web →</span>
+          </div>
+        </div>
+      </a>
+
     </div>
   </section>
 
@@ -2048,6 +2155,13 @@
     <div class="wrapper">
 
       <div class="footer-cta-block reveal">
+        <img
+          src="img/contact-bg.png"
+          alt=""
+          aria-hidden="true"
+          class="contact-parallax-img"
+          id="contact-parallax-img"
+        />
         <div class="footer-cta-inner">
           <div class="footer-cta-tag">Contacto</div>
           <h2 class="footer-cta-title">¿Trabajamos <span>juntos?</span></h2>
@@ -2119,160 +2233,8 @@
        SCRIPTS
   ══════════════════════════════════════ -->
 
-  <!-- cursor-glow (Heartbeat Nebula) -->
-  <script>
-    (function () {
-      if (window.matchMedia('(hover: none)').matches) return;
-      const COLORS = ['#7C3AED', '#A855F7', '#14B8A6', '#6366F1'];
-      const ROTATION_INTERVAL = 8000;
-      const BPM = 68;
-      const CYCLE_MS = 60000 / BPM;
-      function lerp(a, b, t) { return a + (b - a) * t; }
-      function heartbeatScale(phase, strength) {
-        const t = phase;
-        if (t < 0.07) return 1 + (t / 0.07) * strength;
-        if (t < 0.18) return 1 + ((0.18 - t) / 0.11) * strength;
-        if (t < 0.26) return 1 + ((t - 0.18) / 0.08) * strength * 0.65;
-        if (t < 0.38) return 1 + ((0.38 - t) / 0.12) * strength * 0.65;
-        return 1;
-      }
-      function makeLayer({ size, blur, opacity }) {
-        const el = document.createElement('div');
-        Object.assign(el.style, {
-          position: 'fixed', top: '0', left: '0',
-          width: size + 'px', height: size + 'px',
-          borderRadius: '50%', pointerEvents: 'none', zIndex: '9990',
-          opacity: '0', filter: `blur(${blur}px)`, mixBlendMode: 'screen',
-          willChange: 'transform, opacity',
-          background: `radial-gradient(circle at 50% 50%, ${COLORS[0]} 0%, transparent 55%)`,
-          transition: 'background 1.4s ease',
-        });
-        el._base = opacity;
-        document.body.appendChild(el);
-        return el;
-      }
-      const CFG = [
-        { size: 920, blur: 110, opacity: 0.028 },
-        { size: 460, blur: 55,  opacity: 0.042 },
-        { size: 200, blur: 22,  opacity: 0.055 },
-      ];
-      const layers = CFG.map(makeLayer);
-      const LERPS    = [0.030, 0.052, 0.080];
-      const STRENGTH = [0.10,  0.07,  0.04];
-      const DELAY    = [0.06,  0.03,  0.00];
-      const mouse = { x: -2000, y: -2000 };
-      const pos   = CFG.map(() => ({ x: -2000, y: -2000 }));
-      const DRIFT = [
-        { range: 70, speed: 0.00018, phase: 0.0 },
-        { range: 42, speed: 0.00022, phase: 1.3 },
-        { range: 22, speed: 0.00028, phase: 2.5 },
-      ];
-      let visible = false, startTime = null;
-      function show() { visible = true;  layers.forEach(l => { l.style.opacity = String(l._base); }); }
-      function hide() { visible = false; layers.forEach(l => { l.style.opacity = '0'; }); }
-      document.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; if (!visible) show(); });
-      document.addEventListener('mouseleave', hide);
-      document.addEventListener('mouseenter', show);
-      let colorIndex = 0;
-      setInterval(() => {
-        colorIndex = (colorIndex + 1) % COLORS.length;
-        const c = COLORS[colorIndex];
-        layers.forEach(l => { l.style.background = `radial-gradient(circle at 50% 50%, ${c} 0%, transparent 55%)`; });
-      }, ROTATION_INTERVAL);
-      function tick(now) {
-        if (!startTime) startTime = now;
-        const elapsed = now - startTime;
-        layers.forEach((layer, i) => {
-          pos[i].x = lerp(pos[i].x, mouse.x, LERPS[i]);
-          pos[i].y = lerp(pos[i].y, mouse.y, LERPS[i]);
-          const size = CFG[i].size;
-          const cyclePos = ((elapsed / CYCLE_MS) - DELAY[i] + 100) % 1;
-          const pulse    = heartbeatScale(cyclePos, STRENGTH[i]);
-          const opacityBoost = (pulse - 1) * 0.15;
-          layer.style.opacity = String(Math.min(layer._base + opacityBoost, 0.08));
-          const driftY = Math.sin(elapsed * DRIFT[i].speed + DRIFT[i].phase) * DRIFT[i].range - DRIFT[i].range * 0.35;
-          layer.style.transform = `translate(${pos[i].x - (size * pulse) / 2}px, ${pos[i].y - (size * pulse) / 2 + driftY}px) scale(${pulse})`;
-        });
-        requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-    })();
-  </script>
 
   <script>
-    // ── Portrait cycling (fade in/out) + liquid hover ──
-    (function () {
-      const portrait = document.querySelector('.hero-portrait');
-      const slides   = document.querySelectorAll('.portrait-slide');
-      const dots     = document.querySelectorAll('.persona-dot');
-      let current    = 0;
-      let timer;
-      let busy       = false;
-
-      function goTo(idx) {
-        if (idx === current || busy) return;
-        busy = true;
-        slides[current].classList.remove('p-active');
-        dots[current] && dots[current].classList.remove('p-active');
-        current = idx;
-        slides[current].classList.add('p-active');
-        dots[current] && dots[current].classList.add('p-active');
-        setTimeout(() => { busy = false; }, 220);
-      }
-
-      function next() { goTo((current + 1) % slides.length); }
-      timer = setInterval(next, 4000);
-
-      dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
-          clearInterval(timer);
-          busy = false; // allow immediate manual switch
-          goTo(i);
-          timer = setInterval(next, 4000);
-        });
-      });
-
-      // ── Liquid hover cycle ──
-      let liquidTimer   = null;
-      let liquidIdx     = 0;
-
-      function startLiquid() {
-        if (!portrait) return;
-        portrait.classList.add('glitch-hover');
-        // Cycle every 110ms — glitch sci-fi feel
-        liquidTimer = setInterval(() => {
-          liquidIdx = (liquidIdx + 1) % slides.length;
-          slides[current].classList.remove('p-active');
-          dots[current] && dots[current].classList.remove('p-active');
-          current = liquidIdx;
-          slides[current].classList.add('p-active');
-          dots[current] && dots[current].classList.add('p-active');
-        }, 110);
-      }
-
-      function stopLiquid() {
-        if (!portrait) return;
-        clearInterval(liquidTimer);
-        liquidTimer = null;
-        portrait.classList.remove('glitch-hover');
-        // Restore normal transition speed
-        busy = false;
-        // Restart auto-cycle from current
-        clearInterval(timer);
-        timer = setInterval(next, 4000);
-      }
-
-      if (portrait) {
-        portrait.addEventListener('mouseenter', startLiquid);
-        portrait.addEventListener('mouseleave', stopLiquid);
-        // Touch support
-        portrait.addEventListener('touchstart', startLiquid, { passive: true });
-        portrait.addEventListener('touchend',   stopLiquid,  { passive: true });
-      }
-    })();
-
-    // ── Hero name hover efecto — removido per brief ──
-
     // ── Nav scroll effect ──
     const mainNav = document.getElementById('main-nav');
     window.addEventListener('scroll', () => {
@@ -2365,13 +2327,6 @@
   <!-- QUOTES ROTATIVAS — Brian Tracy -->
   <script>
     (function () {
-      window.addEventListener('load', function () {
-        const link = document.createElement('link');
-        link.rel  = 'stylesheet';
-        link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400;1,600&family=Space+Grotesk:wght@500;600&family=Fraunces:ital,opsz,wght@1,9..144,500&family=Plus+Jakarta+Sans:wght@500;600&display=optional';
-        document.head.appendChild(link);
-      });
-
       const quotes = [
         { es: '"Las personas exitosas son simplemente las que tienen hábitos exitosos."', en: '"Successful people are simply those with successful habits."', ja: '「成功する人は、成功する習慣を持つ人だ。」' },
         { es: '"Tu vida solo mejora cuando tú mejoras."', en: '"Your life only gets better when you get better."', ja: '「あなたの人生は、あなた自身が成長したときだけ良くなる。」' },
@@ -2384,14 +2339,11 @@
       ];
 
       const fonts = [
-        { family: "'Playfair Display', serif",      weight: '600', style: 'italic'  },
-        { family: "'Space Grotesk', sans-serif",     weight: '600', style: 'normal'  },
-        { family: "'Fraunces', serif",               weight: '500', style: 'italic'  },
-        { family: "'Plus Jakarta Sans', sans-serif", weight: '600', style: 'normal'  },
-        { family: "'Poppins', sans-serif",           weight: '700', style: 'normal'  },
-        { family: "'DM Mono', monospace",            weight: '400', style: 'normal'  },
-        { family: "'Playfair Display', serif",       weight: '400', style: 'italic'  },
-        { family: "'Space Grotesk', sans-serif",     weight: '500', style: 'normal'  },
+        { family: "'Poppins', sans-serif",               weight: '600', style: 'italic'  },
+        { family: "'DM Mono', monospace",                weight: '400', style: 'normal'  },
+        { family: "'Poppins', sans-serif",               weight: '400', style: 'italic'  },
+        { family: "'Big Shoulders Display', sans-serif", weight: '800', style: 'normal'  },
+        { family: "'Poppins', sans-serif",               weight: '700', style: 'normal'  },
       ];
 
       const container = document.getElementById('quotes-container');
@@ -2443,72 +2395,6 @@
     })();
   </script>
 
-  <!-- ── PARTICLES — Stranger Things style ── -->
-  <script>
-    (function () {
-      const canvas = document.getElementById('particles-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-
-      function resize() {
-        canvas.width  = canvas.offsetWidth  || window.innerWidth;
-        canvas.height = canvas.offsetHeight || window.innerHeight;
-      }
-      resize();
-      window.addEventListener('resize', resize, { passive: true });
-
-      const COUNT = 123; // +45% (85 → 123)
-      const pts = [];
-      for (let i = 0; i < COUNT; i++) {
-        const t = Math.random();
-        pts.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          r: t < 0.12 ? Math.random() * 2.2 + 1.4 : Math.random() * 1.2 + 0.3,
-          vx: (Math.random() - 0.5) * 0.22,
-          vy: (Math.random() - 0.5) * 0.18,
-          base: Math.random() * 0.55 + 0.2,
-          phase: Math.random() * Math.PI * 2,
-          speed: Math.random() * 0.018 + 0.006,
-          color: t < 0.32 ? [220, 50, 50] : t < 0.55 ? [200, 90, 255] : [210, 210, 240],
-        });
-      }
-
-      function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (const p of pts) {
-          p.x += p.vx; p.y += p.vy;
-          if (p.x < -8) p.x = canvas.width + 8;
-          if (p.x > canvas.width + 8) p.x = -8;
-          if (p.y < -8) p.y = canvas.height + 8;
-          if (p.y > canvas.height + 8) p.y = -8;
-          p.phase += p.speed;
-          const a = p.base * (0.45 + 0.55 * Math.sin(p.phase));
-          const [r, g, b] = p.color;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${r},${g},${b},${a.toFixed(3)})`;
-          ctx.fill();
-        }
-        for (let i = 0; i < pts.length; i++) {
-          for (let j = i + 1; j < pts.length; j++) {
-            const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-            const d = Math.sqrt(dx * dx + dy * dy);
-            if (d < 110) {
-              ctx.beginPath();
-              ctx.moveTo(pts[i].x, pts[i].y);
-              ctx.lineTo(pts[j].x, pts[j].y);
-              ctx.strokeStyle = `rgba(180,50,50,${((1 - d / 110) * 0.07).toFixed(3)})`;
-              ctx.lineWidth = 0.5;
-              ctx.stroke();
-            }
-          }
-        }
-        requestAnimationFrame(draw);
-      }
-      draw();
-    })();
-  </script>
 
   <!-- ── QUOTES PARTICLES — cursor follow ── -->
   <script>
@@ -2525,7 +2411,8 @@
       resize();
       window.addEventListener('resize', resize, { passive: true });
 
-      const COUNT = 95;
+      const isMobile = window.innerWidth <= 768;
+      const COUNT = isMobile ? 35 : 95;
       const pts   = [];
       for (let i = 0; i < COUNT; i++) {
         const isGreen = Math.random() < 0.38;
@@ -2611,13 +2498,12 @@
     })();
   </script>
 
-  <!-- ── SLIDES CAROUSEL JS — auto-scroll infinito + lightbox ── -->
+  <!-- ── SLIDES CAROUSEL JS — auto-scroll infinito + flechas + lightbox ── -->
   <script>
     (function () {
       const track = document.getElementById('slides-track');
       if (!track) return;
 
-      // Duplicar items para scroll infinito
       const origItems = Array.from(track.querySelectorAll('.slide-item'));
       origItems.forEach(item => {
         const clone = item.cloneNode(true);
@@ -2625,20 +2511,54 @@
         track.appendChild(clone);
       });
 
-      // Lightbox
-      const lightbox    = document.getElementById('slide-lightbox');
+      const prevBtn = document.getElementById('slides-prev');
+      const nextBtn = document.getElementById('slides-next');
+
+      function getMetrics() {
+        const item = track.querySelector('.slide-item');
+        const gap = parseInt(window.getComputedStyle(track).gap) || 0;
+        const durationStr = window.getComputedStyle(track).animationDuration;
+        return {
+          itemW: item.offsetWidth + gap,
+          animDur: parseFloat(durationStr) || 15
+        };
+      }
+
+      let manualMode = false;
+      let currentOffset = 0;
+
+      function jumpCarousel(delta) {
+        const { itemW } = getMetrics();
+        const halfWidth = origItems.length * itemW;
+
+        if (!manualMode) {
+          // First click: freeze current position and switch to manual
+          const matrix = new DOMMatrix(window.getComputedStyle(track).transform);
+          currentOffset = Math.abs(matrix.m41);
+          manualMode = true;
+          track.style.animation = 'none';
+          void track.offsetHeight;
+        }
+
+        currentOffset += delta * itemW;
+        currentOffset = ((currentOffset % halfWidth) + halfWidth) % halfWidth;
+        track.style.transform = `translateX(-${currentOffset}px)`;
+        track.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', () => jumpCarousel(-1));
+      if (nextBtn) nextBtn.addEventListener('click', () => jumpCarousel(1));
+
+      const lightbox = document.getElementById('slide-lightbox');
       const lightboxImg = document.getElementById('slide-lightbox-img');
       const lightboxClose = document.getElementById('slide-lightbox-close');
 
       function openLightbox(src, alt) {
-        lightboxImg.src = src;
-        lightboxImg.alt = alt || '';
-        lightbox.classList.add('open');
-        document.body.style.overflow = 'hidden';
+        lightboxImg.src = src; lightboxImg.alt = alt || '';
+        lightbox.classList.add('open'); document.body.style.overflow = 'hidden';
       }
       function closeLightbox() {
-        lightbox.classList.remove('open');
-        document.body.style.overflow = '';
+        lightbox.classList.remove('open'); document.body.style.overflow = '';
       }
 
       track.addEventListener('click', (e) => {
@@ -2647,14 +2567,9 @@
         const img = item.querySelector('img');
         if (img) openLightbox(img.src, img.alt);
       });
-
       lightboxClose.addEventListener('click', closeLightbox);
-      lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) closeLightbox();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeLightbox();
-      });
+      lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
     })();
   </script>
 
@@ -2730,42 +2645,32 @@
     })();
   </script>
 
-  <!-- ── HERO GLITCH ── -->
+  <!-- ── CONTACT PARALLAX (GSAP ScrollTrigger) ── -->
   <script>
-    (function() {
-      const container = document.getElementById('heroCharacter');
-      if (!container) return;
-      const imgs = container.querySelectorAll('.hero-style');
-      let current = 0;
-      let busy = false;
+  window.addEventListener('load', function () {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-      function switchStyle() {
-        if (busy) return;
-        busy = true;
-        const next = (current + 1) % imgs.length;
+    gsap.registerPlugin(ScrollTrigger);
 
-        // tag two random visible imgs as glitch layers
-        imgs[current].setAttribute('data-glitch', 'a');
-        imgs[next].setAttribute('data-glitch', 'b');
-        container.classList.add('glitching');
+    const img = document.getElementById('contact-parallax-img');
+    if (!img) return;
 
-        setTimeout(() => {
-          imgs[current].style.opacity = '0';
-          imgs[current].removeAttribute('data-glitch');
-          imgs[next].style.opacity = '1';
-          imgs[next].removeAttribute('data-glitch');
-          current = next;
-        }, 120);
-
-        setTimeout(() => {
-          container.classList.remove('glitching');
-          busy = false;
-        }, 320);
+    gsap.fromTo(img,
+      { y: '0%' },
+      {
+        y: '12%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: img.closest('.footer-cta-block'),
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.5,
+          invalidateOnRefresh: true,
+        }
       }
-
-      const hero = document.querySelector('.hero');
-      if (hero) hero.addEventListener('mouseenter', switchStyle);
-    })();
+    );
+  });
   </script>
 
 </body>
