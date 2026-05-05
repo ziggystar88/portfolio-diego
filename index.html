@@ -39,8 +39,8 @@
     /* Custom cursor */
     *, *::before, *::after { cursor: url('img/cursor.png') 8 8, auto; }
     a, button, [role="button"], .nav-cta, .btn-primary, .btn-secondary,
-    .slide-item, .slides-btn, .nav-hamburger, .lang-toggle,
-    .filter-btn, .video-card { cursor: url('img/cursor.png') 8 8, pointer; }
+    .wk-card, .wk-arrow, .wk-dot, .wk-cat-row, .lang-toggle,
+    .filter-btn { cursor: url('img/cursor.png') 8 8, pointer; }
 
     :focus-visible {
       outline: 2px solid var(--accent-light);
@@ -627,262 +627,264 @@
       padding: 96px 0;
     }
 
-    /* ── WORK CATEGORIES — 3 accordion panels ── */
+    /* ── WORK SECTION ── */
     .slides-section {
-      padding: 96px 0;
+      padding: 96px 0 80px;
       overflow: hidden;
     }
-    .slides-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 40px;
-      gap: 16px;
-    }
-    .slides-title {
-      font-size: clamp(28px, 3.5vw, 48px);
-      font-weight: 900;
-      letter-spacing: -0.035em;
-      color: #fff;
-    }
-
-    /* Accordion panels container */
-    .wcat-panels {
-      display: flex;
-      height: 440px;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      gap: 0;
-    }
-    .wcat-panel {
-      position: relative;
-      flex: 1;
-      overflow: hidden;
-      cursor: pointer;
-      border-right: 1px solid rgba(255,255,255,0.06);
-      transition: flex 0.65s cubic-bezier(0.16,1,0.3,1);
-    }
-    .wcat-panel:last-child { border-right: none; }
-    .wcat-panel.open { flex: 8; cursor: default; }
-
-    /* Collapsed face */
-    .wcat-face {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: var(--card);
-      transition: opacity 0.3s, transform 0.3s;
-      z-index: 3;
-    }
-    .wcat-panel.open .wcat-face { opacity: 0; pointer-events: none; transform: scale(0.9); }
-    .wcat-face-num {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      color: var(--muted2);
-      letter-spacing: 0.12em;
-    }
-    .wcat-face-name {
+    .slides-header { margin-bottom: 36px; }
+    .wk-title {
       font-family: 'Big Shoulders Display', sans-serif;
-      font-weight: 800;
-      font-size: clamp(14px, 2vw, 20px);
-      color: rgba(255,255,255,0.7);
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      letter-spacing: 0.04em;
-      transition: color 0.2s;
+      font-size: clamp(52px, 8vw, 100px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #fff;
+      line-height: 0.88;
+      margin-bottom: 14px;
     }
-    .wcat-panel:hover .wcat-face-name { color: #fff; }
-    .wcat-face-count {
+    .wk-subtitle {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 52px;
+    }
+
+    /* Category rows */
+    .wk-cats { border-top: 1px solid rgba(255,255,255,0.06); }
+    .wk-cat-row {
+      display: flex;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      gap: 14px;
+      transition: border-color 0.25s;
+    }
+    .wk-cat-row.active { border-bottom-color: rgba(124,58,255,0.35); }
+    .wk-cat-num {
       font-family: 'DM Mono', monospace;
       font-size: 9px;
       color: var(--accent-light);
-      opacity: 0.8;
-    }
-    /* hover glow on face */
-    .wcat-panel:not(.open):hover .wcat-face {
-      background: #141020;
-    }
-
-    /* Expanded content */
-    .wcat-body {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s 0.2s;
-    }
-    .wcat-panel.open .wcat-body { opacity: 1; pointer-events: auto; }
-
-    .wcat-body-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 24px 12px;
+      width: 26px;
       flex-shrink: 0;
+      letter-spacing: 0.06em;
     }
-    .wcat-body-title {
+    .wk-cat-name {
       font-family: 'Big Shoulders Display', sans-serif;
-      font-size: clamp(24px, 3vw, 36px);
+      font-size: clamp(24px, 3.8vw, 52px);
       font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.02em;
-    }
-    .wcat-body-meta {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      color: var(--muted);
-    }
-    .wcat-close {
-      background: none;
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 50%;
-      width: 28px; height: 28px;
-      color: var(--muted);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px;
-      transition: border-color 0.2s, color 0.2s;
-      flex-shrink: 0;
-    }
-    .wcat-close:hover { border-color: #fff; color: #fff; }
-
-    /* Slider inside panel */
-    .wcat-slider-wrap {
+      color: rgba(255,255,255,0.22);
       flex: 1;
-      overflow: hidden;
-      position: relative;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
-      mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+      transition: color 0.25s;
+      letter-spacing: -0.02em;
+      line-height: 1;
     }
-    .wcat-track {
+    .wk-cat-row.active .wk-cat-name,
+    .wk-cat-row:hover .wk-cat-name { color: #fff; }
+    .wk-cat-count {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* Carousel stage */
+    .wk-stage { margin-top: 52px; }
+    .wk-carousel { display: none; }
+    .wk-carousel.active { display: block; }
+
+    /* Viewport */
+    .wk-viewport {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 13%, #000 87%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, #000 13%, #000 87%, transparent 100%);
+    }
+    .wk-carousel[data-cat="videos"]  .wk-viewport { height: 316px; }
+    .wk-carousel[data-cat="digital"] .wk-viewport { height: 396px; }
+    .wk-carousel[data-cat="logos"]   .wk-viewport { height: 232px; }
+
+    .wk-track {
       display: flex;
       align-items: center;
-      height: 100%;
-      gap: 12px;
-      padding: 0 32px;
-      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+      gap: 20px;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
       will-change: transform;
     }
 
-    /* Arrow controls */
-    .wcat-arrows {
-      display: flex;
-      gap: 8px;
-      padding: 10px 24px 14px;
+    /* Cards */
+    .wk-card {
       flex-shrink: 0;
-    }
-    .wcat-arrow {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.7);
-      font-size: 16px;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .wcat-arrow:hover { background: rgba(124,58,255,0.25); border-color: var(--accent-light); }
-
-    /* Card types */
-    .wcard {
-      flex-shrink: 0;
-      border-radius: 10px;
+      border-radius: 18px;
       overflow: hidden;
-      border: 1px solid var(--border);
-      transition: border-color 0.3s, transform 0.3s;
-      background: #0d0d14;
-    }
-    .wcard:hover { border-color: rgba(124,58,255,0.4); transform: scale(1.03); }
-
-    /* Video card 16:9 */
-    .wcard-vid {
-      width: 240px; height: 135px;
-      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease;
       position: relative;
-      background: linear-gradient(135deg, #0a080f 0%, #100818 100%);
+      outline: none;
     }
-    .wcard-vid::before {
+    .wk-card:focus-visible { box-shadow: 0 0 0 3px var(--accent-light); }
+    .wk-card.center  { opacity: 1;    transform: scale(1); }
+    .wk-card.adjacent{ opacity: 0.52; transform: scale(0.87); }
+    .wk-card.far     { opacity: 0.18; transform: scale(0.75); pointer-events: none; }
+    .wk-card.hidden-card { opacity: 0; transform: scale(0.68); pointer-events: none; }
+
+    /* Video card (16:9) */
+    .wk-card-vid {
+      width: 500px; height: 281px;
+      background: linear-gradient(135deg, #080610 0%, #100820 100%);
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .wk-card-vid::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 35% 55%, rgba(124,58,255,0.12) 0%, transparent 65%);
+      background: radial-gradient(ellipse at 38% 58%, rgba(124,58,255,0.18) 0%, transparent 62%);
+      pointer-events: none;
     }
-    .wcard-play {
-      width: 38px; height: 38px;
+    .wk-vid-thumb {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; opacity: 0.65;
+    }
+    .wk-play-btn {
+      width: 60px; height: 60px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      border: 1.5px solid rgba(255,255,255,0.2);
       display: flex; align-items: center; justify-content: center;
-      position: relative; z-index: 1;
-      transition: background 0.25s, transform 0.25s;
+      position: relative; z-index: 2;
+      transition: background 0.25s, transform 0.25s, border-color 0.25s, box-shadow 0.25s;
     }
-    .wcard:hover .wcard-play { background: rgba(124,58,255,0.35); transform: scale(1.12); }
-    .wcard-play svg { width: 14px; height: 14px; fill: #fff; margin-left: 2px; }
-    .wcard-vid-label {
-      position: absolute; bottom: 8px; left: 10px;
-      font-family: 'DM Mono', monospace; font-size: 8px;
-      color: rgba(255,255,255,0.35); letter-spacing: 0.08em; text-transform: uppercase;
-      z-index: 1;
+    .wk-card.center .wk-play-btn {
+      background: rgba(124,58,255,0.52);
+      border-color: rgba(124,58,255,0.75);
+      box-shadow: 0 0 28px rgba(124,58,255,0.4);
+    }
+    .wk-card.center:hover .wk-play-btn { transform: scale(1.12); }
+    .wk-play-btn svg { width: 20px; height: 20px; fill: #fff; margin-left: 3px; }
+    .wk-vid-label {
+      position: absolute; bottom: 12px; left: 16px; right: 16px;
+      font-family: 'DM Mono', monospace; font-size: 9px;
+      color: rgba(255,255,255,0.4); letter-spacing: 0.09em;
+      text-transform: uppercase; z-index: 2;
     }
 
-    /* Digital card 9:16 portrait */
-    .wcard-dig {
-      width: 100px; height: 178px;
+    /* Digital card (9:16) */
+    .wk-card-dig {
+      width: 198px; height: 352px;
+      border: 1px solid rgba(255,255,255,0.07);
     }
-    .wcard-dig img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .wk-card-dig img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* Logo card */
-    .wcard-logo {
-      width: 140px; height: 100px;
-      background: #111;
+    .wk-card-logo {
+      width: 280px; height: 196px;
+      background: #fff;
       display: flex; align-items: center; justify-content: center;
-      padding: 16px;
+      padding: 26px;
     }
-    .wcard-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .wk-card-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
-    /* Lightbox (kept for direct image clicks) */
-    .slide-lightbox {
+    /* Nav: arrows + dots in one row */
+    .wk-nav {
+      display: flex;
+      justify-content: center;
+      margin-top: 28px;
+    }
+    .wk-arrows-dots {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .wk-dots {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .wk-dot {
+      height: 5px;
+      width: 5px;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.2);
+      transition: width 0.3s ease, background 0.3s ease, transform 0.2s;
+      border: none; padding: 0; cursor: pointer; flex-shrink: 0;
+    }
+    .wk-dot.active { width: 18px; background: var(--accent-light); }
+    .wk-arrow {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.75);
+      font-size: 17px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s, transform 0.12s;
+    }
+    .wk-arrow:hover  { background: rgba(124,58,255,0.3); border-color: var(--accent-light); }
+    .wk-arrow:active { transform: scale(0.92); }
+
+    /* Lightbox */
+    .wk-lightbox {
       display: none;
       position: fixed; inset: 0;
-      background: rgba(0,0,0,0.92);
+      background: rgba(0,0,0,0.93);
       z-index: 2000;
       align-items: center; justify-content: center;
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
-    .slide-lightbox.open { display: flex; }
-    .slide-lightbox-img {
-      display: block; max-width: 90vw; max-height: 90vh;
+    .wk-lightbox.open { display: flex; }
+    .wk-lb-close {
+      position: fixed; top: 20px; right: 20px;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; font-size: 20px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.2s; z-index: 2001; line-height: 1;
+    }
+    .wk-lb-close:hover { background: rgba(255,255,255,0.25); transform: scale(1.08); }
+    .wk-lb-video {
+      width: min(380px, 90vw);
+      aspect-ratio: 9 / 16;
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+    }
+    .wk-lb-video iframe { width: 100%; height: 100%; border: none; display: block; }
+    .wk-lb-img {
+      display: none;
+      max-width: 92vw; max-height: 92vh;
       width: auto; height: auto;
       border-radius: 14px; object-fit: contain;
-      box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
     }
-    .slide-lightbox-close {
-      position: fixed; top: 24px; right: 24px;
-      width: 48px; height: 48px; border-radius: 50%;
-      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
-      color: #fff; font-size: 22px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, transform 0.2s; z-index: 2001;
-    }
-    .slide-lightbox-close:hover { background: rgba(255,255,255,0.28); transform: scale(1.1); }
+    .wk-lightbox.img-mode .wk-lb-video { display: none; }
+    .wk-lightbox.img-mode .wk-lb-img  { display: block; }
 
-    /* Mobile: vertical stack */
+    /* Responsive */
     @media (max-width: 640px) {
-      .wcat-panels { flex-direction: column; height: auto; border-radius: 14px; }
-      .wcat-panel { flex: none !important; min-height: 64px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
-      .wcat-panel:last-child { border-bottom: none; }
-      .wcat-panel.open { min-height: 340px; }
-      .wcat-face { flex-direction: row; gap: 14px; padding: 0 20px; }
-      .wcat-face-name { writing-mode: horizontal-tb; font-size: 16px; }
-      .wcat-face-num { display: none; }
+      .slides-section { padding: 64px 0 56px; }
+      .wk-title { font-size: clamp(40px, 13vw, 60px); }
+      .wk-subtitle { margin-bottom: 32px; }
+      .wk-cat-name { font-size: clamp(20px, 7vw, 32px); }
+      .wk-carousel[data-cat="videos"]  .wk-viewport { height: 196px; }
+      .wk-carousel[data-cat="digital"] .wk-viewport { height: 280px; }
+      .wk-carousel[data-cat="logos"]   .wk-viewport { height: 164px; }
+      .wk-card-vid { width: 300px; height: 169px; }
+      .wk-play-btn { width: 48px; height: 48px; }
+      .wk-play-btn svg { width: 16px; height: 16px; }
+      .wk-card-dig { width: 148px; height: 263px; }
+      .wk-card-logo { width: 210px; height: 147px; padding: 18px; }
+      .wk-lb-video { width: min(300px, 94vw); }
+    }
+    @media (max-width: 860px) and (min-width: 641px) {
+      .wk-carousel[data-cat="videos"]  .wk-viewport { height: 252px; }
+      .wk-carousel[data-cat="digital"] .wk-viewport { height: 332px; }
+      .wk-carousel[data-cat="logos"]   .wk-viewport { height: 196px; }
+      .wk-card-vid { width: 400px; height: 225px; }
+      .wk-card-dig { width: 170px; height: 302px; }
+      .wk-card-logo { width: 240px; height: 168px; }
     }
     .showreel-header {
       display: flex;
@@ -1838,7 +1840,7 @@
   <nav id="main-nav" role="navigation" aria-label="Navegación principal">
     <div class="nav-logo">Diego <span>Manjarrés</span>.</div>
     <ul class="nav-links">
-      <li><a href="work.html" data-es="Work" data-en="Work">Work</a></li>
+      <li><a href="#slides" data-es="Work" data-en="Work">Work</a></li>
       <li><a href="#sobre-mi" data-es="Sobre mí" data-en="About me">Sobre mí</a></li>
       <li><a href="#experiencia" data-es="Experiencia" data-en="Experience">Experiencia</a></li>
     </ul>
@@ -1855,7 +1857,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       Inicio
     </a>
-    <a href="work.html" class="mob-nav-item" aria-label="Work">
+    <a href="#slides" class="mob-nav-item" aria-label="Work">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
       Work
     </a>
@@ -1976,197 +1978,348 @@
       <div class="slides-header reveal">
         <div>
           <div class="section-label" data-es="Contenido" data-en="Content">Contenido</div>
-          <h2 class="slides-title" data-es="Work" data-en="Work">Work</h2>
+          <h2 class="wk-title" data-es="Work" data-en="Work">Work</h2>
+          <div class="wk-subtitle">META ADS · AI CONTENT PRODUCTION</div>
         </div>
       </div>
 
-      <!-- 3 interactive category panels -->
-      <div class="wcat-panels reveal" id="wcat-panels">
-
-        <!-- ── PANEL 1: VIDEOS ── -->
-        <div class="wcat-panel" id="wcat-videos" data-cat="videos">
-          <div class="wcat-face">
-            <span class="wcat-face-num">01</span>
-            <span class="wcat-face-name">Videos</span>
-            <span class="wcat-face-count">25</span>
-          </div>
-          <div class="wcat-body">
-            <div class="wcat-body-head">
-              <div>
-                <div class="wcat-body-title">Videos</div>
-                <div class="wcat-body-meta">25 piezas · Fashion · Food · Auto · Real Estate</div>
-              </div>
-              <button class="wcat-close" data-close="wcat-videos" aria-label="Cerrar">✕</button>
-            </div>
-            <div class="wcat-slider-wrap">
-              <div class="wcat-track" id="wcat-track-videos">
-                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Portafolio Reel 2024">
-                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
-                  <span class="wcard-vid-label">Reel 2024</span>
-                </a>
-                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Patagua">
-                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
-                  <span class="wcard-vid-label">Patagua · Fashion</span>
-                </a>
-                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Passe">
-                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
-                  <span class="wcard-vid-label">Passe · Fashion</span>
-                </a>
-                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Joyería Helmlinger">
-                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
-                  <span class="wcard-vid-label">Helmlinger · Fashion</span>
-                </a>
-                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Grillo">
-                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
-                  <span class="wcard-vid-label">Grillo · Food</span>
-                </a>
-                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Nubetta">
-                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
-                  <span class="wcard-vid-label">Nubetta · Food</span>
-                </a>
-                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Simply Sweet">
-                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
-                  <span class="wcard-vid-label">Simply Sweet · Food</span>
-                </a>
-                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Ducati">
-                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
-                  <span class="wcard-vid-label">Ducati · Auto</span>
-                </a>
-                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Rocas de Maitencillo">
-                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
-                  <span class="wcard-vid-label">Rocas de Maitencillo</span>
-                </a>
-                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Micro">
-                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
-                  <span class="wcard-vid-label">Micro · Real Estate</span>
-                </a>
-              </div>
-            </div>
-            <div class="wcat-arrows">
-              <button class="wcat-arrow" data-track="wcat-track-videos" data-dir="-1" aria-label="Anterior">&#8592;</button>
-              <button class="wcat-arrow" data-track="wcat-track-videos" data-dir="1" aria-label="Siguiente">&#8594;</button>
-              <a href="work.html#sec-videos" class="wcat-arrow" style="width:auto;padding:0 14px;border-radius:100px;font-size:11px;font-family:'DM Mono',monospace;text-decoration:none;margin-left:8px;">Ver todos →</a>
-            </div>
-          </div>
+      <!-- Category rows -->
+      <div class="wk-cats">
+        <div class="wk-cat-row active" data-cat="videos">
+          <span class="wk-cat-num">01</span>
+          <span class="wk-cat-name" data-es="Videos" data-en="Videos">Videos</span>
+          <span class="wk-cat-count">25 piezas</span>
         </div>
-
-        <!-- ── PANEL 2: DIGITAL ── -->
-        <div class="wcat-panel" id="wcat-digital" data-cat="digital">
-          <div class="wcat-face">
-            <span class="wcat-face-num">02</span>
-            <span class="wcat-face-name">Digital</span>
-            <span class="wcat-face-count">20</span>
-          </div>
-          <div class="wcat-body">
-            <div class="wcat-body-head">
-              <div>
-                <div class="wcat-body-title">Digital</div>
-                <div class="wcat-body-meta">20 piezas · Social Media · Meta Ads</div>
-              </div>
-              <button class="wcat-close" data-close="wcat-digital" aria-label="Cerrar">✕</button>
-            </div>
-            <div class="wcat-slider-wrap">
-              <div class="wcat-track" id="wcat-track-digital">
-                <div class="wcard wcard-dig"><img src="img/slides/1-imagen-slide_1080x1920.png"  alt="Digital 1"  loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/2-imagen-slide_1080x1920.png"  alt="Digital 2"  loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/3-imagen-slide_1080x1920.png"  alt="Digital 3"  loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/4-imagen-slide_1080x1920.png"  alt="Digital 4"  loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/5-imagen-slide_1080x1920.png"  alt="Digital 5"  loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/6-imagen-slide_1080x1920.png"  alt="Digital 6"  loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/7-imagen-slide_1080x1920.png"  alt="Digital 7"  loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/8-imagen-slide_1080x1920.png"  alt="Digital 8"  loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/9-imagen-slide_1080x1920.png"  alt="Digital 9"  loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/10-imagen-slide_1080x1920.png" alt="Digital 10" loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/12-imagen-slide_1080x1920.png" alt="Digital 11" loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/13-imagen-slide_1080x1920.png" alt="Digital 12" loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/14-imagen-slide_1080x1920.png" alt="Digital 13" loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/15-imagen-slide_1080x1920.png" alt="Digital 14" loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/16-imagen-slide_1080x1920.png" alt="Digital 15" loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/17-imagen-slide_1080x1920.png" alt="Digital 16" loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/18-imagen-slide_1080x1920.png" alt="Digital 17" loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/19-imagen-slide_1080x1920.png" alt="Digital 18" loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/20-imagen-slide_1080x1920.png" alt="Digital 19" loading="lazy"></div>
-                <div class="wcard wcard-dig"><img src="img/slides/21-imagen-slide_1080x1920.png" alt="Digital 20" loading="lazy"></div>
-              </div>
-            </div>
-            <div class="wcat-arrows">
-              <button class="wcat-arrow" data-track="wcat-track-digital" data-dir="-1" aria-label="Anterior">&#8592;</button>
-              <button class="wcat-arrow" data-track="wcat-track-digital" data-dir="1" aria-label="Siguiente">&#8594;</button>
-              <a href="work.html#sec-digital" class="wcat-arrow" style="width:auto;padding:0 14px;border-radius:100px;font-size:11px;font-family:'DM Mono',monospace;text-decoration:none;margin-left:8px;">Ver todos →</a>
-            </div>
-          </div>
+        <div class="wk-cat-row" data-cat="digital">
+          <span class="wk-cat-num">02</span>
+          <span class="wk-cat-name" data-es="Digital" data-en="Digital">Digital</span>
+          <span class="wk-cat-count">20 piezas</span>
         </div>
-
-        <!-- ── PANEL 3: LOGOTIPOS ── -->
-        <div class="wcat-panel" id="wcat-logos" data-cat="logos">
-          <div class="wcat-face">
-            <span class="wcat-face-num">03</span>
-            <span class="wcat-face-name">Logotipos</span>
-            <span class="wcat-face-count">28</span>
-          </div>
-          <div class="wcat-body">
-            <div class="wcat-body-head">
-              <div>
-                <div class="wcat-body-title">Logotipos</div>
-                <div class="wcat-body-meta">28 marcas · Identidad visual</div>
-              </div>
-              <button class="wcat-close" data-close="wcat-logos" aria-label="Cerrar">✕</button>
-            </div>
-            <div class="wcat-slider-wrap">
-              <div class="wcat-track" id="wcat-track-logos">
-                <div class="wcard wcard-logo"><img src="img/logos/1.png"  alt="Logo 1"  loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/2.png"  alt="Logo 2"  loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/3.png"  alt="Logo 3"  loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/4.png"  alt="Logo 4"  loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/5.png"  alt="Logo 5"  loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/6.png"  alt="Logo 6"  loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/7.png"  alt="Logo 7"  loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/8.png"  alt="Logo 8"  loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/9.png"  alt="Logo 9"  loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/10.png" alt="Logo 10" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/11.png" alt="Logo 11" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/12.png" alt="Logo 12" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/13.png" alt="Logo 13" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/14.png" alt="Logo 14" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/15.png" alt="Logo 15" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/16.png" alt="Logo 16" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/17.png" alt="Logo 17" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/18.png" alt="Logo 18" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/19.png" alt="Logo 19" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/20.png" alt="Logo 20" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/21.png" alt="Logo 21" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/22.png" alt="Logo 22" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/23.png" alt="Logo 23" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/24.png" alt="Logo 24" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/25.png" alt="Logo 25" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/26.png" alt="Logo 26" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/27.png" alt="Logo 27" loading="lazy"></div>
-                <div class="wcard wcard-logo"><img src="img/logos/28.png" alt="Logo 28" loading="lazy"></div>
-              </div>
-            </div>
-            <div class="wcat-arrows">
-              <button class="wcat-arrow" data-track="wcat-track-logos" data-dir="-1" aria-label="Anterior">&#8592;</button>
-              <button class="wcat-arrow" data-track="wcat-track-logos" data-dir="1" aria-label="Siguiente">&#8594;</button>
-              <a href="work.html#sec-logos" class="wcat-arrow" style="width:auto;padding:0 14px;border-radius:100px;font-size:11px;font-family:'DM Mono',monospace;text-decoration:none;margin-left:8px;">Ver todos →</a>
-            </div>
-          </div>
+        <div class="wk-cat-row" data-cat="logos">
+          <span class="wk-cat-num">03</span>
+          <span class="wk-cat-name" data-es="Logotipos" data-en="Logos">Logotipos</span>
+          <span class="wk-cat-count">28 piezas</span>
         </div>
-
-      </div><!-- /wcat-panels -->
-
-      <!-- Lightbox -->
-      <div class="slide-lightbox" id="slide-lightbox" role="dialog" aria-modal="true">
-        <button class="slide-lightbox-close" id="slide-lightbox-close" aria-label="Cerrar">✕</button>
-        <img class="slide-lightbox-img" id="slide-lightbox-img" src="" alt="" />
       </div>
+    </div>
 
-      <div style="display:flex;justify-content:center;margin-top:40px;">
-        <a href="work.html" class="btn-secondary" data-es="Ver más Work" data-en="See more Work">Ver más Work</a>
+    <!-- Carousels -->
+    <div class="wk-stage">
+    <!-- VIDEOS carousel -->
+    <div class="wk-carousel  active" data-cat="videos">
+      <div class="wk-viewport">
+        <div class="wk-track" id="wk-track-videos">
+          <div class="wk-card wk-card-vid" data-vid="1176332413" role="button" tabindex="0" aria-label="Reel 2024">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1176332413.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Reel 2024</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180618670" role="button" tabindex="0" aria-label="Patagua 1/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180618670.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 1/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621440" role="button" tabindex="0" aria-label="Patagua 2/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621440.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 2/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621458" role="button" tabindex="0" aria-label="Patagua 3/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621458.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 3/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621477" role="button" tabindex="0" aria-label="Patagua 4/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621477.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 4/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621490" role="button" tabindex="0" aria-label="Patagua 5/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621490.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 5/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180618644" role="button" tabindex="0" aria-label="Passe · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180618644.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Passe · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617384" role="button" tabindex="0" aria-label="Helmlinger · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617384.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Helmlinger · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180580101" role="button" tabindex="0" aria-label="Grillo 1/3 · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180580101.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Grillo 1/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180580151" role="button" tabindex="0" aria-label="Grillo 2/3 · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180580151.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Grillo 2/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180580266" role="button" tabindex="0" aria-label="Grillo 3/3 · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180580266.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Grillo 3/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180622009" role="button" tabindex="0" aria-label="Simply Sweet · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180622009.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Simply Sweet · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180618559" role="button" tabindex="0" aria-label="Nubetta 1/3 · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180618559.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Nubetta 1/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180618584" role="button" tabindex="0" aria-label="Nubetta 2/3 · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180618584.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Nubetta 2/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180618622" role="button" tabindex="0" aria-label="Nubetta 3/3 · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180618622.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Nubetta 3/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180580072" role="button" tabindex="0" aria-label="Ducati · Auto">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180580072.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Ducati · Auto</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621993" role="button" tabindex="0" aria-label="Rocas de Maitencillo">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621993.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Rocas de Maitencillo</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617499" role="button" tabindex="0" aria-label="Micro 1/6 · Real Estate">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617499.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 1/6 · Real Estate</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617525" role="button" tabindex="0" aria-label="Micro 2/6 · Real Estate">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617525.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 2/6 · Real Estate</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617829" role="button" tabindex="0" aria-label="Micro 3/6 · Real Estate">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617829.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 3/6 · Real Estate</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617842" role="button" tabindex="0" aria-label="Micro 4/6 · Real Estate">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617842.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 4/6 · Real Estate</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617873" role="button" tabindex="0" aria-label="Micro 5/6 · Real Estate">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617873.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 5/6 · Real Estate</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617903" role="button" tabindex="0" aria-label="Micro 6/6 · Real Estate">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617903.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 6/6 · Real Estate</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180622084" role="button" tabindex="0" aria-label="Unibag">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180622084.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Unibag</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617423" role="button" tabindex="0" aria-label="Maat">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617423.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Maat</span>
+          </div>
+        </div>
       </div>
+      <div class="wk-nav">
+        <div class="wk-arrows-dots">
+          <button class="wk-arrow" data-cat="videos" data-dir="-1" aria-label="Anterior">&#8592;</button>
+          <div class="wk-dots" id="wk-dots-videos"></div>
+          <button class="wk-arrow" data-cat="videos" data-dir="1" aria-label="Siguiente">&#8594;</button>
+        </div>
+      </div>
+    </div>
+    <!-- DIGITAL carousel -->
+    <div class="wk-carousel" data-cat="digital">
+      <div class="wk-viewport">
+        <div class="wk-track" id="wk-track-digital">
+          <div class="wk-card wk-card-dig" data-img="img/slides/1-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 1">
+            <img src="img/slides/1-imagen-slide_1080x1920.png" alt="Digital 1" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/2-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 2">
+            <img src="img/slides/2-imagen-slide_1080x1920.png" alt="Digital 2" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/3-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 3">
+            <img src="img/slides/3-imagen-slide_1080x1920.png" alt="Digital 3" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/4-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 4">
+            <img src="img/slides/4-imagen-slide_1080x1920.png" alt="Digital 4" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/5-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 5">
+            <img src="img/slides/5-imagen-slide_1080x1920.png" alt="Digital 5" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/6-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 6">
+            <img src="img/slides/6-imagen-slide_1080x1920.png" alt="Digital 6" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/7-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 7">
+            <img src="img/slides/7-imagen-slide_1080x1920.png" alt="Digital 7" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/8-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 8">
+            <img src="img/slides/8-imagen-slide_1080x1920.png" alt="Digital 8" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/9-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 9">
+            <img src="img/slides/9-imagen-slide_1080x1920.png" alt="Digital 9" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/10-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 10">
+            <img src="img/slides/10-imagen-slide_1080x1920.png" alt="Digital 10" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/12-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 12">
+            <img src="img/slides/12-imagen-slide_1080x1920.png" alt="Digital 12" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/13-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 13">
+            <img src="img/slides/13-imagen-slide_1080x1920.png" alt="Digital 13" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/14-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 14">
+            <img src="img/slides/14-imagen-slide_1080x1920.png" alt="Digital 14" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/15-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 15">
+            <img src="img/slides/15-imagen-slide_1080x1920.png" alt="Digital 15" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/16-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 16">
+            <img src="img/slides/16-imagen-slide_1080x1920.png" alt="Digital 16" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/17-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 17">
+            <img src="img/slides/17-imagen-slide_1080x1920.png" alt="Digital 17" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/18-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 18">
+            <img src="img/slides/18-imagen-slide_1080x1920.png" alt="Digital 18" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/19-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 19">
+            <img src="img/slides/19-imagen-slide_1080x1920.png" alt="Digital 19" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/20-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 20">
+            <img src="img/slides/20-imagen-slide_1080x1920.png" alt="Digital 20" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/21-imagen-slide_1080x1920.png" role="button" tabindex="0" aria-label="Digital 21">
+            <img src="img/slides/21-imagen-slide_1080x1920.png" alt="Digital 21" loading="lazy">
+          </div>
+        </div>
+      </div>
+      <div class="wk-nav">
+        <div class="wk-arrows-dots">
+          <button class="wk-arrow" data-cat="digital" data-dir="-1" aria-label="Anterior">&#8592;</button>
+          <div class="wk-dots" id="wk-dots-digital"></div>
+          <button class="wk-arrow" data-cat="digital" data-dir="1" aria-label="Siguiente">&#8594;</button>
+        </div>
+      </div>
+    </div>
+    <!-- LOGOS carousel -->
+    <div class="wk-carousel" data-cat="logos">
+      <div class="wk-viewport">
+        <div class="wk-track" id="wk-track-logos">
+          <div class="wk-card wk-card-logo" data-img="img/logos/1.png" role="button" tabindex="0" aria-label="Logo 1">
+            <img src="img/logos/1.png" alt="Logo 1" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/2.png" role="button" tabindex="0" aria-label="Logo 2">
+            <img src="img/logos/2.png" alt="Logo 2" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/3.png" role="button" tabindex="0" aria-label="Logo 3">
+            <img src="img/logos/3.png" alt="Logo 3" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/4.png" role="button" tabindex="0" aria-label="Logo 4">
+            <img src="img/logos/4.png" alt="Logo 4" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/5.png" role="button" tabindex="0" aria-label="Logo 5">
+            <img src="img/logos/5.png" alt="Logo 5" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/6.png" role="button" tabindex="0" aria-label="Logo 6">
+            <img src="img/logos/6.png" alt="Logo 6" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/7.png" role="button" tabindex="0" aria-label="Logo 7">
+            <img src="img/logos/7.png" alt="Logo 7" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/8.png" role="button" tabindex="0" aria-label="Logo 8">
+            <img src="img/logos/8.png" alt="Logo 8" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/9.png" role="button" tabindex="0" aria-label="Logo 9">
+            <img src="img/logos/9.png" alt="Logo 9" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/10.png" role="button" tabindex="0" aria-label="Logo 10">
+            <img src="img/logos/10.png" alt="Logo 10" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/11.png" role="button" tabindex="0" aria-label="Logo 11">
+            <img src="img/logos/11.png" alt="Logo 11" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/12.png" role="button" tabindex="0" aria-label="Logo 12">
+            <img src="img/logos/12.png" alt="Logo 12" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/13.png" role="button" tabindex="0" aria-label="Logo 13">
+            <img src="img/logos/13.png" alt="Logo 13" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/14.png" role="button" tabindex="0" aria-label="Logo 14">
+            <img src="img/logos/14.png" alt="Logo 14" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/15.png" role="button" tabindex="0" aria-label="Logo 15">
+            <img src="img/logos/15.png" alt="Logo 15" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/16.png" role="button" tabindex="0" aria-label="Logo 16">
+            <img src="img/logos/16.png" alt="Logo 16" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/17.png" role="button" tabindex="0" aria-label="Logo 17">
+            <img src="img/logos/17.png" alt="Logo 17" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/18.png" role="button" tabindex="0" aria-label="Logo 18">
+            <img src="img/logos/18.png" alt="Logo 18" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/19.png" role="button" tabindex="0" aria-label="Logo 19">
+            <img src="img/logos/19.png" alt="Logo 19" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/20.png" role="button" tabindex="0" aria-label="Logo 20">
+            <img src="img/logos/20.png" alt="Logo 20" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/21.png" role="button" tabindex="0" aria-label="Logo 21">
+            <img src="img/logos/21.png" alt="Logo 21" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/22.png" role="button" tabindex="0" aria-label="Logo 22">
+            <img src="img/logos/22.png" alt="Logo 22" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/23.png" role="button" tabindex="0" aria-label="Logo 23">
+            <img src="img/logos/23.png" alt="Logo 23" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/24.png" role="button" tabindex="0" aria-label="Logo 24">
+            <img src="img/logos/24.png" alt="Logo 24" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/25.png" role="button" tabindex="0" aria-label="Logo 25">
+            <img src="img/logos/25.png" alt="Logo 25" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/26.png" role="button" tabindex="0" aria-label="Logo 26">
+            <img src="img/logos/26.png" alt="Logo 26" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/27.png" role="button" tabindex="0" aria-label="Logo 27">
+            <img src="img/logos/27.png" alt="Logo 27" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/28.png" role="button" tabindex="0" aria-label="Logo 28">
+            <img src="img/logos/28.png" alt="Logo 28" loading="lazy">
+          </div>
+        </div>
+      </div>
+      <div class="wk-nav">
+        <div class="wk-arrows-dots">
+          <button class="wk-arrow" data-cat="logos" data-dir="-1" aria-label="Anterior">&#8592;</button>
+          <div class="wk-dots" id="wk-dots-logos"></div>
+          <button class="wk-arrow" data-cat="logos" data-dir="1" aria-label="Siguiente">&#8594;</button>
+        </div>
+      </div>
+    </div>
     </div>
   </section>
 
-  <!-- ── SOBRE MÍ + STACK ── -->
+    <!-- ── SOBRE MÍ + STACK ── -->
   <section class="about-section" id="sobre-mi">
     <div class="wrapper">
       <div class="section-label reveal">Sobre mí</div>
@@ -2428,7 +2581,7 @@
         <div class="footer-col">
           <div class="footer-col-title">Navegación</div>
           <ul class="footer-nav-list">
-            <li><a href="work.html">Work</a></li>
+            <li><a href="#slides">Work</a></li>
             <li><a href="#sobre-mi">Sobre mí</a></li>
             <li><a href="#experiencia">Experiencia</a></li>
             <li><a href="#contacto">Contacto</a></li>
@@ -2447,7 +2600,7 @@
           <div class="footer-col-title">CV & Links</div>
           <ul class="footer-nav-list">
             <li><a href="cv_diego_v2.html" download>Descargar CV</a></li>
-            <li><a href="work.html">Ver trabajos</a></li>
+            <li><a href="#slides">Ver trabajos</a></li>
             <li><a href="https://wa.me/56945128412" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
           </ul>
         </div>
@@ -2465,13 +2618,14 @@
     </div>
   </section>
 
-  <!-- ── LIGHTBOX ── -->
-  <div class="slide-lightbox" id="slide-lightbox" role="dialog" aria-modal="true" aria-label="Vista previa">
-    <button class="slide-lightbox-close" id="slide-lightbox-close" aria-label="Cerrar">✕</button>
-    <img class="slide-lightbox-img" id="slide-lightbox-img" src="" alt="Vista previa" />
+  <!-- ── WORK LIGHTBOX ── -->
+  <div class="wk-lightbox" id="wk-lightbox" role="dialog" aria-modal="true" aria-label="Vista previa">
+    <button class="wk-lb-close" id="wk-lb-close" aria-label="Cerrar">&#10005;</button>
+    <div class="wk-lb-video" id="wk-lb-video"></div>
+    <img class="wk-lb-img" id="wk-lb-img" src="" alt="Vista previa" />
   </div>
 
-  <!-- ══════════════════════════════════════
+    <!-- ══════════════════════════════════════
        SCRIPTS
   ══════════════════════════════════════ -->
 
@@ -2712,55 +2866,153 @@
     })();
   </script>
 
-  <!-- ── WORK ACCORDION + SLIDER JS ── -->
+  <!-- ── WORK CAROUSEL JS ── -->
   <script>
   (function () {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const pref = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const state = {};
 
-    /* ── Accordion panels ── */
-    const panels = Array.from(document.querySelectorAll('.wcat-panel'));
-    if (!panels.length) return;
+    /* Category row clicks */
+    document.querySelectorAll('.wk-cat-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const cat = row.dataset.cat;
+        document.querySelectorAll('.wk-cat-row').forEach(r => r.classList.toggle('active', r === row));
+        document.querySelectorAll('.wk-carousel').forEach(c => c.classList.toggle('active', c.dataset.cat === cat));
+        if (!state[cat]) initCarousel(cat);
+        else go(cat, state[cat].current);
+      });
+    });
 
-    function openPanel(panel) {
-      panels.forEach(p => p.classList.remove('open'));
-      panel.classList.add('open');
+    function initCarousel(cat) {
+      const carousel = document.querySelector(`.wk-carousel[data-cat="${cat}"]`);
+      if (!carousel) return;
+      const viewport = carousel.querySelector('.wk-viewport');
+      const track    = carousel.querySelector('.wk-track');
+      const dotsEl   = carousel.querySelector('.wk-dots');
+      const cards    = Array.from(track.querySelectorAll('.wk-card'));
+      if (!cards.length) return;
+
+      /* Set track padding so first card is centered */
+      function setPad() {
+        const vpW  = viewport.offsetWidth;
+        const cardW = cards[0].offsetWidth;
+        const pad  = Math.max(0, Math.floor((vpW - cardW) / 2));
+        track.style.paddingLeft  = pad + 'px';
+        track.style.paddingRight = pad + 'px';
+      }
+      setPad();
+      window.addEventListener('resize', setPad, { passive: true });
+
+      /* Create dots */
+      cards.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'wk-dot';
+        dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+        dot.addEventListener('click', () => go(cat, i));
+        dotsEl.appendChild(dot);
+      });
+
+      state[cat] = { viewport, track, cards, dotsEl, current: 0 };
+      go(cat, 0);
+
+      /* Touch swipe */
+      let tx = 0;
+      viewport.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+      viewport.addEventListener('touchend',   e => {
+        const dx = e.changedTouches[0].clientX - tx;
+        if (Math.abs(dx) > 36) go(cat, state[cat].current + (dx < 0 ? 1 : -1));
+      }, { passive: true });
     }
 
-    panels.forEach(panel => {
-      panel.addEventListener('click', (e) => {
-        if (e.target.closest('.wcat-close') || e.target.closest('.wcat-arrow') || e.target.closest('a')) return;
-        if (!panel.classList.contains('open')) openPanel(panel);
+    function go(cat, idx) {
+      const s = state[cat];
+      if (!s) return;
+      idx = Math.max(0, Math.min(idx, s.cards.length - 1));
+      s.current = idx;
+
+      const cardW = s.cards[0].offsetWidth;
+      const gap   = parseInt(window.getComputedStyle(s.track).gap) || 20;
+      const offset = idx * (cardW + gap);
+
+      s.track.style.transition = pref ? 'none' : 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+      s.track.style.transform  = `translateX(-${offset}px)`;
+
+      /* Visual classes */
+      s.cards.forEach((c, i) => {
+        const d = Math.abs(i - idx);
+        c.classList.remove('center', 'adjacent', 'far', 'hidden-card');
+        if      (d === 0) c.classList.add('center');
+        else if (d === 1) c.classList.add('adjacent');
+        else if (d === 2) c.classList.add('far');
+        else              c.classList.add('hidden-card');
       });
-      const closeBtn = panel.querySelector('.wcat-close');
-      if (closeBtn) closeBtn.addEventListener('click', () => panel.classList.remove('open'));
-    });
 
-    /* Open first panel by default */
-    if (panels[0]) panels[0].classList.add('open');
+      /* Dots */
+      Array.from(s.dotsEl.querySelectorAll('.wk-dot')).forEach((d, i) => {
+        d.classList.toggle('active', i === idx);
+      });
+    }
 
-    /* ── Slider arrows ── */
-    const trackOffsets = {};
-    document.querySelectorAll('.wcat-arrow[data-track]').forEach(btn => {
+    /* Arrow clicks */
+    document.querySelectorAll('.wk-arrow[data-cat]').forEach(btn => {
       btn.addEventListener('click', () => {
-        const trackId = btn.dataset.track;
+        const cat = btn.dataset.cat;
         const dir = parseInt(btn.dataset.dir, 10);
-        const track = document.getElementById(trackId);
-        if (!track) return;
-        const card = track.querySelector('[class^="wcard"]');
-        if (!card) return;
-        const gap = parseInt(window.getComputedStyle(track).gap) || 16;
-        const step = card.offsetWidth + gap;
-        const maxScroll = track.scrollWidth - track.parentElement.offsetWidth;
-        trackOffsets[trackId] = (trackOffsets[trackId] || 0) + dir * step;
-        trackOffsets[trackId] = Math.max(0, Math.min(trackOffsets[trackId], maxScroll));
-        track.style.transition = prefersReduced ? 'none' : 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-        track.style.transform = `translateX(-${trackOffsets[trackId]}px)`;
+        if (state[cat]) go(cat, state[cat].current + dir);
       });
     });
+
+    /* Clicking adjacent card navigates; clicking center opens lightbox */
+    const lightbox = document.getElementById('wk-lightbox');
+    const lbVideo  = document.getElementById('wk-lb-video');
+    const lbImg    = document.getElementById('wk-lb-img');
+    const lbClose  = document.getElementById('wk-lb-close');
+
+    document.querySelectorAll('.wk-stage').forEach(stage => {
+      stage.addEventListener('click', e => {
+        const card = e.target.closest('.wk-card');
+        if (!card) return;
+        const cat  = card.closest('.wk-carousel').dataset.cat;
+        const cards = Array.from(card.closest('.wk-track').querySelectorAll('.wk-card'));
+        const idx  = cards.indexOf(card);
+        if (!state[cat]) return;
+
+        if (idx !== state[cat].current) {
+          go(cat, idx);
+          return;
+        }
+
+        /* Open lightbox */
+        const vidId = card.dataset.vid;
+        const imgSrc = card.dataset.img;
+        if (vidId) {
+          lbVideo.innerHTML = `<iframe src="https://player.vimeo.com/video/${vidId}?autoplay=1&title=0&byline=0&portrait=0&dnt=1&color=7C3AFF" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+          lightbox.classList.remove('img-mode');
+        } else if (imgSrc) {
+          lbImg.src = imgSrc;
+          lightbox.classList.add('img-mode');
+        }
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeLB() {
+      lightbox.classList.remove('open', 'img-mode');
+      lbVideo.innerHTML = '';
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+    if (lbClose) lbClose.addEventListener('click', closeLB);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+
+    /* Init first carousel */
+    initCarousel('videos');
   })();
   </script>
 
-  <!-- ── MOBILE NAV ACTIVE STATE ── -->
+    <!-- ── MOBILE NAV ACTIVE STATE ── -->
   <script>
   (function () {
     const navItems = Array.from(document.querySelectorAll('.mob-nav-item[data-section]'));
