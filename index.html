@@ -175,87 +175,63 @@
       box-shadow: 0 4px 18px rgba(124,58,255,0.45);
     }
 
-    /* hamburger */
-    .nav-hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 6px 2px;
-      margin-left: 10px;
-    }
-    .nav-hamburger span {
-      display: block;
-      width: 20px;
-      height: 2px;
-      background: #fff;
-      border-radius: 2px;
-      transition: transform 0.25s, opacity 0.25s;
-    }
-    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
-    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* mobile drawer — fullscreen overlay */
-    .nav-mobile-drawer {
+    /* ── MOBILE BOTTOM PILL NAV ── */
+    .nav-hamburger { display: none; } /* removed */
+    .mob-nav {
       display: none;
       position: fixed;
-      inset: 0;
-      background: rgba(8,8,8,0.97);
-      backdrop-filter: blur(28px);
-      z-index: 190;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      background: rgba(12,10,18,0.82);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 100px;
+      padding: 10px 8px;
+      gap: 2px;
+      align-items: center;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(124,58,255,0.08);
+    }
+    .mob-nav-item {
+      display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-    .nav-mobile-drawer.open { display: flex; }
-
-    @keyframes menuSlideIn {
-      from { transform: translateX(80px); opacity: 0; }
-      to   { transform: translateX(0);   opacity: 1; }
-    }
-    .nav-mobile-drawer a {
-      font-size: 32px;
-      font-weight: 800;
-      color: rgba(255,255,255,0.55);
+      gap: 3px;
+      padding: 7px 14px;
+      border-radius: 80px;
       text-decoration: none;
-      padding: 14px 0;
-      letter-spacing: -0.03em;
-      opacity: 0;
-      transform: translateX(80px);
-      transition: color 0.2s, text-shadow 0.2s;
+      color: rgba(255,255,255,0.45);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+      min-width: 44px;
+      min-height: 44px;
+      justify-content: center;
     }
-    .nav-mobile-drawer.open a {
-      animation: menuSlideIn 0.45s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-    .nav-mobile-drawer.open a:nth-child(1) { animation-delay: 0.05s; }
-    .nav-mobile-drawer.open a:nth-child(2) { animation-delay: 0.12s; }
-    .nav-mobile-drawer.open a:nth-child(3) { animation-delay: 0.19s; }
-    .nav-mobile-drawer.open a:nth-child(4) { animation-delay: 0.26s; }
-    .nav-mobile-drawer.open a:nth-child(5) { animation-delay: 0.33s; }
-
-    .nav-mobile-drawer a:hover {
+    .mob-nav-item svg { width: 18px; height: 18px; stroke: currentColor; flex-shrink: 0; }
+    .mob-nav-item:hover,
+    .mob-nav-item.active {
       color: #fff;
-      text-shadow: 0 0 22px rgba(255,255,255,0.55);
+      background: rgba(124,58,255,0.22);
     }
-    /* Hablemos — recuadro blanco, glow verde */
-    .nav-mobile-drawer a.cta {
+    .mob-nav-item.active svg { stroke: var(--accent-light); }
+    /* Hablemos pill — accent */
+    .mob-nav-item.mob-cta {
+      background: var(--accent);
       color: #fff;
-      border: 2px solid #fff;
-      padding: 10px 36px;
-      border-radius: 10px;
-      margin-top: 8px;
-      box-shadow: 0 0 28px rgba(74,222,128,0.38), inset 0 0 20px rgba(74,222,128,0.06);
-      text-shadow: 0 0 18px rgba(74,222,128,0.7);
-      font-size: 28px;
+      padding: 7px 18px;
     }
-    .nav-mobile-drawer a.cta:hover {
-      box-shadow: 0 0 44px rgba(74,222,128,0.65), inset 0 0 28px rgba(74,222,128,0.12);
-      text-shadow: 0 0 28px rgba(74,222,128,1);
+    .mob-nav-item.mob-cta:hover { background: var(--accent-light); }
+    @media (max-width: 640px) {
+      .mob-nav { display: flex; }
     }
+    /* hide old drawer */
+    .nav-mobile-drawer { display: none !important; }
 
     /* ══════════════════════════════════════
        HERO — fullscreen staggered reveal
@@ -651,10 +627,10 @@
       padding: 96px 0;
     }
 
-    /* ── Slides Carousel — auto-rotate + glow + lightbox ── */
+    /* ── WORK CATEGORIES — 3 accordion panels ── */
     .slides-section {
       padding: 96px 0;
-      overflow-x: clip;
+      overflow: hidden;
     }
     .slides-header {
       display: flex;
@@ -669,143 +645,244 @@
       letter-spacing: -0.035em;
       color: #fff;
     }
-    /* Carousel controls — centered below track */
-    .slides-controls {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 24px;
-    }
-    .slides-btn {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s, border-color 0.2s, transform 0.15s;
-      flex-shrink: 0;
-    }
-    .slides-btn:hover {
-      background: rgba(124,58,255,0.3);
-      border-color: var(--accent-light);
-      transform: scale(1.08);
-    }
 
-    .slides-track-wrap {
-      width: 100%;
-      overflow: hidden;
-      padding: 30px;
-      margin: -30px;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
-      mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
-    }
-    .slides-track {
+    /* Accordion panels container */
+    .wcat-panels {
       display: flex;
-      gap: 24px;
-      animation: slides-auto-scroll 15s linear infinite;
-      will-change: transform;
-    }
-    .slides-track:hover {
-      animation-play-state: paused;
-    }
-    @keyframes slides-auto-scroll {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    .slide-item {
-      flex-shrink: 0;
-      width: 500px;
-      height: 330px;
-      border-radius: 14px;
+      height: 440px;
+      border-radius: 20px;
       overflow: hidden;
       border: 1px solid var(--border);
-      background: var(--card);
-      cursor: pointer;
+      gap: 0;
+    }
+    .wcat-panel {
       position: relative;
-      transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+      flex: 1;
+      overflow: hidden;
+      cursor: pointer;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      transition: flex 0.65s cubic-bezier(0.16,1,0.3,1);
     }
-    .slide-item img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .slide-item::after {
-      content: '';
+    .wcat-panel:last-child { border-right: none; }
+    .wcat-panel.open { flex: 8; cursor: default; }
+
+    /* Collapsed face */
+    .wcat-face {
       position: absolute;
       inset: 0;
-      background: rgba(124,58,255,0);
-      transition: background 0.35s ease;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .slide-item:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 30px rgba(124,58,255,0.4), 0 0 80px rgba(124,58,255,0.15);
-      border-color: var(--accent-light);
-      z-index: 5;
-    }
-    .slide-item:hover::after { background: rgba(124,58,255,0.18); }
-    .slide-item:hover img { transform: scale(1.08); }
-
-    @media (max-width: 640px) {
-      .slide-item { width: 280px; height: 380px; }
-      .slides-header { flex-direction: column; align-items: flex-start; }
-      .slides-track { gap: 16px; animation-duration: 20s; }
-    }
-    @media (max-width: 860px) and (min-width: 641px) {
-      .slide-item { width: 400px; height: 300px; }
-    }
-
-    /* ── Lightbox modal ── */
-    .slide-lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.92);
-      z-index: 2000;
+      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 10px;
+      background: var(--card);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 3;
+    }
+    .wcat-panel.open .wcat-face { opacity: 0; pointer-events: none; transform: scale(0.9); }
+    .wcat-face-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--muted2);
+      letter-spacing: 0.12em;
+    }
+    .wcat-face-name {
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-weight: 800;
+      font-size: clamp(14px, 2vw, 20px);
+      color: rgba(255,255,255,0.7);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .wcat-panel:hover .wcat-face-name { color: #fff; }
+    .wcat-face-count {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--accent-light);
+      opacity: 0.8;
+    }
+    /* hover glow on face */
+    .wcat-panel:not(.open):hover .wcat-face {
+      background: #141020;
+    }
+
+    /* Expanded content */
+    .wcat-body {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s 0.2s;
+    }
+    .wcat-panel.open .wcat-body { opacity: 1; pointer-events: auto; }
+
+    .wcat-body-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px 12px;
+      flex-shrink: 0;
+    }
+    .wcat-body-title {
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .wcat-body-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+    }
+    .wcat-close {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50%;
+      width: 28px; height: 28px;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      transition: border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+    .wcat-close:hover { border-color: #fff; color: #fff; }
+
+    /* Slider inside panel */
+    .wcat-slider-wrap {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    }
+    .wcat-track {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      gap: 12px;
+      padding: 0 32px;
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+      will-change: transform;
+    }
+
+    /* Arrow controls */
+    .wcat-arrows {
+      display: flex;
+      gap: 8px;
+      padding: 10px 24px 14px;
+      flex-shrink: 0;
+    }
+    .wcat-arrow {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .wcat-arrow:hover { background: rgba(124,58,255,0.25); border-color: var(--accent-light); }
+
+    /* Card types */
+    .wcard {
+      flex-shrink: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s, transform 0.3s;
+      background: #0d0d14;
+    }
+    .wcard:hover { border-color: rgba(124,58,255,0.4); transform: scale(1.03); }
+
+    /* Video card 16:9 */
+    .wcard-vid {
+      width: 240px; height: 135px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      background: linear-gradient(135deg, #0a080f 0%, #100818 100%);
+    }
+    .wcard-vid::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 35% 55%, rgba(124,58,255,0.12) 0%, transparent 65%);
+    }
+    .wcard-play {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
+      transition: background 0.25s, transform 0.25s;
+    }
+    .wcard:hover .wcard-play { background: rgba(124,58,255,0.35); transform: scale(1.12); }
+    .wcard-play svg { width: 14px; height: 14px; fill: #fff; margin-left: 2px; }
+    .wcard-vid-label {
+      position: absolute; bottom: 8px; left: 10px;
+      font-family: 'DM Mono', monospace; font-size: 8px;
+      color: rgba(255,255,255,0.35); letter-spacing: 0.08em; text-transform: uppercase;
+      z-index: 1;
+    }
+
+    /* Digital card 9:16 portrait */
+    .wcard-dig {
+      width: 100px; height: 178px;
+    }
+    .wcard-dig img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* Logo card */
+    .wcard-logo {
+      width: 140px; height: 100px;
+      background: #111;
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+    }
+    .wcard-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+    /* Lightbox (kept for direct image clicks) */
+    .slide-lightbox {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 2000;
+      align-items: center; justify-content: center;
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
     .slide-lightbox.open { display: flex; }
     .slide-lightbox-img {
-      display: block;
-      max-width: 90vw;
-      max-height: 90vh;
-      width: auto;
-      height: auto;
-      border-radius: 14px;
-      object-fit: contain;
+      display: block; max-width: 90vw; max-height: 90vh;
+      width: auto; height: auto;
+      border-radius: 14px; object-fit: contain;
       box-shadow: 0 20px 80px rgba(0,0,0,0.6);
     }
     .slide-lightbox-close {
-      position: fixed;
-      top: 24px;
-      right: 24px;
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.25);
-      color: #fff;
-      font-size: 22px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s, transform 0.2s;
-      z-index: 2001;
+      position: fixed; top: 24px; right: 24px;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+      color: #fff; font-size: 22px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.2s; z-index: 2001;
     }
-    .slide-lightbox-close:hover {
-      background: rgba(255,255,255,0.28);
-      transform: scale(1.1);
+    .slide-lightbox-close:hover { background: rgba(255,255,255,0.28); transform: scale(1.1); }
+
+    /* Mobile: vertical stack */
+    @media (max-width: 640px) {
+      .wcat-panels { flex-direction: column; height: auto; border-radius: 14px; }
+      .wcat-panel { flex: none !important; min-height: 64px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+      .wcat-panel:last-child { border-bottom: none; }
+      .wcat-panel.open { min-height: 340px; }
+      .wcat-face { flex-direction: row; gap: 14px; padding: 0 20px; }
+      .wcat-face-name { writing-mode: horizontal-tb; font-size: 16px; }
+      .wcat-face-num { display: none; }
     }
     .showreel-header {
       display: flex;
@@ -1714,7 +1791,7 @@
       .nav-links { display: none; }
       .nav-cta   { display: none; }
       .lang-toggle { display: none; }
-      .nav-hamburger { display: flex; }
+      .nav-hamburger { display: none; }
       /* Botones contacto mobile: centrados y compactos */
       .footer-cta-inner .footer-contact-row {
         flex-direction: column;
@@ -1770,20 +1847,31 @@
       <span id="lang-label">ES</span>
     </button>
     <a href="#contacto" class="nav-cta" data-es="Hablemos →" data-en="Let's Talk →">Hablemos →</a>
-    <button class="nav-hamburger" aria-label="Abrir menú" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
   </nav>
-  <div class="nav-mobile-drawer" id="mobile-drawer" aria-label="Menú móvil">
-    <a href="work.html" data-es="Work" data-en="Work">Work</a>
-    <a href="#sobre-mi" data-es="Sobre mí" data-en="About me">Sobre mí</a>
-    <a href="#experiencia" data-es="Experiencia" data-en="Experience">Experiencia</a>
-    <a href="#contacto" class="cta" data-es="Hablemos" data-en="Let's Talk">Hablemos</a>
-    <button class="lang-toggle" style="font-size:14px;padding:10px 18px;margin-top:8px;" onclick="document.getElementById('lang-toggle').click()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      <span id="lang-label-mobile">ES / EN</span>
-    </button>
-  </div>
+
+  <!-- ── MOBILE BOTTOM PILL NAV ── -->
+  <nav class="mob-nav" id="mob-nav" aria-label="Navegación móvil">
+    <a href="#inicio" class="mob-nav-item active" data-section="inicio" aria-label="Inicio">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Inicio
+    </a>
+    <a href="work.html" class="mob-nav-item" aria-label="Work">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+      Work
+    </a>
+    <a href="#sobre-mi" class="mob-nav-item" data-section="sobre-mi" aria-label="Sobre mí">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Sobre mí
+    </a>
+    <a href="#experiencia" class="mob-nav-item" data-section="experiencia" aria-label="Experiencia">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Exp.
+    </a>
+    <a href="#contacto" class="mob-nav-item mob-cta" aria-label="Hablemos">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Hablemos
+    </a>
+  </nav>
 
   <!-- SVG liquid distortion filter (hidden) -->
   <svg width="0" height="0" style="position:absolute;pointer-events:none;" aria-hidden="true">
@@ -1803,6 +1891,7 @@
 
     <!-- Video background -->
     <video class="hero-bg-video" autoplay muted loop playsinline aria-hidden="true" poster="img/hero-poster.jpg">
+      <source src="video/mobile_hero-bg.mp4" media="(max-width: 768px)" type="video/mp4">
       <source src="video/hero-bg.mp4" type="video/mp4">
     </video>
 
@@ -1856,7 +1945,7 @@
         <a class="hero-available" href="https://wa.me/56945128412" target="_blank" rel="noopener noreferrer">Disponible para nuevos proyectos</a>
         <div class="hero-btn-row">
           <a href="#showreel" class="btn-primary">Ver mi trabajo ↓</a>
-          <a href="cv_diego_v2.html" download class="btn-secondary">Ver CV →</a>
+          <a href="cv-diegomanjarres/CV_Diego_Manjarres.pdf" download="CV_Diego_Manjarres.pdf" class="btn-secondary">Ver CV →</a>
         </div>
       </div>
     </div>
@@ -1890,34 +1979,187 @@
           <h2 class="slides-title" data-es="Work" data-en="Work">Work</h2>
         </div>
       </div>
-      <div class="slides-track-wrap reveal">
-        <div class="slides-track" id="slides-track">
-          <div class="slide-item"><img src="img/slides/1-imagen-slide_1080x1920.png"  alt="Trabajo 1"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/2-imagen-slide_1080x1920.png"  alt="Trabajo 2"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/3-imagen-slide_1080x1920.png"  alt="Trabajo 3"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/4-imagen-slide_1080x1920.png"  alt="Trabajo 4"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/5-imagen-slide_1080x1920.png"  alt="Trabajo 5"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/6-imagen-slide_1080x1920.png"  alt="Trabajo 6"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/7-imagen-slide_1080x1920.png"  alt="Trabajo 7"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/8-imagen-slide_1080x1920.png"  alt="Trabajo 8"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/9-imagen-slide_1080x1920.png"  alt="Trabajo 9"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/10-imagen-slide_1080x1920.png" alt="Trabajo 10" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/12-imagen-slide_1080x1920.png" alt="Trabajo 12" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/13-imagen-slide_1080x1920.png" alt="Trabajo 13" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/14-imagen-slide_1080x1920.png" alt="Trabajo 14" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/15-imagen-slide_1080x1920.png" alt="Trabajo 15" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/16-imagen-slide_1080x1920.png" alt="Trabajo 16" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/17-imagen-slide_1080x1920.png" alt="Trabajo 17" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/18-imagen-slide_1080x1920.png" alt="Trabajo 18" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/19-imagen-slide_1080x1920.png" alt="Trabajo 19" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/20-imagen-slide_1080x1920.png" alt="Trabajo 20" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/21-imagen-slide_1080x1920.png" alt="Trabajo 21" loading="lazy" /></div>
+
+      <!-- 3 interactive category panels -->
+      <div class="wcat-panels reveal" id="wcat-panels">
+
+        <!-- ── PANEL 1: VIDEOS ── -->
+        <div class="wcat-panel" id="wcat-videos" data-cat="videos">
+          <div class="wcat-face">
+            <span class="wcat-face-num">01</span>
+            <span class="wcat-face-name">Videos</span>
+            <span class="wcat-face-count">25</span>
+          </div>
+          <div class="wcat-body">
+            <div class="wcat-body-head">
+              <div>
+                <div class="wcat-body-title">Videos</div>
+                <div class="wcat-body-meta">25 piezas · Fashion · Food · Auto · Real Estate</div>
+              </div>
+              <button class="wcat-close" data-close="wcat-videos" aria-label="Cerrar">✕</button>
+            </div>
+            <div class="wcat-slider-wrap">
+              <div class="wcat-track" id="wcat-track-videos">
+                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Portafolio Reel 2024">
+                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
+                  <span class="wcard-vid-label">Reel 2024</span>
+                </a>
+                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Patagua">
+                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
+                  <span class="wcard-vid-label">Patagua · Fashion</span>
+                </a>
+                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Passe">
+                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
+                  <span class="wcard-vid-label">Passe · Fashion</span>
+                </a>
+                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Joyería Helmlinger">
+                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
+                  <span class="wcard-vid-label">Helmlinger · Fashion</span>
+                </a>
+                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Grillo">
+                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
+                  <span class="wcard-vid-label">Grillo · Food</span>
+                </a>
+                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Nubetta">
+                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
+                  <span class="wcard-vid-label">Nubetta · Food</span>
+                </a>
+                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Simply Sweet">
+                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
+                  <span class="wcard-vid-label">Simply Sweet · Food</span>
+                </a>
+                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Ducati">
+                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
+                  <span class="wcard-vid-label">Ducati · Auto</span>
+                </a>
+                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Rocas de Maitencillo">
+                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
+                  <span class="wcard-vid-label">Rocas de Maitencillo</span>
+                </a>
+                <a href="work.html#sec-videos" class="wcard wcard-vid" aria-label="Micro">
+                  <div class="wcard-play"><svg viewBox="0 0 16 16"><polygon points="5,2 14,8 5,14"/></svg></div>
+                  <span class="wcard-vid-label">Micro · Real Estate</span>
+                </a>
+              </div>
+            </div>
+            <div class="wcat-arrows">
+              <button class="wcat-arrow" data-track="wcat-track-videos" data-dir="-1" aria-label="Anterior">&#8592;</button>
+              <button class="wcat-arrow" data-track="wcat-track-videos" data-dir="1" aria-label="Siguiente">&#8594;</button>
+              <a href="work.html#sec-videos" class="wcat-arrow" style="width:auto;padding:0 14px;border-radius:100px;font-size:11px;font-family:'DM Mono',monospace;text-decoration:none;margin-left:8px;">Ver todos →</a>
+            </div>
+          </div>
         </div>
+
+        <!-- ── PANEL 2: DIGITAL ── -->
+        <div class="wcat-panel" id="wcat-digital" data-cat="digital">
+          <div class="wcat-face">
+            <span class="wcat-face-num">02</span>
+            <span class="wcat-face-name">Digital</span>
+            <span class="wcat-face-count">20</span>
+          </div>
+          <div class="wcat-body">
+            <div class="wcat-body-head">
+              <div>
+                <div class="wcat-body-title">Digital</div>
+                <div class="wcat-body-meta">20 piezas · Social Media · Meta Ads</div>
+              </div>
+              <button class="wcat-close" data-close="wcat-digital" aria-label="Cerrar">✕</button>
+            </div>
+            <div class="wcat-slider-wrap">
+              <div class="wcat-track" id="wcat-track-digital">
+                <div class="wcard wcard-dig"><img src="img/slides/1-imagen-slide_1080x1920.png"  alt="Digital 1"  loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/2-imagen-slide_1080x1920.png"  alt="Digital 2"  loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/3-imagen-slide_1080x1920.png"  alt="Digital 3"  loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/4-imagen-slide_1080x1920.png"  alt="Digital 4"  loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/5-imagen-slide_1080x1920.png"  alt="Digital 5"  loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/6-imagen-slide_1080x1920.png"  alt="Digital 6"  loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/7-imagen-slide_1080x1920.png"  alt="Digital 7"  loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/8-imagen-slide_1080x1920.png"  alt="Digital 8"  loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/9-imagen-slide_1080x1920.png"  alt="Digital 9"  loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/10-imagen-slide_1080x1920.png" alt="Digital 10" loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/12-imagen-slide_1080x1920.png" alt="Digital 11" loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/13-imagen-slide_1080x1920.png" alt="Digital 12" loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/14-imagen-slide_1080x1920.png" alt="Digital 13" loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/15-imagen-slide_1080x1920.png" alt="Digital 14" loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/16-imagen-slide_1080x1920.png" alt="Digital 15" loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/17-imagen-slide_1080x1920.png" alt="Digital 16" loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/18-imagen-slide_1080x1920.png" alt="Digital 17" loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/19-imagen-slide_1080x1920.png" alt="Digital 18" loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/20-imagen-slide_1080x1920.png" alt="Digital 19" loading="lazy"></div>
+                <div class="wcard wcard-dig"><img src="img/slides/21-imagen-slide_1080x1920.png" alt="Digital 20" loading="lazy"></div>
+              </div>
+            </div>
+            <div class="wcat-arrows">
+              <button class="wcat-arrow" data-track="wcat-track-digital" data-dir="-1" aria-label="Anterior">&#8592;</button>
+              <button class="wcat-arrow" data-track="wcat-track-digital" data-dir="1" aria-label="Siguiente">&#8594;</button>
+              <a href="work.html#sec-digital" class="wcat-arrow" style="width:auto;padding:0 14px;border-radius:100px;font-size:11px;font-family:'DM Mono',monospace;text-decoration:none;margin-left:8px;">Ver todos →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── PANEL 3: LOGOTIPOS ── -->
+        <div class="wcat-panel" id="wcat-logos" data-cat="logos">
+          <div class="wcat-face">
+            <span class="wcat-face-num">03</span>
+            <span class="wcat-face-name">Logotipos</span>
+            <span class="wcat-face-count">28</span>
+          </div>
+          <div class="wcat-body">
+            <div class="wcat-body-head">
+              <div>
+                <div class="wcat-body-title">Logotipos</div>
+                <div class="wcat-body-meta">28 marcas · Identidad visual</div>
+              </div>
+              <button class="wcat-close" data-close="wcat-logos" aria-label="Cerrar">✕</button>
+            </div>
+            <div class="wcat-slider-wrap">
+              <div class="wcat-track" id="wcat-track-logos">
+                <div class="wcard wcard-logo"><img src="img/logos/1.png"  alt="Logo 1"  loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/2.png"  alt="Logo 2"  loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/3.png"  alt="Logo 3"  loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/4.png"  alt="Logo 4"  loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/5.png"  alt="Logo 5"  loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/6.png"  alt="Logo 6"  loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/7.png"  alt="Logo 7"  loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/8.png"  alt="Logo 8"  loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/9.png"  alt="Logo 9"  loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/10.png" alt="Logo 10" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/11.png" alt="Logo 11" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/12.png" alt="Logo 12" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/13.png" alt="Logo 13" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/14.png" alt="Logo 14" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/15.png" alt="Logo 15" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/16.png" alt="Logo 16" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/17.png" alt="Logo 17" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/18.png" alt="Logo 18" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/19.png" alt="Logo 19" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/20.png" alt="Logo 20" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/21.png" alt="Logo 21" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/22.png" alt="Logo 22" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/23.png" alt="Logo 23" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/24.png" alt="Logo 24" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/25.png" alt="Logo 25" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/26.png" alt="Logo 26" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/27.png" alt="Logo 27" loading="lazy"></div>
+                <div class="wcard wcard-logo"><img src="img/logos/28.png" alt="Logo 28" loading="lazy"></div>
+              </div>
+            </div>
+            <div class="wcat-arrows">
+              <button class="wcat-arrow" data-track="wcat-track-logos" data-dir="-1" aria-label="Anterior">&#8592;</button>
+              <button class="wcat-arrow" data-track="wcat-track-logos" data-dir="1" aria-label="Siguiente">&#8594;</button>
+              <a href="work.html#sec-logos" class="wcat-arrow" style="width:auto;padding:0 14px;border-radius:100px;font-size:11px;font-family:'DM Mono',monospace;text-decoration:none;margin-left:8px;">Ver todos →</a>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /wcat-panels -->
+
+      <!-- Lightbox -->
+      <div class="slide-lightbox" id="slide-lightbox" role="dialog" aria-modal="true">
+        <button class="slide-lightbox-close" id="slide-lightbox-close" aria-label="Cerrar">✕</button>
+        <img class="slide-lightbox-img" id="slide-lightbox-img" src="" alt="" />
       </div>
-      <div class="slides-controls">
-        <button class="slides-btn" id="slides-prev" aria-label="Anterior">&#8592;</button>
-        <button class="slides-btn" id="slides-next" aria-label="Siguiente">&#8594;</button>
-      </div>
+
       <div style="display:flex;justify-content:center;margin-top:40px;">
         <a href="work.html" class="btn-secondary" data-es="Ver más Work" data-en="See more Work">Ver más Work</a>
       </div>
@@ -2242,40 +2484,12 @@
     }, { passive: true });
 
     // ── Smooth scroll ──
-    const hamburger = document.querySelector('.nav-hamburger');
-    const drawer    = document.getElementById('mobile-drawer');
-
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        drawer.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
       });
-    });
-
-    // ── Hamburger ──
-    hamburger.addEventListener('click', () => {
-      const isOpen = drawer.classList.toggle('open');
-      hamburger.classList.toggle('open', isOpen);
-      hamburger.setAttribute('aria-expanded', String(isOpen));
-      // Reiniciar animaciones de entrada en cada apertura
-      if (isOpen) {
-        drawer.querySelectorAll('a').forEach(a => {
-          a.style.animation = 'none';
-          void a.offsetHeight; // reflow
-          a.style.animation = '';
-        });
-      }
-    });
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('#main-nav') && !e.target.closest('#mobile-drawer')) {
-        drawer.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-      }
     });
 
     // ── IntersectionObserver — reveal on scroll ──
@@ -2498,79 +2712,75 @@
     })();
   </script>
 
-  <!-- ── SLIDES CAROUSEL JS — auto-scroll infinito + flechas + lightbox ── -->
+  <!-- ── WORK ACCORDION + SLIDER JS ── -->
   <script>
-    (function () {
-      const track = document.getElementById('slides-track');
-      if (!track) return;
+  (function () {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      const origItems = Array.from(track.querySelectorAll('.slide-item'));
-      origItems.forEach(item => {
-        const clone = item.cloneNode(true);
-        clone.setAttribute('aria-hidden', 'true');
-        track.appendChild(clone);
+    /* ── Accordion panels ── */
+    const panels = Array.from(document.querySelectorAll('.wcat-panel'));
+    if (!panels.length) return;
+
+    function openPanel(panel) {
+      panels.forEach(p => p.classList.remove('open'));
+      panel.classList.add('open');
+    }
+
+    panels.forEach(panel => {
+      panel.addEventListener('click', (e) => {
+        if (e.target.closest('.wcat-close') || e.target.closest('.wcat-arrow') || e.target.closest('a')) return;
+        if (!panel.classList.contains('open')) openPanel(panel);
       });
+      const closeBtn = panel.querySelector('.wcat-close');
+      if (closeBtn) closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+    });
 
-      const prevBtn = document.getElementById('slides-prev');
-      const nextBtn = document.getElementById('slides-next');
+    /* Open first panel by default */
+    if (panels[0]) panels[0].classList.add('open');
 
-      function getMetrics() {
-        const item = track.querySelector('.slide-item');
-        const gap = parseInt(window.getComputedStyle(track).gap) || 0;
-        const durationStr = window.getComputedStyle(track).animationDuration;
-        return {
-          itemW: item.offsetWidth + gap,
-          animDur: parseFloat(durationStr) || 15
-        };
-      }
+    /* ── Slider arrows ── */
+    const trackOffsets = {};
+    document.querySelectorAll('.wcat-arrow[data-track]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const trackId = btn.dataset.track;
+        const dir = parseInt(btn.dataset.dir, 10);
+        const track = document.getElementById(trackId);
+        if (!track) return;
+        const card = track.querySelector('[class^="wcard"]');
+        if (!card) return;
+        const gap = parseInt(window.getComputedStyle(track).gap) || 16;
+        const step = card.offsetWidth + gap;
+        const maxScroll = track.scrollWidth - track.parentElement.offsetWidth;
+        trackOffsets[trackId] = (trackOffsets[trackId] || 0) + dir * step;
+        trackOffsets[trackId] = Math.max(0, Math.min(trackOffsets[trackId], maxScroll));
+        track.style.transition = prefersReduced ? 'none' : 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        track.style.transform = `translateX(-${trackOffsets[trackId]}px)`;
+      });
+    });
+  })();
+  </script>
 
-      let manualMode = false;
-      let currentOffset = 0;
+  <!-- ── MOBILE NAV ACTIVE STATE ── -->
+  <script>
+  (function () {
+    const navItems = Array.from(document.querySelectorAll('.mob-nav-item[data-section]'));
+    if (!navItems.length) return;
 
-      function jumpCarousel(delta) {
-        const { itemW } = getMetrics();
-        const halfWidth = origItems.length * itemW;
+    const sections = navItems.map(item => document.getElementById(item.dataset.section)).filter(Boolean);
 
-        if (!manualMode) {
-          // First click: freeze current position and switch to manual
-          const matrix = new DOMMatrix(window.getComputedStyle(track).transform);
-          currentOffset = Math.abs(matrix.m41);
-          manualMode = true;
-          track.style.animation = 'none';
-          void track.offsetHeight;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navItems.forEach(item => {
+            item.classList.toggle('active', item.dataset.section === id);
+          });
         }
-
-        currentOffset += delta * itemW;
-        currentOffset = ((currentOffset % halfWidth) + halfWidth) % halfWidth;
-        track.style.transform = `translateX(-${currentOffset}px)`;
-        track.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-      }
-
-      if (prevBtn) prevBtn.addEventListener('click', () => jumpCarousel(-1));
-      if (nextBtn) nextBtn.addEventListener('click', () => jumpCarousel(1));
-
-      const lightbox = document.getElementById('slide-lightbox');
-      const lightboxImg = document.getElementById('slide-lightbox-img');
-      const lightboxClose = document.getElementById('slide-lightbox-close');
-
-      function openLightbox(src, alt) {
-        lightboxImg.src = src; lightboxImg.alt = alt || '';
-        lightbox.classList.add('open'); document.body.style.overflow = 'hidden';
-      }
-      function closeLightbox() {
-        lightbox.classList.remove('open'); document.body.style.overflow = '';
-      }
-
-      track.addEventListener('click', (e) => {
-        const item = e.target.closest('.slide-item');
-        if (!item) return;
-        const img = item.querySelector('img');
-        if (img) openLightbox(img.src, img.alt);
       });
-      lightboxClose.addEventListener('click', closeLightbox);
-      lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
-    })();
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+    sections.forEach(s => observer.observe(s));
+  })();
   </script>
 
   <!-- ── LANG TOGGLE ES / EN (full-page) ── -->
