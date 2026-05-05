@@ -698,36 +698,32 @@
     /* Viewport */
     .wk-viewport {
       overflow: hidden;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 13%, #000 87%, transparent 100%);
-      mask-image: linear-gradient(to right, transparent 0%, #000 13%, #000 87%, transparent 100%);
+      position: relative;
     }
     .wk-carousel[data-cat="videos"]  .wk-viewport { height: 316px; }
     .wk-carousel[data-cat="digital"] .wk-viewport { height: 396px; }
     .wk-carousel[data-cat="logos"]   .wk-viewport { height: 232px; }
 
     .wk-track {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
-      will-change: transform;
+      position: relative;
+      width: 100%;
+      height: 100%;
     }
 
     /* Cards */
     .wk-card {
-      flex-shrink: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       border-radius: 18px;
       overflow: hidden;
       cursor: pointer;
-      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease;
-      position: relative;
       outline: none;
+      will-change: transform, opacity;
     }
     .wk-card:focus-visible { box-shadow: 0 0 0 3px var(--accent-light); }
-    .wk-card.center  { opacity: 1;    transform: scale(1); }
-    .wk-card.adjacent{ opacity: 0.52; transform: scale(0.87); }
-    .wk-card.far     { opacity: 0.18; transform: scale(0.75); pointer-events: none; }
-    .wk-card.hidden-card { opacity: 0; transform: scale(0.68); pointer-events: none; }
+    /* Visual states set by JS */
 
     /* Video card (16:9) */
     .wk-card-vid {
@@ -2872,7 +2868,6 @@
     const pref = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const state = {};
 
-    /* Category row clicks */
     document.querySelectorAll('.wk-cat-row').forEach(row => {
       row.addEventListener('click', () => {
         const cat = row.dataset.cat;
@@ -2892,18 +2887,6 @@
       const cards    = Array.from(track.querySelectorAll('.wk-card'));
       if (!cards.length) return;
 
-      /* Set track padding so first card is centered */
-      function setPad() {
-        const vpW  = viewport.offsetWidth;
-        const cardW = cards[0].offsetWidth;
-        const pad  = Math.max(0, Math.floor((vpW - cardW) / 2));
-        track.style.paddingLeft  = pad + 'px';
-        track.style.paddingRight = pad + 'px';
-      }
-      setPad();
-      window.addEventListener('resize', setPad, { passive: true });
-
-      /* Create dots */
       cards.forEach((_, i) => {
         const dot = document.createElement('button');
         dot.className = 'wk-dot';
@@ -2915,7 +2898,6 @@
       state[cat] = { viewport, track, cards, dotsEl, current: 0 };
       go(cat, 0);
 
-      /* Touch swipe */
       let tx = 0;
       viewport.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
       viewport.addEventListener('touchend',   e => {
@@ -2930,30 +2912,35 @@
       idx = Math.max(0, Math.min(idx, s.cards.length - 1));
       s.current = idx;
 
-      const cardW = s.cards[0].offsetWidth;
-      const gap   = parseInt(window.getComputedStyle(s.track).gap) || 20;
-      const offset = idx * (cardW + gap);
+      const cardW  = s.cards[0].offsetWidth;
+      const offset = Math.round(cardW * 0.62);
 
-      s.track.style.transition = pref ? 'none' : 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
-      s.track.style.transform  = `translateX(-${offset}px)`;
+      s.cards.forEach((card, i) => {
+        const pos  = i - idx;
+        const dist = Math.abs(pos);
+        const tx   = pos * offset;
+        const sc   = Math.max(0.48, 1 - dist * 0.13);
+        const op   = dist === 0 ? 1 : dist === 1 ? 0.78 : dist === 2 ? 0.42 : 0;
+        const zi   = Math.max(1, 10 - dist);
 
-      /* Visual classes */
-      s.cards.forEach((c, i) => {
-        const d = Math.abs(i - idx);
-        c.classList.remove('center', 'adjacent', 'far', 'hidden-card');
-        if      (d === 0) c.classList.add('center');
-        else if (d === 1) c.classList.add('adjacent');
-        else if (d === 2) c.classList.add('far');
-        else              c.classList.add('hidden-card');
+        card.style.transition    = pref ? 'none'
+          : 'transform 0.52s cubic-bezier(0.16,1,0.3,1), opacity 0.45s ease';
+        card.style.transform     = `translate(calc(-50% + ${tx}px), -50%) scale(${sc.toFixed(3)})`;
+        card.style.opacity       = op.toFixed(2);
+        card.style.zIndex        = zi;
+        card.style.pointerEvents = dist <= 2 ? 'auto' : 'none';
+
+        card.classList.remove('center', 'adjacent', 'hidden-card');
+        if (dist === 0)     card.classList.add('center');
+        else if (dist <= 2) card.classList.add('adjacent');
+        else                card.classList.add('hidden-card');
       });
 
-      /* Dots */
       Array.from(s.dotsEl.querySelectorAll('.wk-dot')).forEach((d, i) => {
         d.classList.toggle('active', i === idx);
       });
     }
 
-    /* Arrow clicks */
     document.querySelectorAll('.wk-arrow[data-cat]').forEach(btn => {
       btn.addEventListener('click', () => {
         const cat = btn.dataset.cat;
@@ -2962,7 +2949,6 @@
       });
     });
 
-    /* Clicking adjacent card navigates; clicking center opens lightbox */
     const lightbox = document.getElementById('wk-lightbox');
     const lbVideo  = document.getElementById('wk-lb-video');
     const lbImg    = document.getElementById('wk-lb-img');
@@ -2972,18 +2958,14 @@
       stage.addEventListener('click', e => {
         const card = e.target.closest('.wk-card');
         if (!card) return;
-        const cat  = card.closest('.wk-carousel').dataset.cat;
+        const cat   = card.closest('.wk-carousel').dataset.cat;
         const cards = Array.from(card.closest('.wk-track').querySelectorAll('.wk-card'));
-        const idx  = cards.indexOf(card);
+        const idx   = cards.indexOf(card);
         if (!state[cat]) return;
 
-        if (idx !== state[cat].current) {
-          go(cat, idx);
-          return;
-        }
+        if (idx !== state[cat].current) { go(cat, idx); return; }
 
-        /* Open lightbox */
-        const vidId = card.dataset.vid;
+        const vidId  = card.dataset.vid;
         const imgSrc = card.dataset.img;
         if (vidId) {
           lbVideo.innerHTML = `<iframe src="https://player.vimeo.com/video/${vidId}?autoplay=1&title=0&byline=0&portrait=0&dnt=1&color=7C3AFF" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
@@ -3007,7 +2989,6 @@
     lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 
-    /* Init first carousel */
     initCarousel('videos');
   })();
   </script>
