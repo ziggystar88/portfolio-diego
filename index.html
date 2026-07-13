@@ -315,10 +315,9 @@
     .hero-word {
       display: block;
       opacity: 0;
-      transform: translateY(38%) scale(0.96);
-      filter: blur(34px);
-      will-change: opacity, transform, filter;
-      animation: wordReveal 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      transform: translateX(-50px);
+      will-change: opacity, transform;
+      animation: wordReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .hero-title-line:nth-child(1) .hero-word {
       animation-delay: 0.05s;
@@ -327,13 +326,13 @@
       color: #fff;
     }
     .hero-title-line:nth-child(2) .hero-word {
-      animation-delay: 0.22s;
+      animation-delay: 0.2s;
       font-weight: 200;
       font-style: italic;
       color: var(--accent-light);
     }
     .hero-title-line:nth-child(3) .hero-word {
-      animation-delay: 0.38s;
+      animation-delay: 0.35s;
       font-weight: 200;
       font-style: italic;
       color: rgba(157,106,255,0.72);
@@ -356,7 +355,7 @@
     }
 
     @keyframes wordReveal {
-      to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+      to { opacity: 1; transform: translateX(0); }
     }
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
