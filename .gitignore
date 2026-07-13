@@ -6,3 +6,8 @@
 Thumbs.db
 .claude/
 .netlify/
+
+# Backups y borradores locales — no publicar
+index.backup-*.html
+cambios web_/
+no usar_primero_portafolio-diego/
