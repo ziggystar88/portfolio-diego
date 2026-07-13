@@ -72,24 +72,16 @@
   ];
 
   let visible = false;
+  let pendingVisible = false;
   let startTime = null;
-
-  function show() {
-    visible = true;
-    layers.forEach(l => { l.style.opacity = String(l._base); });
-  }
-  function hide() {
-    visible = false;
-    layers.forEach(l => { l.style.opacity = '0'; });
-  }
 
   document.addEventListener('mousemove', (e) => {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
-    if (!visible) show();
+    pendingVisible = true;
   });
-  document.addEventListener('mouseleave', hide);
-  document.addEventListener('mouseenter', show);
+  document.addEventListener('mouseleave', () => { pendingVisible = false; });
+  document.addEventListener('mouseenter', () => { pendingVisible = true; });
 
   // ── Rotación de color ───────────────────────────────────────────
   let colorIndex = 0;
@@ -105,6 +97,15 @@
   function tick(now) {
     if (!startTime) startTime = now;
     const elapsed = now - startTime;
+
+    if (pendingVisible !== visible) {
+      visible = pendingVisible;
+      if (!visible) {
+        layers.forEach(l => { l.style.opacity = '0'; });
+        requestAnimationFrame(tick);
+        return;
+      }
+    }
 
     layers.forEach((layer, i) => {
       // Lerp de posición
