@@ -39,8 +39,8 @@
     /* Custom cursor */
     *, *::before, *::after { cursor: url('img/cursor.png') 8 8, auto; }
     a, button, [role="button"], .nav-cta, .btn-primary, .btn-secondary,
-    .slide-item, .slides-btn, .nav-hamburger, .lang-toggle,
-    .filter-btn, .video-card { cursor: url('img/cursor.png') 8 8, pointer; }
+    .wk-card, .wk-arrow, .wk-dot, .wk-cat-row, .lang-toggle,
+    .filter-btn { cursor: url('img/cursor.png') 8 8, pointer; }
 
     :focus-visible {
       outline: 2px solid var(--accent-light);
@@ -176,87 +176,63 @@
       box-shadow: 0 4px 18px rgba(124,58,255,0.45);
     }
 
-    /* hamburger */
-    .nav-hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 6px 2px;
-      margin-left: 10px;
-    }
-    .nav-hamburger span {
-      display: block;
-      width: 20px;
-      height: 2px;
-      background: #fff;
-      border-radius: 2px;
-      transition: transform 0.25s, opacity 0.25s;
-    }
-    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
-    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* mobile drawer — fullscreen overlay */
-    .nav-mobile-drawer {
+    /* ── MOBILE BOTTOM PILL NAV ── */
+    .nav-hamburger { display: none; } /* removed */
+    .mob-nav {
       display: none;
       position: fixed;
-      inset: 0;
-      background: rgba(8,8,8,0.97);
-      backdrop-filter: blur(28px);
-      z-index: 190;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      background: rgba(12,10,18,0.82);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 100px;
+      padding: 10px 8px;
+      gap: 2px;
+      align-items: center;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(124,58,255,0.08);
+    }
+    .mob-nav-item {
+      display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-    .nav-mobile-drawer.open { display: flex; }
-
-    @keyframes menuSlideIn {
-      from { transform: translateX(80px); opacity: 0; }
-      to   { transform: translateX(0);   opacity: 1; }
-    }
-    .nav-mobile-drawer a {
-      font-size: 32px;
-      font-weight: 800;
-      color: rgba(255,255,255,0.55);
+      gap: 3px;
+      padding: 7px 14px;
+      border-radius: 80px;
       text-decoration: none;
-      padding: 14px 0;
-      letter-spacing: -0.03em;
-      opacity: 0;
-      transform: translateX(80px);
-      transition: color 0.2s, text-shadow 0.2s;
+      color: rgba(255,255,255,0.45);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+      min-width: 44px;
+      min-height: 44px;
+      justify-content: center;
     }
-    .nav-mobile-drawer.open a {
-      animation: menuSlideIn 0.45s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-    .nav-mobile-drawer.open a:nth-child(1) { animation-delay: 0.05s; }
-    .nav-mobile-drawer.open a:nth-child(2) { animation-delay: 0.12s; }
-    .nav-mobile-drawer.open a:nth-child(3) { animation-delay: 0.19s; }
-    .nav-mobile-drawer.open a:nth-child(4) { animation-delay: 0.26s; }
-    .nav-mobile-drawer.open a:nth-child(5) { animation-delay: 0.33s; }
-
-    .nav-mobile-drawer a:hover {
+    .mob-nav-item svg { width: 18px; height: 18px; stroke: currentColor; flex-shrink: 0; }
+    .mob-nav-item:hover,
+    .mob-nav-item.active {
       color: #fff;
-      text-shadow: 0 0 22px rgba(255,255,255,0.55);
+      background: rgba(124,58,255,0.22);
     }
-    /* Hablemos — recuadro blanco, glow verde */
-    .nav-mobile-drawer a.cta {
+    .mob-nav-item.active svg { stroke: var(--accent-light); }
+    /* Hablemos pill — accent */
+    .mob-nav-item.mob-cta {
+      background: var(--accent);
       color: #fff;
-      border: 2px solid #fff;
-      padding: 10px 36px;
-      border-radius: 10px;
-      margin-top: 8px;
-      box-shadow: 0 0 28px rgba(74,222,128,0.38), inset 0 0 20px rgba(74,222,128,0.06);
-      text-shadow: 0 0 18px rgba(74,222,128,0.7);
-      font-size: 28px;
+      padding: 7px 18px;
     }
-    .nav-mobile-drawer a.cta:hover {
-      box-shadow: 0 0 44px rgba(74,222,128,0.65), inset 0 0 28px rgba(74,222,128,0.12);
-      text-shadow: 0 0 28px rgba(74,222,128,1);
+    .mob-nav-item.mob-cta:hover { background: var(--accent-light); }
+    @media (max-width: 640px) {
+      .mob-nav { display: flex; }
     }
+    /* hide old drawer */
+    .nav-mobile-drawer { display: none !important; }
 
     /* ══════════════════════════════════════
        HERO — fullscreen staggered reveal
@@ -652,161 +628,260 @@
       padding: 96px 0;
     }
 
-    /* ── Slides Carousel — auto-rotate + glow + lightbox ── */
+    /* ── WORK SECTION ── */
     .slides-section {
-      padding: 96px 0;
-      overflow-x: clip;
+      padding: 96px 0 80px;
+      overflow: hidden;
     }
-    .slides-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 40px;
-      gap: 16px;
-    }
-    .slides-title {
-      font-size: clamp(28px, 3.5vw, 48px);
+    .slides-header { margin-bottom: 36px; }
+    .wk-title {
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-size: clamp(52px, 8vw, 100px);
       font-weight: 900;
-      letter-spacing: -0.035em;
+      letter-spacing: -0.03em;
       color: #fff;
+      line-height: 0.88;
+      margin-bottom: 14px;
     }
-    /* Carousel controls — centered below track */
-    .slides-controls {
+    .wk-subtitle {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 52px;
+    }
+
+    /* Category rows */
+    .wk-cats { border-top: 1px solid rgba(255,255,255,0.06); }
+    .wk-cat-row {
       display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 24px;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      gap: 14px;
+      transition: border-color 0.25s;
     }
-    .slides-btn {
-      width: 44px; height: 44px;
+    .wk-cat-row.active { border-bottom-color: rgba(124,58,255,0.35); }
+    .wk-cat-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--accent-light);
+      width: 26px;
+      flex-shrink: 0;
+      letter-spacing: 0.06em;
+    }
+    .wk-cat-name {
+      font-family: 'Big Shoulders Display', sans-serif;
+      font-size: clamp(24px, 3.8vw, 52px);
+      font-weight: 800;
+      color: rgba(255,255,255,0.22);
+      flex: 1;
+      transition: color 0.25s;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .wk-cat-row.active .wk-cat-name,
+    .wk-cat-row:hover .wk-cat-name { color: #fff; }
+    .wk-cat-count {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* Carousel stage */
+    .wk-stage { margin-top: 52px; }
+    .wk-carousel { display: none; }
+    .wk-carousel.active { display: block; }
+
+    /* Viewport */
+    .wk-viewport {
+      overflow: hidden;
+      position: relative;
+    }
+    .wk-carousel[data-cat="videos"]  .wk-viewport { height: 316px; }
+    .wk-carousel[data-cat="digital"] .wk-viewport { height: 310px; }
+    .wk-carousel[data-cat="logos"]   .wk-viewport { height: 232px; }
+
+    .wk-track {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Cards */
+    .wk-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 18px;
+      overflow: hidden;
+      cursor: pointer;
+      outline: none;
+      will-change: transform, opacity;
+    }
+    .wk-card:focus-visible { box-shadow: 0 0 0 3px var(--accent-light); }
+    /* Visual states set by JS */
+
+    /* Video card (16:9) */
+    .wk-card-vid {
+      width: 500px; height: 281px;
+      background: linear-gradient(135deg, #080610 0%, #100820 100%);
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .wk-card-vid::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 38% 58%, rgba(124,58,255,0.18) 0%, transparent 62%);
+      pointer-events: none;
+    }
+    .wk-vid-thumb {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; opacity: 0.65;
+    }
+    .wk-play-btn {
+      width: 60px; height: 60px;
       border-radius: 50%;
       background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 2;
+      transition: background 0.25s, transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+    .wk-card.center .wk-play-btn {
+      background: rgba(124,58,255,0.52);
+      border-color: rgba(124,58,255,0.75);
+      box-shadow: 0 0 28px rgba(124,58,255,0.4);
+    }
+    .wk-card.center:hover .wk-play-btn { transform: scale(1.12); }
+    .wk-play-btn svg { width: 20px; height: 20px; fill: #fff; margin-left: 3px; }
+    .wk-vid-label {
+      position: absolute; bottom: 12px; left: 16px; right: 16px;
+      font-family: 'DM Mono', monospace; font-size: 9px;
+      color: rgba(255,255,255,0.4); letter-spacing: 0.09em;
+      text-transform: uppercase; z-index: 2;
+    }
+
+    /* Digital card (9:16) */
+    .wk-card-dig {
+      width: 480px; height: 270px;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .wk-card-dig img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* Logo card */
+    .wk-card-logo {
+      width: 280px; height: 196px;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      padding: 26px;
+    }
+    .wk-card-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+    /* Nav: arrows + dots in one row */
+    .wk-nav {
+      display: flex;
+      justify-content: center;
+      margin-top: 28px;
+    }
+    .wk-arrows-dots {
       display: flex;
       align-items: center;
-      justify-content: center;
-      transition: background 0.2s, border-color 0.2s, transform 0.15s;
-      flex-shrink: 0;
+      gap: 16px;
     }
-    .slides-btn:hover {
-      background: rgba(124,58,255,0.3);
-      border-color: var(--accent-light);
-      transform: scale(1.08);
-    }
-
-    .slides-track-wrap {
-      width: 100%;
-      overflow: hidden;
-      padding: 30px;
-      margin: -30px;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
-      mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
-    }
-    .slides-track {
+    .wk-dots {
       display: flex;
-      gap: 24px;
-      animation: slides-auto-scroll 15s linear infinite;
-      will-change: transform;
+      align-items: center;
+      gap: 5px;
     }
-    .slides-track:hover {
-      animation-play-state: paused;
+    .wk-dot {
+      height: 5px;
+      width: 5px;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.2);
+      transition: width 0.3s ease, background 0.3s ease, transform 0.2s;
+      border: none; padding: 0; cursor: pointer; flex-shrink: 0;
     }
-    @keyframes slides-auto-scroll {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    .slide-item {
-      flex-shrink: 0;
-      width: 500px;
-      height: 330px;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: var(--card);
+    .wk-dot.active { width: 18px; background: var(--accent-light); }
+    .wk-arrow {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.75);
+      font-size: 17px;
       cursor: pointer;
-      position: relative;
-      transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s, transform 0.12s;
     }
-    .slide-item img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .slide-item::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(124,58,255,0);
-      transition: background 0.35s ease;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .slide-item:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 30px rgba(124,58,255,0.4), 0 0 80px rgba(124,58,255,0.15);
-      border-color: var(--accent-light);
-      z-index: 5;
-    }
-    .slide-item:hover::after { background: rgba(124,58,255,0.18); }
-    .slide-item:hover img { transform: scale(1.08); }
+    .wk-arrow:hover  { background: rgba(124,58,255,0.3); border-color: var(--accent-light); }
+    .wk-arrow:active { transform: scale(0.92); }
 
-    @media (max-width: 640px) {
-      .slide-item { width: 280px; height: 380px; }
-      .slides-header { flex-direction: column; align-items: flex-start; }
-      .slides-track { gap: 16px; animation-duration: 20s; }
-    }
-    @media (max-width: 860px) and (min-width: 641px) {
-      .slide-item { width: 400px; height: 300px; }
-    }
-
-    /* ── Lightbox modal ── */
-    .slide-lightbox {
+    /* Lightbox */
+    .wk-lightbox {
       display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.92);
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.93);
       z-index: 2000;
-      align-items: center;
-      justify-content: center;
+      align-items: center; justify-content: center;
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
-    .slide-lightbox.open { display: flex; }
-    .slide-lightbox-img {
-      display: block;
-      max-width: 90vw;
-      max-height: 90vh;
-      width: auto;
-      height: auto;
-      border-radius: 14px;
-      object-fit: contain;
-      box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+    .wk-lightbox.open { display: flex; }
+    .wk-lb-close {
+      position: fixed; top: 20px; right: 20px;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; font-size: 20px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.2s; z-index: 2001; line-height: 1;
     }
-    .slide-lightbox-close {
-      position: fixed;
-      top: 24px;
-      right: 24px;
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.25);
-      color: #fff;
-      font-size: 22px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s, transform 0.2s;
-      z-index: 2001;
+    .wk-lb-close:hover { background: rgba(255,255,255,0.25); transform: scale(1.08); }
+    .wk-lb-video {
+      width: min(380px, 90vw);
+      aspect-ratio: 9 / 16;
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
     }
-    .slide-lightbox-close:hover {
-      background: rgba(255,255,255,0.28);
-      transform: scale(1.1);
+    .wk-lb-video iframe { width: 100%; height: 100%; border: none; display: block; }
+    .wk-lb-img {
+      display: none;
+      max-width: 92vw; max-height: 92vh;
+      width: auto; height: auto;
+      border-radius: 14px; object-fit: contain;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+    }
+    .wk-lightbox.img-mode .wk-lb-video { display: none; }
+    .wk-lightbox.img-mode .wk-lb-img  { display: block; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .slides-section { padding: 64px 0 56px; }
+      .wk-title { font-size: clamp(40px, 13vw, 60px); }
+      .wk-subtitle { margin-bottom: 32px; }
+      .wk-cat-name { font-size: clamp(20px, 7vw, 32px); }
+      .wk-carousel[data-cat="videos"]  .wk-viewport { height: 196px; }
+      .wk-carousel[data-cat="digital"] .wk-viewport { height: 224px; }
+      .wk-carousel[data-cat="logos"]   .wk-viewport { height: 164px; }
+      .wk-card-vid { width: 300px; height: 169px; }
+      .wk-play-btn { width: 48px; height: 48px; }
+      .wk-play-btn svg { width: 16px; height: 16px; }
+      .wk-card-dig { width: 300px; height: 169px; }
+      .wk-card-logo { width: 210px; height: 147px; padding: 18px; }
+      .wk-lb-video { width: min(300px, 94vw); }
+    }
+    @media (max-width: 860px) and (min-width: 641px) {
+      .wk-carousel[data-cat="videos"]  .wk-viewport { height: 252px; }
+      .wk-carousel[data-cat="digital"] .wk-viewport { height: 268px; }
+      .wk-carousel[data-cat="logos"]   .wk-viewport { height: 196px; }
+      .wk-card-vid { width: 400px; height: 225px; }
+      .wk-card-dig { width: 380px; height: 214px; }
+      .wk-card-logo { width: 240px; height: 168px; }
     }
     .showreel-header {
       display: flex;
@@ -1715,7 +1790,7 @@
       .nav-links { display: none; }
       .nav-cta   { display: none; }
       .lang-toggle { display: none; }
-      .nav-hamburger { display: flex; }
+      .nav-hamburger { display: none; }
       /* Botones contacto mobile: centrados y compactos */
       .footer-cta-inner .footer-contact-row {
         flex-direction: column;
@@ -1762,7 +1837,7 @@
   <nav id="main-nav" role="navigation" aria-label="Navegación principal">
     <div class="nav-logo">Diego <span>Manjarrés</span>.</div>
     <ul class="nav-links">
-      <li><a href="work.html" data-es="Work" data-en="Work">Work</a></li>
+      <li><a href="#slides" data-es="Work" data-en="Work">Work</a></li>
       <li><a href="#sobre-mi" data-es="Sobre mí" data-en="About me">Sobre mí</a></li>
       <li><a href="#experiencia" data-es="Experiencia" data-en="Experience">Experiencia</a></li>
     </ul>
@@ -1771,20 +1846,31 @@
       <span id="lang-label">ES</span>
     </button>
     <a href="#contacto" class="nav-cta" data-es="Hablemos →" data-en="Let's Talk →">Hablemos →</a>
-    <button class="nav-hamburger" aria-label="Abrir menú" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
   </nav>
-  <div class="nav-mobile-drawer" id="mobile-drawer" aria-label="Menú móvil">
-    <a href="work.html" data-es="Work" data-en="Work">Work</a>
-    <a href="#sobre-mi" data-es="Sobre mí" data-en="About me">Sobre mí</a>
-    <a href="#experiencia" data-es="Experiencia" data-en="Experience">Experiencia</a>
-    <a href="#contacto" class="cta" data-es="Hablemos" data-en="Let's Talk">Hablemos</a>
-    <button class="lang-toggle" style="font-size:14px;padding:10px 18px;margin-top:8px;" onclick="document.getElementById('lang-toggle').click()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      <span id="lang-label-mobile">ES / EN</span>
-    </button>
-  </div>
+
+  <!-- ── MOBILE BOTTOM PILL NAV ── -->
+  <nav class="mob-nav" id="mob-nav" aria-label="Navegación móvil">
+    <a href="#inicio" class="mob-nav-item active" data-section="inicio" aria-label="Inicio">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Inicio
+    </a>
+    <a href="#slides" class="mob-nav-item" aria-label="Work">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+      Work
+    </a>
+    <a href="#sobre-mi" class="mob-nav-item" data-section="sobre-mi" aria-label="Sobre mí">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Sobre mí
+    </a>
+    <a href="#experiencia" class="mob-nav-item" data-section="experiencia" aria-label="Experiencia">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Exp.
+    </a>
+    <a href="#contacto" class="mob-nav-item mob-cta" aria-label="Hablemos">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Hablemos
+    </a>
+  </nav>
 
   <!-- SVG liquid distortion filter (hidden) -->
   <svg width="0" height="0" style="position:absolute;pointer-events:none;" aria-hidden="true">
@@ -1804,7 +1890,8 @@
 
     <!-- Video background -->
     <video class="hero-bg-video" autoplay muted loop playsinline aria-hidden="true" poster="img/hero-poster.jpg">
-      <source src="video/hero-bg.mp4" type="video/mp4">
+      <source src="https://res.cloudinary.com/disogf0sg/video/upload/v1777958285/mobile_hero-bg_ndw8au.mp4" media="(max-width: 768px)" type="video/mp4">
+      <source src="https://res.cloudinary.com/disogf0sg/video/upload/v1777958259/hero-bg_v0pqor.mp4" type="video/mp4">
     </video>
 
     <div style="position:relative;z-index:2">
@@ -1857,7 +1944,7 @@
         <a class="hero-available" href="https://wa.me/56945128412" target="_blank" rel="noopener noreferrer">Disponible para nuevos proyectos</a>
         <div class="hero-btn-row">
           <a href="#showreel" class="btn-primary">Ver mi trabajo ↓</a>
-          <a href="cv_diego_v2.html" download class="btn-secondary">Ver CV →</a>
+          <a href="cv-diegomanjarres/CV_Diego_Manjarres.pdf" download="CV_Diego_Manjarres.pdf" class="btn-secondary">Ver CV →</a>
         </div>
       </div>
     </div>
@@ -1888,44 +1975,348 @@
       <div class="slides-header reveal">
         <div>
           <div class="section-label" data-es="Contenido" data-en="Content">Contenido</div>
-          <h2 class="slides-title" data-es="Work" data-en="Work">Work</h2>
+          <h2 class="wk-title" data-es="Work" data-en="Work">Work</h2>
+          <div class="wk-subtitle">META ADS · AI CONTENT PRODUCTION</div>
         </div>
       </div>
-      <div class="slides-track-wrap reveal">
-        <div class="slides-track" id="slides-track">
-          <div class="slide-item"><img src="img/slides/1-imagen-slide_1080x1920.png"  alt="Trabajo 1"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/2-imagen-slide_1080x1920.png"  alt="Trabajo 2"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/3-imagen-slide_1080x1920.png"  alt="Trabajo 3"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/4-imagen-slide_1080x1920.png"  alt="Trabajo 4"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/5-imagen-slide_1080x1920.png"  alt="Trabajo 5"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/6-imagen-slide_1080x1920.png"  alt="Trabajo 6"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/7-imagen-slide_1080x1920.png"  alt="Trabajo 7"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/8-imagen-slide_1080x1920.png"  alt="Trabajo 8"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/9-imagen-slide_1080x1920.png"  alt="Trabajo 9"  loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/10-imagen-slide_1080x1920.png" alt="Trabajo 10" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/12-imagen-slide_1080x1920.png" alt="Trabajo 12" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/13-imagen-slide_1080x1920.png" alt="Trabajo 13" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/14-imagen-slide_1080x1920.png" alt="Trabajo 14" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/15-imagen-slide_1080x1920.png" alt="Trabajo 15" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/16-imagen-slide_1080x1920.png" alt="Trabajo 16" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/17-imagen-slide_1080x1920.png" alt="Trabajo 17" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/18-imagen-slide_1080x1920.png" alt="Trabajo 18" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/19-imagen-slide_1080x1920.png" alt="Trabajo 19" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/20-imagen-slide_1080x1920.png" alt="Trabajo 20" loading="lazy" /></div>
-          <div class="slide-item"><img src="img/slides/21-imagen-slide_1080x1920.png" alt="Trabajo 21" loading="lazy" /></div>
+
+      <!-- Category rows -->
+      <div class="wk-cats">
+        <div class="wk-cat-row active" data-cat="videos">
+          <span class="wk-cat-num">01</span>
+          <span class="wk-cat-name" data-es="Videos" data-en="Videos">Videos</span>
+          <span class="wk-cat-count">25 piezas</span>
+        </div>
+        <div class="wk-cat-row" data-cat="digital">
+          <span class="wk-cat-num">02</span>
+          <span class="wk-cat-name" data-es="Digital" data-en="Digital">Digital</span>
+          <span class="wk-cat-count">20 piezas</span>
+        </div>
+        <div class="wk-cat-row" data-cat="logos">
+          <span class="wk-cat-num">03</span>
+          <span class="wk-cat-name" data-es="Logotipos" data-en="Logos">Logotipos</span>
+          <span class="wk-cat-count">28 piezas</span>
         </div>
       </div>
-      <div class="slides-controls">
-        <button class="slides-btn" id="slides-prev" aria-label="Anterior">&#8592;</button>
-        <button class="slides-btn" id="slides-next" aria-label="Siguiente">&#8594;</button>
+    </div>
+
+    <!-- Carousels -->
+    <div class="wk-stage">
+    <!-- VIDEOS carousel -->
+    <div class="wk-carousel  active" data-cat="videos">
+      <div class="wk-viewport">
+        <div class="wk-track" id="wk-track-videos">
+          <div class="wk-card wk-card-vid" data-vid="1176332413" role="button" tabindex="0" aria-label="Reel 2024">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1176332413.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Reel 2024</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180618670" role="button" tabindex="0" aria-label="Patagua 1/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180618670.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 1/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621440" role="button" tabindex="0" aria-label="Patagua 2/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621440.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 2/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621458" role="button" tabindex="0" aria-label="Patagua 3/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621458.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 3/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621477" role="button" tabindex="0" aria-label="Patagua 4/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621477.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 4/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621490" role="button" tabindex="0" aria-label="Patagua 5/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621490.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 5/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180618644" role="button" tabindex="0" aria-label="Passe · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180618644.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Passe · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617384" role="button" tabindex="0" aria-label="Helmlinger · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617384.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Helmlinger · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180580101" role="button" tabindex="0" aria-label="Grillo 1/3 · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180580101.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Grillo 1/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180580151" role="button" tabindex="0" aria-label="Grillo 2/3 · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180580151.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Grillo 2/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180580266" role="button" tabindex="0" aria-label="Grillo 3/3 · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180580266.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Grillo 3/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180622009" role="button" tabindex="0" aria-label="Simply Sweet · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180622009.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Simply Sweet · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180618559" role="button" tabindex="0" aria-label="Nubetta 1/3 · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180618559.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Nubetta 1/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180618584" role="button" tabindex="0" aria-label="Nubetta 2/3 · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180618584.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Nubetta 2/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180618622" role="button" tabindex="0" aria-label="Nubetta 3/3 · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180618622.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Nubetta 3/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180580072" role="button" tabindex="0" aria-label="Ducati · Auto">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180580072.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Ducati · Auto</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621993" role="button" tabindex="0" aria-label="Rocas de Maitencillo">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621993.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Rocas de Maitencillo</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617499" role="button" tabindex="0" aria-label="Micro 1/6 · Real Estate">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617499.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 1/6 · Real Estate</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617525" role="button" tabindex="0" aria-label="Micro 2/6 · Real Estate">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617525.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 2/6 · Real Estate</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617829" role="button" tabindex="0" aria-label="Micro 3/6 · Real Estate">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617829.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 3/6 · Real Estate</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617842" role="button" tabindex="0" aria-label="Micro 4/6 · Real Estate">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617842.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 4/6 · Real Estate</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617873" role="button" tabindex="0" aria-label="Micro 5/6 · Real Estate">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617873.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 5/6 · Real Estate</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617903" role="button" tabindex="0" aria-label="Micro 6/6 · Real Estate">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617903.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 6/6 · Real Estate</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180622084" role="button" tabindex="0" aria-label="Unibag">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180622084.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Unibag</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617423" role="button" tabindex="0" aria-label="Maat">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617423.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Maat</span>
+          </div>
+        </div>
       </div>
-      <div style="display:flex;justify-content:center;margin-top:40px;">
-        <a href="work.html" class="btn-secondary" data-es="Ver más Work" data-en="See more Work">Ver más Work</a>
+      <div class="wk-nav">
+        <div class="wk-arrows-dots">
+          <button class="wk-arrow" data-cat="videos" data-dir="-1" aria-label="Anterior">&#8592;</button>
+          <div class="wk-dots" id="wk-dots-videos"></div>
+          <button class="wk-arrow" data-cat="videos" data-dir="1" aria-label="Siguiente">&#8594;</button>
+        </div>
       </div>
+    </div>
+    <!-- DIGITAL carousel -->
+    <div class="wk-carousel" data-cat="digital">
+      <div class="wk-viewport">
+        <div class="wk-track" id="wk-track-digital">
+          <div class="wk-card wk-card-dig" data-img="img/slides/1-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 1">
+            <img src="img/slides/1-imagen-slide_1080x1920.jpg" alt="Digital 1" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/2-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 2">
+            <img src="img/slides/2-imagen-slide_1080x1920.jpg" alt="Digital 2" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/3-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 3">
+            <img src="img/slides/3-imagen-slide_1080x1920.jpg" alt="Digital 3" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/4-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 4">
+            <img src="img/slides/4-imagen-slide_1080x1920.jpg" alt="Digital 4" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/5-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 5">
+            <img src="img/slides/5-imagen-slide_1080x1920.jpg" alt="Digital 5" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/6-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 6">
+            <img src="img/slides/6-imagen-slide_1080x1920.jpg" alt="Digital 6" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/7-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 7">
+            <img src="img/slides/7-imagen-slide_1080x1920.jpg" alt="Digital 7" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/8-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 8">
+            <img src="img/slides/8-imagen-slide_1080x1920.jpg" alt="Digital 8" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/9-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 9">
+            <img src="img/slides/9-imagen-slide_1080x1920.jpg" alt="Digital 9" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/10-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 10">
+            <img src="img/slides/10-imagen-slide_1080x1920.jpg" alt="Digital 10" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/12-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 12">
+            <img src="img/slides/12-imagen-slide_1080x1920.jpg" alt="Digital 12" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/13-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 13">
+            <img src="img/slides/13-imagen-slide_1080x1920.jpg" alt="Digital 13" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/14-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 14">
+            <img src="img/slides/14-imagen-slide_1080x1920.jpg" alt="Digital 14" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/15-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 15">
+            <img src="img/slides/15-imagen-slide_1080x1920.jpg" alt="Digital 15" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/16-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 16">
+            <img src="img/slides/16-imagen-slide_1080x1920.jpg" alt="Digital 16" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/17-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 17">
+            <img src="img/slides/17-imagen-slide_1080x1920.jpg" alt="Digital 17" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/18-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 18">
+            <img src="img/slides/18-imagen-slide_1080x1920.jpg" alt="Digital 18" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/19-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 19">
+            <img src="img/slides/19-imagen-slide_1080x1920.jpg" alt="Digital 19" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/20-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 20">
+            <img src="img/slides/20-imagen-slide_1080x1920.jpg" alt="Digital 20" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/slides/21-imagen-slide_1080x1920.jpg" role="button" tabindex="0" aria-label="Digital 21">
+            <img src="img/slides/21-imagen-slide_1080x1920.jpg" alt="Digital 21" loading="lazy">
+          </div>
+        </div>
+      </div>
+      <div class="wk-nav">
+        <div class="wk-arrows-dots">
+          <button class="wk-arrow" data-cat="digital" data-dir="-1" aria-label="Anterior">&#8592;</button>
+          <div class="wk-dots" id="wk-dots-digital"></div>
+          <button class="wk-arrow" data-cat="digital" data-dir="1" aria-label="Siguiente">&#8594;</button>
+        </div>
+      </div>
+    </div>
+    <!-- LOGOS carousel -->
+    <div class="wk-carousel" data-cat="logos">
+      <div class="wk-viewport">
+        <div class="wk-track" id="wk-track-logos">
+          <div class="wk-card wk-card-logo" data-img="img/logos/1.png" role="button" tabindex="0" aria-label="Logo 1">
+            <img src="img/logos/1.png" alt="Logo 1" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/2.png" role="button" tabindex="0" aria-label="Logo 2">
+            <img src="img/logos/2.png" alt="Logo 2" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/3.png" role="button" tabindex="0" aria-label="Logo 3">
+            <img src="img/logos/3.png" alt="Logo 3" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/4.png" role="button" tabindex="0" aria-label="Logo 4">
+            <img src="img/logos/4.png" alt="Logo 4" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/5.png" role="button" tabindex="0" aria-label="Logo 5">
+            <img src="img/logos/5.png" alt="Logo 5" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/6.png" role="button" tabindex="0" aria-label="Logo 6">
+            <img src="img/logos/6.png" alt="Logo 6" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/7.png" role="button" tabindex="0" aria-label="Logo 7">
+            <img src="img/logos/7.png" alt="Logo 7" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/8.png" role="button" tabindex="0" aria-label="Logo 8">
+            <img src="img/logos/8.png" alt="Logo 8" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/9.png" role="button" tabindex="0" aria-label="Logo 9">
+            <img src="img/logos/9.png" alt="Logo 9" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/10.png" role="button" tabindex="0" aria-label="Logo 10">
+            <img src="img/logos/10.png" alt="Logo 10" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/11.png" role="button" tabindex="0" aria-label="Logo 11">
+            <img src="img/logos/11.png" alt="Logo 11" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/12.png" role="button" tabindex="0" aria-label="Logo 12">
+            <img src="img/logos/12.png" alt="Logo 12" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/13.png" role="button" tabindex="0" aria-label="Logo 13">
+            <img src="img/logos/13.png" alt="Logo 13" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/14.png" role="button" tabindex="0" aria-label="Logo 14">
+            <img src="img/logos/14.png" alt="Logo 14" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/15.png" role="button" tabindex="0" aria-label="Logo 15">
+            <img src="img/logos/15.png" alt="Logo 15" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/16.png" role="button" tabindex="0" aria-label="Logo 16">
+            <img src="img/logos/16.png" alt="Logo 16" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/17.png" role="button" tabindex="0" aria-label="Logo 17">
+            <img src="img/logos/17.png" alt="Logo 17" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/18.png" role="button" tabindex="0" aria-label="Logo 18">
+            <img src="img/logos/18.png" alt="Logo 18" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/19.png" role="button" tabindex="0" aria-label="Logo 19">
+            <img src="img/logos/19.png" alt="Logo 19" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/20.png" role="button" tabindex="0" aria-label="Logo 20">
+            <img src="img/logos/20.png" alt="Logo 20" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/21.png" role="button" tabindex="0" aria-label="Logo 21">
+            <img src="img/logos/21.png" alt="Logo 21" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/22.png" role="button" tabindex="0" aria-label="Logo 22">
+            <img src="img/logos/22.png" alt="Logo 22" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/23.png" role="button" tabindex="0" aria-label="Logo 23">
+            <img src="img/logos/23.png" alt="Logo 23" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/24.png" role="button" tabindex="0" aria-label="Logo 24">
+            <img src="img/logos/24.png" alt="Logo 24" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/25.png" role="button" tabindex="0" aria-label="Logo 25">
+            <img src="img/logos/25.png" alt="Logo 25" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/26.png" role="button" tabindex="0" aria-label="Logo 26">
+            <img src="img/logos/26.png" alt="Logo 26" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/27.png" role="button" tabindex="0" aria-label="Logo 27">
+            <img src="img/logos/27.png" alt="Logo 27" loading="lazy">
+          </div>
+          <div class="wk-card wk-card-logo" data-img="img/logos/28.png" role="button" tabindex="0" aria-label="Logo 28">
+            <img src="img/logos/28.png" alt="Logo 28" loading="lazy">
+          </div>
+        </div>
+      </div>
+      <div class="wk-nav">
+        <div class="wk-arrows-dots">
+          <button class="wk-arrow" data-cat="logos" data-dir="-1" aria-label="Anterior">&#8592;</button>
+          <div class="wk-dots" id="wk-dots-logos"></div>
+          <button class="wk-arrow" data-cat="logos" data-dir="1" aria-label="Siguiente">&#8594;</button>
+        </div>
+      </div>
+    </div>
     </div>
   </section>
 
-  <!-- ── SOBRE MÍ + STACK ── -->
+    <!-- ── SOBRE MÍ + STACK ── -->
   <section class="about-section" id="sobre-mi">
     <div class="wrapper">
       <div class="section-label reveal">Sobre mí</div>
@@ -2026,7 +2417,7 @@
       </div>
       <div class="project-card-lumyn reveal">
         <div class="lumyn-visual">
-          <a href="https://lumyn-studio.netlify.app/" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;position:relative;z-index:1;" aria-label="Visitar Lumyn.studio">
+          <a href="https://web-v2-eight-xi.vercel.app/" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;position:relative;z-index:1;" aria-label="Visitar Lumyn.studio">
             <img src="logo/SVG/logo_lumyn-studio.svg"
                  alt="Lumyn.studio"
                  role="img"
@@ -2053,7 +2444,7 @@
       </div>
 
       <!-- Cyberpunk Motorcycle — web demo -->
-      <a href="https://cyberpunk-motorcycle.netlify.app/" target="_blank" rel="noopener noreferrer"
+      <a href="https://nothing-moto-deploy.vercel.app/" target="_blank" rel="noopener noreferrer"
          class="project-card-cyber reveal" style="text-decoration:none;display:grid;">
         <div class="cyber-visual">
           <img src="img/cyber-moto.jpg" alt="Cyberpunk Motorcycle — web demo" loading="lazy" />
@@ -2187,7 +2578,7 @@
         <div class="footer-col">
           <div class="footer-col-title">Navegación</div>
           <ul class="footer-nav-list">
-            <li><a href="work.html">Work</a></li>
+            <li><a href="#slides">Work</a></li>
             <li><a href="#sobre-mi">Sobre mí</a></li>
             <li><a href="#experiencia">Experiencia</a></li>
             <li><a href="#contacto">Contacto</a></li>
@@ -2206,7 +2597,7 @@
           <div class="footer-col-title">CV & Links</div>
           <ul class="footer-nav-list">
             <li><a href="cv_diego_v2.html" download>Descargar CV</a></li>
-            <li><a href="work.html">Ver trabajos</a></li>
+            <li><a href="#slides">Ver trabajos</a></li>
             <li><a href="https://wa.me/56945128412" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
           </ul>
         </div>
@@ -2224,13 +2615,14 @@
     </div>
   </section>
 
-  <!-- ── LIGHTBOX ── -->
-  <div class="slide-lightbox" id="slide-lightbox" role="dialog" aria-modal="true" aria-label="Vista previa">
-    <button class="slide-lightbox-close" id="slide-lightbox-close" aria-label="Cerrar">✕</button>
-    <img class="slide-lightbox-img" id="slide-lightbox-img" src="" alt="Vista previa" />
+  <!-- ── WORK LIGHTBOX ── -->
+  <div class="wk-lightbox" id="wk-lightbox" role="dialog" aria-modal="true" aria-label="Vista previa">
+    <button class="wk-lb-close" id="wk-lb-close" aria-label="Cerrar">&#10005;</button>
+    <div class="wk-lb-video" id="wk-lb-video"></div>
+    <img class="wk-lb-img" id="wk-lb-img" src="" alt="Vista previa" />
   </div>
 
-  <!-- ══════════════════════════════════════
+    <!-- ══════════════════════════════════════
        SCRIPTS
   ══════════════════════════════════════ -->
 
@@ -2243,40 +2635,12 @@
     }, { passive: true });
 
     // ── Smooth scroll ──
-    const hamburger = document.querySelector('.nav-hamburger');
-    const drawer    = document.getElementById('mobile-drawer');
-
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        drawer.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
       });
-    });
-
-    // ── Hamburger ──
-    hamburger.addEventListener('click', () => {
-      const isOpen = drawer.classList.toggle('open');
-      hamburger.classList.toggle('open', isOpen);
-      hamburger.setAttribute('aria-expanded', String(isOpen));
-      // Reiniciar animaciones de entrada en cada apertura
-      if (isOpen) {
-        drawer.querySelectorAll('a').forEach(a => {
-          a.style.animation = 'none';
-          void a.offsetHeight; // reflow
-          a.style.animation = '';
-        });
-      }
-    });
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('#main-nav') && !e.target.closest('#mobile-drawer')) {
-        drawer.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-      }
     });
 
     // ── IntersectionObserver — reveal on scroll ──
@@ -2499,79 +2863,162 @@
     })();
   </script>
 
-  <!-- ── SLIDES CAROUSEL JS — auto-scroll infinito + flechas + lightbox ── -->
+  <!-- ── WORK CAROUSEL JS ── -->
   <script>
-    (function () {
-      const track = document.getElementById('slides-track');
-      if (!track) return;
+  (function () {
+    const pref = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const state = {};
 
-      const origItems = Array.from(track.querySelectorAll('.slide-item'));
-      origItems.forEach(item => {
-        const clone = item.cloneNode(true);
-        clone.setAttribute('aria-hidden', 'true');
-        track.appendChild(clone);
+    document.querySelectorAll('.wk-cat-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const cat = row.dataset.cat;
+        document.querySelectorAll('.wk-cat-row').forEach(r => r.classList.toggle('active', r === row));
+        document.querySelectorAll('.wk-carousel').forEach(c => c.classList.toggle('active', c.dataset.cat === cat));
+        if (!state[cat]) initCarousel(cat);
+        else go(cat, state[cat].current);
+      });
+    });
+
+    function initCarousel(cat) {
+      const carousel = document.querySelector(`.wk-carousel[data-cat="${cat}"]`);
+      if (!carousel) return;
+      const viewport = carousel.querySelector('.wk-viewport');
+      const track    = carousel.querySelector('.wk-track');
+      const dotsEl   = carousel.querySelector('.wk-dots');
+      const cards    = Array.from(track.querySelectorAll('.wk-card'));
+      if (!cards.length) return;
+
+      cards.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'wk-dot';
+        dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+        dot.addEventListener('click', () => go(cat, i));
+        dotsEl.appendChild(dot);
       });
 
-      const prevBtn = document.getElementById('slides-prev');
-      const nextBtn = document.getElementById('slides-next');
+      state[cat] = { viewport, track, cards, dotsEl, current: 0 };
+      go(cat, 0);
 
-      function getMetrics() {
-        const item = track.querySelector('.slide-item');
-        const gap = parseInt(window.getComputedStyle(track).gap) || 0;
-        const durationStr = window.getComputedStyle(track).animationDuration;
-        return {
-          itemW: item.offsetWidth + gap,
-          animDur: parseFloat(durationStr) || 15
-        };
-      }
+      let tx = 0;
+      viewport.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+      viewport.addEventListener('touchend',   e => {
+        const dx = e.changedTouches[0].clientX - tx;
+        if (Math.abs(dx) > 36) go(cat, state[cat].current + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+    }
 
-      let manualMode = false;
-      let currentOffset = 0;
+    function go(cat, idx) {
+      const s = state[cat];
+      if (!s) return;
+      idx = Math.max(0, Math.min(idx, s.cards.length - 1));
+      s.current = idx;
 
-      function jumpCarousel(delta) {
-        const { itemW } = getMetrics();
-        const halfWidth = origItems.length * itemW;
+      const cardW  = s.cards[0].offsetWidth;
+      const offset = Math.round(cardW * 0.62);
 
-        if (!manualMode) {
-          // First click: freeze current position and switch to manual
-          const matrix = new DOMMatrix(window.getComputedStyle(track).transform);
-          currentOffset = Math.abs(matrix.m41);
-          manualMode = true;
-          track.style.animation = 'none';
-          void track.offsetHeight;
+      s.cards.forEach((card, i) => {
+        const pos  = i - idx;
+        const dist = Math.abs(pos);
+        const tx   = pos * offset;
+        const sc   = Math.max(0.48, 1 - dist * 0.13);
+        const op   = dist <= 2 ? 1 : 0;
+        const zi   = Math.max(1, 10 - dist);
+        const glow = dist === 0
+          ? '0 28px 80px rgba(0,0,0,0.65), 0 0 60px rgba(124,58,255,0.14), 0 0 120px rgba(124,58,255,0.07)'
+          : 'none';
+
+        card.style.transition    = pref ? 'none'
+          : 'transform 0.52s cubic-bezier(0.16,1,0.3,1), opacity 0.45s ease, box-shadow 0.45s ease';
+        card.style.transform     = `translate(calc(-50% + ${tx}px), -50%) scale(${sc.toFixed(3)})`;
+        card.style.opacity       = op.toFixed(2);
+        card.style.zIndex        = zi;
+        card.style.boxShadow     = glow;
+        card.style.pointerEvents = dist <= 2 ? 'auto' : 'none';
+
+        card.classList.remove('center', 'adjacent', 'hidden-card');
+        if (dist === 0)     card.classList.add('center');
+        else if (dist <= 2) card.classList.add('adjacent');
+        else                card.classList.add('hidden-card');
+      });
+
+      Array.from(s.dotsEl.querySelectorAll('.wk-dot')).forEach((d, i) => {
+        d.classList.toggle('active', i === idx);
+      });
+    }
+
+    document.querySelectorAll('.wk-arrow[data-cat]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.cat;
+        const dir = parseInt(btn.dataset.dir, 10);
+        if (state[cat]) go(cat, state[cat].current + dir);
+      });
+    });
+
+    const lightbox = document.getElementById('wk-lightbox');
+    const lbVideo  = document.getElementById('wk-lb-video');
+    const lbImg    = document.getElementById('wk-lb-img');
+    const lbClose  = document.getElementById('wk-lb-close');
+
+    document.querySelectorAll('.wk-stage').forEach(stage => {
+      stage.addEventListener('click', e => {
+        const card = e.target.closest('.wk-card');
+        if (!card) return;
+        const cat   = card.closest('.wk-carousel').dataset.cat;
+        const cards = Array.from(card.closest('.wk-track').querySelectorAll('.wk-card'));
+        const idx   = cards.indexOf(card);
+        if (!state[cat]) return;
+
+        if (idx !== state[cat].current) { go(cat, idx); return; }
+
+        const vidId  = card.dataset.vid;
+        const imgSrc = card.dataset.img;
+        if (vidId) {
+          lbVideo.innerHTML = `<iframe src="https://player.vimeo.com/video/${vidId}?autoplay=1&title=0&byline=0&portrait=0&dnt=1&color=7C3AFF" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+          lightbox.classList.remove('img-mode');
+        } else if (imgSrc) {
+          lbImg.src = imgSrc;
+          lightbox.classList.add('img-mode');
         }
-
-        currentOffset += delta * itemW;
-        currentOffset = ((currentOffset % halfWidth) + halfWidth) % halfWidth;
-        track.style.transform = `translateX(-${currentOffset}px)`;
-        track.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-      }
-
-      if (prevBtn) prevBtn.addEventListener('click', () => jumpCarousel(-1));
-      if (nextBtn) nextBtn.addEventListener('click', () => jumpCarousel(1));
-
-      const lightbox = document.getElementById('slide-lightbox');
-      const lightboxImg = document.getElementById('slide-lightbox-img');
-      const lightboxClose = document.getElementById('slide-lightbox-close');
-
-      function openLightbox(src, alt) {
-        lightboxImg.src = src; lightboxImg.alt = alt || '';
-        lightbox.classList.add('open'); document.body.style.overflow = 'hidden';
-      }
-      function closeLightbox() {
-        lightbox.classList.remove('open'); document.body.style.overflow = '';
-      }
-
-      track.addEventListener('click', (e) => {
-        const item = e.target.closest('.slide-item');
-        if (!item) return;
-        const img = item.querySelector('img');
-        if (img) openLightbox(img.src, img.alt);
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
       });
-      lightboxClose.addEventListener('click', closeLightbox);
-      lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
-    })();
+    });
+
+    function closeLB() {
+      lightbox.classList.remove('open', 'img-mode');
+      lbVideo.innerHTML = '';
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+    if (lbClose) lbClose.addEventListener('click', closeLB);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+
+    initCarousel('videos');
+  })();
+  </script>
+
+    <!-- ── MOBILE NAV ACTIVE STATE ── -->
+  <script>
+  (function () {
+    const navItems = Array.from(document.querySelectorAll('.mob-nav-item[data-section]'));
+    if (!navItems.length) return;
+
+    const sections = navItems.map(item => document.getElementById(item.dataset.section)).filter(Boolean);
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navItems.forEach(item => {
+            item.classList.toggle('active', item.dataset.section === id);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+    sections.forEach(s => observer.observe(s));
+  })();
   </script>
 
   <!-- ── LANG TOGGLE ES / EN (full-page) ── -->

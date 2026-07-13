@@ -1,0 +1,24 @@
+# Large video files — host on CDN/Cloudinary instead
+video/
+
+# Unused hero image variants
+img/hero-2.png
+img/hero-4.png
+img/hero-5.png
+img/hero-6.png
+img/hero-7.png
+img/hero-pixar.png
+img/hero-pixar-final.png
+img/hero-clay.png
+img/hero-clay-final.png
+img/hero-cyberpunk.png
+img/hero-cyberpunk-final.png
+img/hero-illustration.png
+
+# Backup / dev files
+index.backup-2026-03-27.html
+index.backup-redesign.html
+cambios web/
+no usar_primero_portafolio-diego/
+reporte-lumyn.html
+cv_diego_v2.html
