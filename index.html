@@ -316,6 +316,8 @@
       display: block;
       opacity: 0;
       transform: translateY(105%);
+      filter: blur(16px);
+      will-change: opacity, transform, filter;
       animation: wordReveal 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .hero-title-line:nth-child(1) .hero-word {
@@ -352,10 +354,13 @@
     }
 
     @keyframes wordReveal {
-      to { opacity: 1; transform: translateY(0); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
     }
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUpBlur {
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
     }
 
     /* hover removido del título — sin efecto */
@@ -397,7 +402,9 @@
       gap: 12px;
       opacity: 0;
       transform: translateY(20px);
-      animation: fadeUp 0.7s ease forwards 0.52s;
+      filter: blur(12px);
+      will-change: opacity, transform, filter;
+      animation: fadeUpBlur 0.7s ease forwards 0.52s;
     }
     .hero-role { display: none; }
     .hero-actions {
@@ -450,37 +457,6 @@
       z-index: 2;
     }
 
-    /* scroll indicator */
-    .hero-scroll {
-      position: absolute;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.7);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards 0.85s;
-      white-space: nowrap;
-      z-index: 10;  /* Garantiza visibilidad sobre portrait */
-    }
-    .hero-scroll::before {
-      content: '';
-      width: 1px;
-      height: 36px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
-      animation: scrollPulse 1.8s ease-in-out infinite;
-    }
-    @keyframes scrollPulse {
-      0%, 100% { opacity: 0.25; transform: scaleY(1) translateY(0); }
-      50%       { opacity: 0.9;  transform: scaleY(0.55) translateY(4px); }
-    }
 
 
     /* ══════════════════════════════════════
@@ -1747,7 +1723,6 @@
     @media (max-width: 1024px) {
       .wrapper { padding: 0 40px; }
       .hero    { padding: 0 40px 72px; }
-      .hero-scroll { left: 50%; transform: translateX(-50%); }
       .exp-layout { grid-template-columns: 200px 1fr; }
       .exp-sidebar { padding-right: 40px; }
       .timeline { padding-left: 40px; }
@@ -1759,7 +1734,6 @@
     @media (max-width: 860px) {
       .wrapper { padding: 0 28px; }
       .hero    { padding: 0 28px 64px; }
-      .hero-scroll { left: 50%; transform: translateX(-50%); }
       .about-grid { grid-template-columns: 1fr; gap: 48px; }
       .exp-layout { grid-template-columns: 1fr; }
       .exp-sidebar {
@@ -1805,10 +1779,8 @@
       .hero-bg-video { object-fit: cover; object-position: 72% center; }
       .hero-logo-svg { display: none; }
       .hero-role-mobile { display: block; }
-      .hero-scroll { display: none; }
       .hero > div[style] { max-width: 100% !important; }
       .hero { padding: 0 20px 60px; }
-      .hero-scroll { left: 50%; transform: translateX(-50%); }
       .hero-title { font-size: clamp(32px, 10vw, 56px); margin-bottom: 24px; }
       .hero-logo-svg { max-width: 220px; margin-top: 12px; margin-bottom: 24px; }
       .hero-bottom { flex-direction: column; align-items: flex-start; gap: 20px; }
@@ -1945,7 +1917,6 @@
       </div>
     </div>
     </div><!-- /z-index wrapper -->
-    <div class="hero-scroll" aria-hidden="true">scroll</div>
     <div class="hero-fade-bottom" aria-hidden="true"></div>
   </section>
 
