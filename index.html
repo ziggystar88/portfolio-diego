@@ -316,22 +316,22 @@
       display: block;
       opacity: 0;
       transform: translateY(105%);
-      filter: blur(16px);
+      filter: blur(24px);
       will-change: opacity, transform, filter;
-      animation: wordReveal 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: wordReveal 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .hero-title-line:nth-child(1) .hero-word {
-      animation-delay: 0.10s;
+      animation-delay: 0.15s;
       font-weight: 900;
     }
     .hero-title-line:nth-child(2) .hero-word {
-      animation-delay: 0.26s;
+      animation-delay: 0.45s;
       font-weight: 200;
       font-style: italic;
       color: var(--accent-light);
     }
     .hero-title-line:nth-child(3) .hero-word {
-      animation-delay: 0.42s;
+      animation-delay: 0.75s;
       font-weight: 200;
       font-style: italic;
       color: rgba(157,106,255,0.72);
@@ -400,11 +400,6 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 12px;
-      opacity: 0;
-      transform: translateY(20px);
-      filter: blur(12px);
-      will-change: opacity, transform, filter;
-      animation: fadeUpBlur 0.7s ease forwards 0.52s;
     }
     .hero-role { display: none; }
     .hero-actions {
@@ -428,6 +423,11 @@
       text-decoration: none;
       transition: background 0.2s, border-color 0.2s;
       cursor: pointer;
+      opacity: 0;
+      transform: translateY(16px);
+      filter: blur(20px);
+      will-change: opacity, transform, filter;
+      animation: fadeUpBlur 1s ease forwards 1.05s;
     }
     .hero-available:hover {
       background: rgba(74,222,128,0.15);
@@ -449,6 +449,16 @@
       display: flex;
       gap: 10px;
     }
+    .hero-btn-row > .btn-primary,
+    .hero-btn-row > .btn-secondary {
+      opacity: 0;
+      transform: translateY(16px);
+      filter: blur(20px);
+      will-change: opacity, transform, filter;
+      animation: fadeUpBlur 1s ease forwards;
+    }
+    .hero-btn-row > .btn-primary   { animation-delay: 1.25s; }
+    .hero-btn-row > .btn-secondary { animation-delay: 1.45s; }
 
     /* Constrain text to left half so portrait has room */
     .hero > div[style] {
