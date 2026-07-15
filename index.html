@@ -821,6 +821,23 @@
     }
     .wk-arrow:hover  { background: rgba(124,58,255,0.3); border-color: var(--accent-light); }
     .wk-arrow:active { transform: scale(0.92); }
+    .wk-arrow-prev, .wk-arrow-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+      background: rgba(8,8,8,0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .wk-arrow-prev:active, .wk-arrow-next:active { transform: translateY(-50%) scale(0.92); }
+    .wk-arrow-prev { left: 12px; }
+    .wk-arrow-next { right: 12px; }
+    @media (max-width: 640px) {
+      .wk-arrow-prev, .wk-arrow-next { width: 36px; height: 36px; font-size: 14px; }
+      .wk-arrow-prev { left: 8px; }
+      .wk-arrow-next { right: 8px; }
+    }
 
     /* Lightbox */
     .wk-lightbox {
@@ -2121,12 +2138,12 @@
             <span class="wk-vid-label">Maat</span>
           </div>
         </div>
+        <button class="wk-arrow wk-arrow-prev" data-cat="videos" data-dir="-1" aria-label="Anterior">&#8592;</button>
+        <button class="wk-arrow wk-arrow-next" data-cat="videos" data-dir="1" aria-label="Siguiente">&#8594;</button>
       </div>
       <div class="wk-nav">
         <div class="wk-arrows-dots">
-          <button class="wk-arrow" data-cat="videos" data-dir="-1" aria-label="Anterior">&#8592;</button>
           <div class="wk-dots" id="wk-dots-videos"></div>
-          <button class="wk-arrow" data-cat="videos" data-dir="1" aria-label="Siguiente">&#8594;</button>
         </div>
       </div>
     </div>
@@ -2195,12 +2212,12 @@
             <img src="img/slides/21-imagen-slide_1080x1920.jpg" alt="Digital 21" loading="lazy">
           </div>
         </div>
+        <button class="wk-arrow wk-arrow-prev" data-cat="digital" data-dir="-1" aria-label="Anterior">&#8592;</button>
+        <button class="wk-arrow wk-arrow-next" data-cat="digital" data-dir="1" aria-label="Siguiente">&#8594;</button>
       </div>
       <div class="wk-nav">
         <div class="wk-arrows-dots">
-          <button class="wk-arrow" data-cat="digital" data-dir="-1" aria-label="Anterior">&#8592;</button>
           <div class="wk-dots" id="wk-dots-digital"></div>
-          <button class="wk-arrow" data-cat="digital" data-dir="1" aria-label="Siguiente">&#8594;</button>
         </div>
       </div>
     </div>
@@ -2293,12 +2310,12 @@
             <img src="img/logos/28.png" alt="Logo 28" loading="lazy">
           </div>
         </div>
+        <button class="wk-arrow wk-arrow-prev" data-cat="logos" data-dir="-1" aria-label="Anterior">&#8592;</button>
+        <button class="wk-arrow wk-arrow-next" data-cat="logos" data-dir="1" aria-label="Siguiente">&#8594;</button>
       </div>
       <div class="wk-nav">
         <div class="wk-arrows-dots">
-          <button class="wk-arrow" data-cat="logos" data-dir="-1" aria-label="Anterior">&#8592;</button>
           <div class="wk-dots" id="wk-dots-logos"></div>
-          <button class="wk-arrow" data-cat="logos" data-dir="1" aria-label="Siguiente">&#8594;</button>
         </div>
       </div>
     </div>
