@@ -693,7 +693,7 @@
 
     /* Carousel stage */
     .wk-stage { margin-top: 52px; }
-    .wk-carousel { display: none; }
+    .wk-carousel { display: none; position: relative; }
     .wk-carousel.active { display: block; }
 
     /* Viewport */
@@ -821,6 +821,7 @@
     }
     .wk-arrow:hover  { background: rgba(124,58,255,0.3); border-color: var(--accent-light); }
     .wk-arrow:active { transform: scale(0.92); }
+    /* Flechas fuera del visor del carrusel — viven en el margen del wrapper, nunca sobre la imagen */
     .wk-arrow-prev, .wk-arrow-next {
       position: absolute;
       top: 50%;
@@ -831,10 +832,16 @@
       -webkit-backdrop-filter: blur(6px);
     }
     .wk-arrow-prev:active, .wk-arrow-next:active { transform: translateY(-50%) scale(0.92); }
-    .wk-arrow-prev { left: 12px; }
-    .wk-arrow-next { right: 12px; }
-    @media (max-width: 640px) {
-      /* En mobile no hay espacio para las flechas sin tapar la imagen — se navega con swipe + dots */
+    .wk-arrow-prev { left: -58px; }
+    .wk-arrow-next { right: -58px; }
+    /* Gutter del wrapper baja a 40px en este rango — achicamos la flecha para que siga sin tocar la imagen */
+    @media (max-width: 1024px) and (min-width: 861px) {
+      .wk-arrow-prev, .wk-arrow-next { width: 32px; height: 32px; font-size: 13px; }
+      .wk-arrow-prev { left: -38px; }
+      .wk-arrow-next { right: -38px; }
+    }
+    /* Debajo de 861px el gutter ya no alcanza — se navega con swipe + dots */
+    @media (max-width: 860px) {
       .wk-arrow-prev, .wk-arrow-next { display: none; }
     }
 
@@ -2137,9 +2144,9 @@
             <span class="wk-vid-label">Maat</span>
           </div>
         </div>
-        <button class="wk-arrow wk-arrow-prev" data-cat="videos" data-dir="-1" aria-label="Anterior">&#8592;</button>
-        <button class="wk-arrow wk-arrow-next" data-cat="videos" data-dir="1" aria-label="Siguiente">&#8594;</button>
       </div>
+      <button class="wk-arrow wk-arrow-prev" data-cat="videos" data-dir="-1" aria-label="Anterior">&#8592;</button>
+      <button class="wk-arrow wk-arrow-next" data-cat="videos" data-dir="1" aria-label="Siguiente">&#8594;</button>
       <div class="wk-nav">
         <div class="wk-arrows-dots">
           <div class="wk-dots" id="wk-dots-videos"></div>
@@ -2211,9 +2218,9 @@
             <img src="img/slides/21-imagen-slide_1080x1920.jpg" alt="Digital 21" loading="lazy">
           </div>
         </div>
-        <button class="wk-arrow wk-arrow-prev" data-cat="digital" data-dir="-1" aria-label="Anterior">&#8592;</button>
-        <button class="wk-arrow wk-arrow-next" data-cat="digital" data-dir="1" aria-label="Siguiente">&#8594;</button>
       </div>
+      <button class="wk-arrow wk-arrow-prev" data-cat="digital" data-dir="-1" aria-label="Anterior">&#8592;</button>
+      <button class="wk-arrow wk-arrow-next" data-cat="digital" data-dir="1" aria-label="Siguiente">&#8594;</button>
       <div class="wk-nav">
         <div class="wk-arrows-dots">
           <div class="wk-dots" id="wk-dots-digital"></div>
@@ -2309,9 +2316,9 @@
             <img src="img/logos/28.png" alt="Logo 28" loading="lazy">
           </div>
         </div>
-        <button class="wk-arrow wk-arrow-prev" data-cat="logos" data-dir="-1" aria-label="Anterior">&#8592;</button>
-        <button class="wk-arrow wk-arrow-next" data-cat="logos" data-dir="1" aria-label="Siguiente">&#8594;</button>
       </div>
+      <button class="wk-arrow wk-arrow-prev" data-cat="logos" data-dir="-1" aria-label="Anterior">&#8592;</button>
+      <button class="wk-arrow wk-arrow-next" data-cat="logos" data-dir="1" aria-label="Siguiente">&#8594;</button>
       <div class="wk-nav">
         <div class="wk-arrows-dots">
           <div class="wk-dots" id="wk-dots-logos"></div>
