@@ -1203,7 +1203,6 @@
       overflow: hidden;
       transition: border-color 0.3s, transform 0.4s, box-shadow 0.4s;
       position: relative;
-      cursor: default;
     }
     .project-card-lumyn:hover {
       border-color: rgba(124,58,255,0.5);
@@ -1227,38 +1226,37 @@
       grid-row: 1;
       background: #080812;
       border-left: 1px solid rgba(124,58,255,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       position: relative;
       overflow: hidden;
       min-height: 260px;
     }
-    .lumyn-visual::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, rgba(124,58,255,0.14) 0%, transparent 70%);
-    }
     .lumyn-visual img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
       display: block;
-      position: relative;
-      z-index: 1;
-      max-height: 60px;
-      object-fit: contain;
-      max-width: 260px;
+      transition: transform 0.5s ease, filter 0.5s ease;
+      filter: brightness(0.9) saturate(1.1);
     }
-    .lumyn-visual-text {
+    .project-card-lumyn:hover .lumyn-visual img {
+      transform: scale(1.04);
+      filter: brightness(1) saturate(1.2);
+    }
+    .lumyn-visual-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
       font-family: 'DM Mono', monospace;
       font-size: 9px;
-      color: var(--muted2);
-      text-align: center;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      position: absolute;
-      bottom: 20px;
+      color: var(--accent-light);
+      background: rgba(0,0,0,0.65);
+      border: 1px solid rgba(124,58,255,0.35);
+      border-radius: 4px;
+      padding: 4px 8px;
+      backdrop-filter: blur(6px);
     }
     .lumyn-content {
       grid-column: 1;
@@ -1277,11 +1275,11 @@
       margin-bottom: 14px;
     }
     .lumyn-name {
-      font-size: 40px;
+      font-size: 36px;
       font-weight: 900;
       letter-spacing: -0.035em;
       color: #fff;
-      line-height: 1;
+      line-height: 1.05;
       margin-bottom: 14px;
     }
     .lumyn-name span { color: var(--accent-light); }
@@ -1292,7 +1290,24 @@
       max-width: 340px;
       margin-bottom: 28px;
     }
-    .lumyn-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .lumyn-btn {
+      display: inline-block;
+      padding: 11px 26px;
+      border-radius: 100px;
+      background: rgba(124,58,255,0.12);
+      border: 1px solid rgba(124,58,255,0.4);
+      color: var(--accent-light);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: background 0.25s, border-color 0.25s, color 0.25s, box-shadow 0.25s;
+    }
+    .project-card-lumyn:hover .lumyn-btn {
+      background: rgba(124,58,255,0.22);
+      border-color: rgba(124,58,255,0.7);
+      color: #fff;
+      box-shadow: 0 0 18px rgba(124,58,255,0.25);
+    }
 
     /* Cyberpunk project card */
     .project-card-cyber {
@@ -1907,7 +1922,7 @@
       .project-card-lumyn { grid-template-columns: 1fr; }
       .lumyn-visual {
         grid-column: 1; grid-row: 1;
-        min-height: 80px;
+        min-height: 180px;
         border-left: none;
         border-bottom: 1px solid rgba(124,58,255,0.15);
       }
@@ -2548,33 +2563,23 @@
       <div class="reveal" style="margin-bottom:48px">
         <div class="section-label">Websites</div>
       </div>
-      <div class="project-card-lumyn reveal">
+      <a href="https://web-v2-eight-xi.vercel.app/" target="_blank" rel="noopener noreferrer"
+         class="project-card-lumyn reveal" style="text-decoration:none;display:grid;">
         <div class="lumyn-visual">
-          <a href="https://web-v2-eight-xi.vercel.app/" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;position:relative;z-index:1;" aria-label="Visitar Lumyn.studio">
-            <img src="logo/SVG/logo_lumyn-studio.svg"
-                 alt="Lumyn.studio"
-                 role="img"
-                 style="width:100%;height:auto;display:block;max-height:60px;object-fit:contain;transition:transform 0.25s,filter 0.25s;"
-                 onmouseover="this.style.transform='scale(1.06)';this.style.filter='drop-shadow(0 0 12px rgba(124,58,255,0.8))'"
-                 onmouseout="this.style.transform='scale(1)';this.style.filter='none'" />
-          </a>
+          <img src="img/project-lumyn.jpg" alt="Lumyn.studio — agencia boutique de contenido IA" loading="lazy" />
+          <span class="lumyn-visual-badge">Proyecto propio · Estudio boutique</span>
         </div>
         <div class="lumyn-content">
           <div>
             <div class="project-label">Proyecto propio · 2026 — presente</div>
+            <h3 class="lumyn-name">Lumyn<span>.studio</span></h3>
             <p class="lumyn-tagline">Estudio boutique de contenido IA: product shots, virtual influencers y UGC sintético para marcas. Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1.</p>
           </div>
-          <div class="lumyn-chips tags-wrap">
-            <span class="tag">ComfyUI</span>
-            <span class="tag">Flux.1</span>
-            <span class="tag">Wan2.1</span>
-            <span class="tag">Virtual Influencers</span>
-            <span class="tag">UGC Sintético</span>
-            <span class="tag">Claude Code</span>
-            <span class="tag">Lovable</span>
+          <div>
+            <span class="lumyn-btn">Ir a la web →</span>
           </div>
         </div>
-      </div>
+      </a>
 
       <!-- Cyberpunk Motorcycle — web demo -->
       <a href="https://nothing-moto-deploy.vercel.app/" target="_blank" rel="noopener noreferrer"
