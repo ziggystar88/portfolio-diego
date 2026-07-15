@@ -8,7 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AFF'/><text x='16' y='22' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='18' fill='white'>D</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&family=DM+Mono:wght@400;500&family=Big+Shoulders+Display:wght@100;200;300;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&family=DM+Mono:wght@400;500&family=Big+Shoulders+Display:wght@100;200;300;500;800;900&display=swap" rel="stylesheet" />
   <!-- GSAP + ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
@@ -662,7 +662,7 @@
     .wk-cat-name {
       font-family: 'Big Shoulders Display', sans-serif;
       font-size: clamp(24px, 3.8vw, 52px);
-      font-weight: 800;
+      font-weight: 500;
       color: rgba(255,255,255,0.22);
       flex: 1;
       transition: color 0.25s;
@@ -2855,9 +2855,20 @@
     document.querySelectorAll('.wk-cat-row').forEach(row => {
       row.addEventListener('click', () => {
         const cat = row.dataset.cat;
+        const stage = document.querySelector('.wk-stage');
+        const wasActive = row.classList.contains('active');
+
+        if (wasActive) {
+          row.classList.remove('active');
+          document.querySelectorAll('.wk-carousel').forEach(c => c.classList.remove('active'));
+          if (stage) stage.style.display = 'none';
+          return;
+        }
+
         document.querySelectorAll('.wk-cat-row').forEach(r => r.classList.toggle('active', r === row));
         document.querySelectorAll('.wk-carousel').forEach(c => c.classList.toggle('active', c.dataset.cat === cat));
         placeStageAfter(row);
+        if (stage) stage.style.display = '';
         if (!state[cat]) initCarousel(cat);
         else go(cat, state[cat].current);
       });
