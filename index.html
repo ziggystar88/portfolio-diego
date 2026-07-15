@@ -825,7 +825,7 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      z-index: 5;
+      z-index: 20;
       background: rgba(8,8,8,0.55);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
@@ -834,9 +834,8 @@
     .wk-arrow-prev { left: 12px; }
     .wk-arrow-next { right: 12px; }
     @media (max-width: 640px) {
-      .wk-arrow-prev, .wk-arrow-next { width: 36px; height: 36px; font-size: 14px; }
-      .wk-arrow-prev { left: 8px; }
-      .wk-arrow-next { right: 8px; }
+      /* En mobile no hay espacio para las flechas sin tapar la imagen — se navega con swipe + dots */
+      .wk-arrow-prev, .wk-arrow-next { display: none; }
     }
 
     /* Lightbox */
