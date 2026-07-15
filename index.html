@@ -2847,15 +2847,23 @@
     const pref = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const state = {};
 
+    function placeStageAfter(row) {
+      const stage = document.querySelector('.wk-stage');
+      if (stage && row) row.insertAdjacentElement('afterend', stage);
+    }
+
     document.querySelectorAll('.wk-cat-row').forEach(row => {
       row.addEventListener('click', () => {
         const cat = row.dataset.cat;
         document.querySelectorAll('.wk-cat-row').forEach(r => r.classList.toggle('active', r === row));
         document.querySelectorAll('.wk-carousel').forEach(c => c.classList.toggle('active', c.dataset.cat === cat));
+        placeStageAfter(row);
         if (!state[cat]) initCarousel(cat);
         else go(cat, state[cat].current);
       });
     });
+
+    placeStageAfter(document.querySelector('.wk-cat-row.active') || document.querySelector('.wk-cat-row'));
 
     function initCarousel(cat) {
       const carousel = document.querySelector(`.wk-carousel[data-cat="${cat}"]`);
