@@ -39,7 +39,7 @@
     /* Custom cursor */
     *, *::before, *::after { cursor: url('img/cursor.png') 8 8, auto; }
     a, button, [role="button"], .nav-cta, .btn-primary, .btn-secondary,
-    .wk-card, .wk-arrow, .wk-dot, .wk-cat-row, .wk-cat-name, .wk-cat-num, .wk-cat-count, .lang-toggle,
+    .wk-card, .wk-arrow, .wk-dot, .wk-cat-row, .wk-cat-name, .wk-cat-num, .wk-cat-count, .wk-cat-chevron, .lang-toggle,
     .filter-btn { cursor: url('img/cursor.png') 8 8, pointer; }
 
     :focus-visible {
@@ -677,6 +677,19 @@
       color: var(--muted);
       letter-spacing: 0.06em;
     }
+    .wk-cat-chevron {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      transition: transform 0.3s ease, color 0.25s;
+    }
+    .wk-cat-chevron svg { width: 14px; height: 14px; }
+    .wk-cat-row.active .wk-cat-chevron { color: var(--accent-light); transform: rotate(180deg); }
+    .wk-cat-row:hover .wk-cat-chevron { color: #fff; }
 
     /* Carousel stage */
     .wk-stage { margin-top: 52px; }
@@ -1964,16 +1977,19 @@
           <span class="wk-cat-num">01</span>
           <span class="wk-cat-name" data-es="Videos" data-en="Videos">Videos</span>
           <span class="wk-cat-count">24 piezas</span>
+          <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
         <div class="wk-cat-row" data-cat="digital">
           <span class="wk-cat-num">02</span>
           <span class="wk-cat-name" data-es="Digital" data-en="Digital">Digital</span>
           <span class="wk-cat-count">20 piezas</span>
+          <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
         <div class="wk-cat-row" data-cat="logos">
           <span class="wk-cat-num">03</span>
           <span class="wk-cat-name" data-es="Logotipos" data-en="Logos">Logotipos</span>
           <span class="wk-cat-count">28 piezas</span>
+          <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
       </div>
     </div>
