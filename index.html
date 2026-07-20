@@ -1817,7 +1817,17 @@
       background: rgba(124,58,255,0.06);
     }
     .contact-field textarea { resize: vertical; min-height: 100px; font-family: 'Poppins', sans-serif; }
-    .contact-field select { cursor: pointer; }
+    .contact-field select { cursor: pointer; accent-color: var(--accent-light); }
+    .contact-field select option {
+      background: #0d0d0d;
+      color: #fff;
+    }
+    .contact-field select option:checked,
+    .contact-field select option:hover,
+    .contact-field select option:focus {
+      background: var(--accent-light);
+      color: #fff;
+    }
     .contact-checkbox {
       display: flex;
       align-items: flex-start;
