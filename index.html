@@ -2812,7 +2812,9 @@
       <div class="footer-cta-block reveal">
         <video
           class="contact-bg-video"
-          src="img/Device_levitates_in_void_1080p_202607291234.mp4"
+          id="contact-bg-video"
+          data-src-desktop="img/Device_levitates_in_void_1080p_202607291234.mp4"
+          data-src-mobile="img/contact-bg-mobile.mp4"
           autoplay
           muted
           loop
@@ -3412,6 +3414,29 @@
         translatePage();
       });
     })();
+  </script>
+
+  <!-- ── CONTACT BG VIDEO: responsive source (desktop vs mobile) ── -->
+  <script>
+  (function () {
+    var v = document.getElementById('contact-bg-video');
+    if (!v) return;
+    var mq = window.matchMedia('(max-width: 640px)');
+    var current = '';
+    function setSrc() {
+      var next = mq.matches ? v.dataset.srcMobile : v.dataset.srcDesktop;
+      if (next && next !== current) {
+        current = next;
+        v.src = next;
+        v.load();
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+      }
+    }
+    setSrc();
+    if (mq.addEventListener) mq.addEventListener('change', setSrc);
+    else if (mq.addListener) mq.addListener(setSrc);
+  })();
   </script>
 
   <!-- ── CONTACT FORM → mailto ── -->
