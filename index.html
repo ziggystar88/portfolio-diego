@@ -2071,6 +2071,102 @@
       .hero-btn-row { flex-direction: column; }
       .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
     }
+
+    /* ══════════════════════════════════════
+       NAV CONTROLS — segmented theme + lang toggles
+    ══════════════════════════════════════ */
+    .nav-controls { display: flex; align-items: center; gap: 8px; margin-right: 12px; }
+    .seg-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 2px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px;
+    }
+    .seg-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 24px;
+      padding: 0 9px;
+      border: none;
+      background: none;
+      border-radius: 100px;
+      cursor: pointer;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 1;
+      transition: background 0.2s, color 0.2s;
+    }
+    .theme-seg .seg-btn { min-width: 28px; padding: 0 7px; }
+    .seg-btn svg { display: block; width: 14px; height: 14px; }
+    .seg-btn:hover { color: var(--text); }
+    .seg-btn.active { background: var(--accent); color: #fff; }
+    .seg-btn.active svg { stroke: #fff; }
+
+    /* ══════════════════════════════════════
+       LIGHT THEME (html.light)
+    ══════════════════════════════════════ */
+    html.light {
+      --bg: #F4F3EF;
+      --card: #ffffff;
+      --border: rgba(0,0,0,0.10);
+      --border-hover: rgba(124,58,255,0.35);
+      --text: #000000;
+      --muted: #454545;
+      --muted2: #6a6a6a;
+    }
+    html.light body::before { opacity: 0.12; }
+
+    /* Nav in light — more opaque so dark text stays legible over the dark hero */
+    html.light #main-nav { background: rgba(255,255,255,0.72); border-color: rgba(0,0,0,0.08); }
+    html.light #main-nav.scrolled { background: rgba(255,255,255,0.88); border-color: rgba(0,0,0,0.10); box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+    html.light .nav-logo { color: #000; }
+    html.light .nav-links a:hover { color: #000; }
+    html.light .seg-group { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.14); }
+    html.light .seg-btn { color: #5a5a5a; }
+    html.light .seg-btn:hover { color: #000; }
+    html.light .seg-btn.active { background: var(--accent); color: #fff; }
+
+    /* Mid-section headings hardcoded #fff → true black */
+    html.light .stat-number,
+    html.light .wk-title,
+    html.light .exp-sidebar-title,
+    html.light .timeline-company,
+    html.light .about-text strong { color: #000; }
+
+    /* Work category rows */
+    html.light .wk-cats { border-top-color: rgba(0,0,0,0.12); }
+    html.light .wk-cat-row { border-bottom-color: rgba(0,0,0,0.12); }
+    html.light .wk-cat-name { color: rgba(0,0,0,0.30); }
+    html.light .wk-cat-row.active .wk-cat-name,
+    html.light .wk-cat-row:hover .wk-cat-name { color: #000; }
+    html.light .wk-cat-row:hover .wk-cat-chevron { color: #000; }
+
+    /* About + experience body text → dark, legible on light bg */
+    html.light .about-text { color: #333; }
+    html.light .timeline-list li { color: #3f3f3f; }
+    html.light .timeline-other { color: #555; }
+    html.light .timeline-date { background: rgba(0,0,0,0.05); }
+    html.light .tag-neutral { background: rgba(0,0,0,0.05); color: #444; }
+
+    /* Footer stays dark in both themes (sits over dark video / dark backdrop) */
+    html.light .footer-section { background: #080808; }
+    html.light .footer-section .contact-field label,
+    html.light .footer-section .contact-checkbox,
+    html.light .footer-section .footer-cta-alt,
+    html.light .footer-section .footer-claudecode { color: rgba(255,255,255,0.6); }
+    html.light .footer-section .footer-claudecode strong { color: rgba(255,255,255,0.8); }
+
+    @media (max-width: 640px) {
+      .nav-controls { gap: 5px; margin-right: 6px; }
+      .seg-btn { min-width: 26px; padding: 0 6px; font-size: 10px; height: 22px; }
+    }
   </style>
 </head>
 <body>
@@ -2083,10 +2179,20 @@
       <li><a href="#sobre-mi" data-es="Sobre mí" data-en="About me">Sobre mí</a></li>
       <li><a href="#experiencia" data-es="Experiencia" data-en="Experience">Experiencia</a></li>
     </ul>
-    <button class="lang-toggle" id="lang-toggle" aria-label="Cambiar idioma" title="Cambiar idioma / Switch language">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      <span id="lang-label">ES</span>
-    </button>
+    <div class="nav-controls">
+      <div class="seg-group theme-seg" id="theme-seg" role="group" aria-label="Tema claro u oscuro">
+        <button type="button" class="seg-btn" data-theme-val="light" aria-label="Tema claro" title="Tema claro">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <button type="button" class="seg-btn" data-theme-val="dark" aria-label="Tema oscuro" title="Tema oscuro">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+      <div class="seg-group lang-seg" id="lang-seg" role="group" aria-label="Idioma / Language">
+        <button type="button" class="seg-btn" data-lang-val="es">ES</button>
+        <button type="button" class="seg-btn" data-lang-val="en">EN</button>
+      </div>
+    </div>
     <a href="#contacto" class="nav-cta" data-es="Hablemos →" data-en="Let's Talk →">Hablemos →</a>
   </nav>
 
@@ -2551,6 +2657,90 @@
     </div>
   </section>
 
+  <!-- ── PROYECTOS / WEBSITES (movido: ahora tras Contenido) ── -->
+  <section class="projects-section" id="proyectos">
+    <div class="wrapper">
+      <div class="reveal" style="margin-bottom:48px">
+        <div class="section-label" data-es="Websites" data-en="Websites">Websites</div>
+      </div>
+      <a href="https://web-v2-eight-xi.vercel.app/" target="_blank" rel="noopener noreferrer"
+         class="project-card-lumyn reveal" style="text-decoration:none;display:grid;">
+        <div class="lumyn-visual">
+          <img src="img/project-lumyn.jpg" alt="Lumyn.studio — agencia boutique de contenido IA" loading="lazy" />
+          <span class="lumyn-visual-badge">Estudio boutique</span>
+        </div>
+        <div class="lumyn-content">
+          <div>
+            <div class="project-label">2026 — presente</div>
+            <h3 class="lumyn-name">Lumyn<span>.studio</span></h3>
+            <p class="lumyn-tagline">Estudio boutique de contenido IA: product shots, virtual influencers y UGC sintético para marcas. Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1.</p>
+          </div>
+          <div>
+            <span class="lumyn-btn">Ir a la web →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Cyberpunk Motorcycle — web demo -->
+      <a href="https://nothing-moto-deploy.vercel.app/" target="_blank" rel="noopener noreferrer"
+         class="project-card-cyber reveal" style="text-decoration:none;display:grid;">
+        <div class="cyber-visual">
+          <img src="img/cyber-moto.jpg" alt="Cyberpunk Motorcycle — web demo" loading="lazy" />
+          <span class="cyber-visual-badge">Demo · Web de ejemplo</span>
+        </div>
+        <div class="cyber-content">
+          <div>
+            <div class="project-label cyber-label">Proyecto propio · 2025 — concepto</div>
+            <h3 class="cyber-name">Cyberpunk<br><span>Motorcycle</span></h3>
+            <p class="lumyn-tagline">Landing page de concepto para una marca ficticia de motos de alto rendimiento con estética cyberpunk. Desarrollada con Claude Code como demo de capacidades web — el producto no es real.</p>
+          </div>
+          <div>
+            <span class="cyber-btn">Ir a la web →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- CryptoStart — web demo -->
+      <a href="https://cryptostart-beta.vercel.app/" target="_blank" rel="noopener noreferrer"
+         class="project-card-crypto reveal" style="text-decoration:none;display:grid;">
+        <div class="crypto-visual">
+          <img src="img/project-cryptostart.jpg" alt="CryptoStart — plataforma educativa Web3" loading="lazy" />
+          <span class="crypto-visual-badge">Demo · Plataforma Web3</span>
+        </div>
+        <div class="crypto-content">
+          <div>
+            <div class="project-label crypto-label">Proyecto propio · 2026 — concepto</div>
+            <h3 class="crypto-name">Crypto<span>Start</span></h3>
+            <p class="lumyn-tagline">Plataforma educativa de Web3 en español: simulador de trading con $10.000 USD virtuales, precios de mercado en vivo, quizzes con recompensa de insignia NFT y planes de suscripción. Desarrollada con Claude Code como demo de producto SaaS — no custodia fondos reales.</p>
+          </div>
+          <div>
+            <span class="crypto-btn">Ir a la web →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Nexus Bank — web demo -->
+      <a href="https://web-nexus-bank.vercel.app/login" target="_blank" rel="noopener noreferrer"
+         class="project-card-crypto reveal" style="text-decoration:none;display:grid;">
+        <div class="crypto-visual">
+          <img src="img/project-nexusbank.jpg" alt="Nexus Bank — dashboard bancario ficticio" loading="lazy" />
+          <span class="crypto-visual-badge">Demo · Dashboard Bancario</span>
+        </div>
+        <div class="crypto-content">
+          <div>
+            <div class="project-label crypto-label">Proyecto propio · 2026 — concepto</div>
+            <h3 class="crypto-name">Nexus<span> Bank</span></h3>
+            <p class="lumyn-tagline">Dashboard bancario ficticio: gestión de cuentas, gráficos de gastos e ingresos con Recharts, tarjetas virtuales y panel de transacciones. Prototipo de portafolio construido con React, Vite y Tailwind CSS — sin datos ni fondos reales.</p>
+          </div>
+          <div>
+            <span class="crypto-btn">Ir a la web →</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
     <!-- ── SOBRE MÍ + STACK ── -->
   <section class="about-section" id="sobre-mi">
     <div class="wrapper">
@@ -2642,90 +2832,6 @@
       </div>
     </div>
     <p class="quotes-caption">Pasa el cursor sobre las partículas y cobran vida</p>
-  </section>
-
-  <!-- ── PROYECTOS ── -->
-  <section class="projects-section" id="proyectos">
-    <div class="wrapper">
-      <div class="reveal" style="margin-bottom:48px">
-        <div class="section-label">Websites</div>
-      </div>
-      <a href="https://web-v2-eight-xi.vercel.app/" target="_blank" rel="noopener noreferrer"
-         class="project-card-lumyn reveal" style="text-decoration:none;display:grid;">
-        <div class="lumyn-visual">
-          <img src="img/project-lumyn.jpg" alt="Lumyn.studio — agencia boutique de contenido IA" loading="lazy" />
-          <span class="lumyn-visual-badge">Estudio boutique</span>
-        </div>
-        <div class="lumyn-content">
-          <div>
-            <div class="project-label">2026 — presente</div>
-            <h3 class="lumyn-name">Lumyn<span>.studio</span></h3>
-            <p class="lumyn-tagline">Estudio boutique de contenido IA: product shots, virtual influencers y UGC sintético para marcas. Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1.</p>
-          </div>
-          <div>
-            <span class="lumyn-btn">Ir a la web →</span>
-          </div>
-        </div>
-      </a>
-
-      <!-- Cyberpunk Motorcycle — web demo -->
-      <a href="https://nothing-moto-deploy.vercel.app/" target="_blank" rel="noopener noreferrer"
-         class="project-card-cyber reveal" style="text-decoration:none;display:grid;">
-        <div class="cyber-visual">
-          <img src="img/cyber-moto.jpg" alt="Cyberpunk Motorcycle — web demo" loading="lazy" />
-          <span class="cyber-visual-badge">Demo · Web de ejemplo</span>
-        </div>
-        <div class="cyber-content">
-          <div>
-            <div class="project-label cyber-label">Proyecto propio · 2025 — concepto</div>
-            <h3 class="cyber-name">Cyberpunk<br><span>Motorcycle</span></h3>
-            <p class="lumyn-tagline">Landing page de concepto para una marca ficticia de motos de alto rendimiento con estética cyberpunk. Desarrollada con Claude Code como demo de capacidades web — el producto no es real.</p>
-          </div>
-          <div>
-            <span class="cyber-btn">Ir a la web →</span>
-          </div>
-        </div>
-      </a>
-
-      <!-- CryptoStart — web demo -->
-      <a href="https://cryptostart-beta.vercel.app/" target="_blank" rel="noopener noreferrer"
-         class="project-card-crypto reveal" style="text-decoration:none;display:grid;">
-        <div class="crypto-visual">
-          <img src="img/project-cryptostart.jpg" alt="CryptoStart — plataforma educativa Web3" loading="lazy" />
-          <span class="crypto-visual-badge">Demo · Plataforma Web3</span>
-        </div>
-        <div class="crypto-content">
-          <div>
-            <div class="project-label crypto-label">Proyecto propio · 2026 — concepto</div>
-            <h3 class="crypto-name">Crypto<span>Start</span></h3>
-            <p class="lumyn-tagline">Plataforma educativa de Web3 en español: simulador de trading con $10.000 USD virtuales, precios de mercado en vivo, quizzes con recompensa de insignia NFT y planes de suscripción. Desarrollada con Claude Code como demo de producto SaaS — no custodia fondos reales.</p>
-          </div>
-          <div>
-            <span class="crypto-btn">Ir a la web →</span>
-          </div>
-        </div>
-      </a>
-
-      <!-- Nexus Bank — web demo -->
-      <a href="https://web-nexus-bank.vercel.app/login" target="_blank" rel="noopener noreferrer"
-         class="project-card-crypto reveal" style="text-decoration:none;display:grid;">
-        <div class="crypto-visual">
-          <img src="img/project-nexusbank.jpg" alt="Nexus Bank — dashboard bancario ficticio" loading="lazy" />
-          <span class="crypto-visual-badge">Demo · Dashboard Bancario</span>
-        </div>
-        <div class="crypto-content">
-          <div>
-            <div class="project-label crypto-label">Proyecto propio · 2026 — concepto</div>
-            <h3 class="crypto-name">Nexus<span> Bank</span></h3>
-            <p class="lumyn-tagline">Dashboard bancario ficticio: gestión de cuentas, gráficos de gastos e ingresos con Recharts, tarjetas virtuales y panel de transacciones. Prototipo de portafolio construido con React, Vite y Tailwind CSS — sin datos ni fondos reales.</p>
-          </div>
-          <div>
-            <span class="crypto-btn">Ir a la web →</span>
-          </div>
-        </div>
-      </a>
-
-    </div>
   </section>
 
   <!-- ── EXPERIENCIA ── -->
@@ -3344,14 +3450,24 @@
   })();
   </script>
 
-  <!-- ── LANG TOGGLE ES / EN (full-page) ── -->
+  <!-- ── THEME (light/dark) + LANG (ES/EN) TOGGLES ── -->
   <script>
     (function () {
-      const btn        = document.getElementById('lang-toggle');
-      const labelEl    = document.getElementById('lang-label');
-      const labelMobEl = document.getElementById('lang-label-mobile');
-      if (!btn) return;
+      /* ---------- THEME ---------- */
+      const root = document.documentElement;
+      const themeBtns = document.querySelectorAll('#theme-seg .seg-btn');
+      function applyTheme(theme) {
+        root.classList.toggle('light', theme === 'light');
+        themeBtns.forEach(b => b.classList.toggle('active', b.dataset.themeVal === theme));
+        try { localStorage.setItem('dm-theme', theme); } catch (e) {}
+      }
+      themeBtns.forEach(b => b.addEventListener('click', () => applyTheme(b.dataset.themeVal)));
+      let savedTheme = 'dark';
+      try { savedTheme = localStorage.getItem('dm-theme') || 'dark'; } catch (e) {}
+      applyTheme(savedTheme);
 
+      /* ---------- LANGUAGE ---------- */
+      const langBtns = document.querySelectorAll('#lang-seg .seg-btn');
       let lang = 'es';
 
       // Elements with data-es / data-en already in markup
@@ -3361,24 +3477,7 @@
         });
       }
 
-      // Add full-page translation map for elements without attributes
-      const translations = {
-        // Hero
-        '.hero-eyebrow':        { es: 'AI Creative Producer · Art Director', en: 'AI Creative Producer · Art Director' },
-        '.hero-available':      { es: 'Disponible para nuevos proyectos',     en: 'Available for new projects' },
-        // Counters labels
-        '.count-label':         { es: null, en: null }, // handled per-element below
-        // Section labels
-        '.section-label':       { es: null, en: null },
-        // About
-        '.about-desc p':        { es: null, en: null },
-        // Footer CTA
-        '.footer-cta-tag':      { es: 'Contacto', en: 'Contact' },
-        '.footer-cta-title':    { es: null, en: null },
-        '.footer-brand-desc':   { es: null, en: null },
-      };
-
-      // Fine-grained map: selector → { es, en } — overrides generic
+      // Fine-grained map: selector → { es, en } (innerHTML-safe)
       const textMap = [
         { sel: '.footer-cta-title',      es: '¿Trabajamos <span>juntos?</span>',              en: "Let's <span>Work Together?</span>" },
         { sel: '.footer-cta-sub',        es: 'Si estás buscando alguien que entienda tanto de <strong>creatividad con tecnología IA</strong> — hablemos.', en: 'If you\'re looking for someone who understands both <strong>creativity and AI technology</strong> — let\'s talk.' },
@@ -3387,32 +3486,27 @@
         { sel: '.slides-title',          es: 'Trabajos recientes',                en: 'Recent Work' },
         { sel: '.footer-brand-name',     es: 'Diego <span>Manjarrés</span>.',     en: 'Diego <span>Manjarrés</span>.' },
         { sel: '.footer-cta-tag',        es: 'Contacto',                          en: 'Contact' },
-        { sel: '.footer-claudecode',     es: null,                                en: null },
-        { sel: 'title',                  es: 'Diego Manjarrés — AI Creative Producer', en: 'Diego Manjarrés — AI Creative Producer' },
       ];
 
       function translatePage() {
-        // 1. data-es / data-en attributes
         swapAttrElements();
-        // 2. textMap (innerHTML-safe)
         textMap.forEach(({ sel, es, en }) => {
           const val = lang === 'en' ? en : es;
           if (!val) return;
-          document.querySelectorAll(sel).forEach(el => {
-            el.innerHTML = val;
-          });
+          document.querySelectorAll(sel).forEach(el => { el.innerHTML = val; });
         });
-        // 3. html lang
         document.documentElement.lang = lang;
-        // 4. Labels
-        if (labelEl)    labelEl.textContent    = lang.toUpperCase();
-        if (labelMobEl) labelMobEl.textContent = lang === 'es' ? 'ES / EN' : 'EN / ES';
+        langBtns.forEach(b => b.classList.toggle('active', b.dataset.langVal === lang));
       }
-
-      btn.addEventListener('click', () => {
-        lang = lang === 'es' ? 'en' : 'es';
+      function setLang(next) {
+        lang = next;
         translatePage();
-      });
+        try { localStorage.setItem('dm-lang', lang); } catch (e) {}
+      }
+      langBtns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.langVal)));
+      let savedLang = 'es';
+      try { savedLang = localStorage.getItem('dm-lang') || 'es'; } catch (e) {}
+      setLang(savedLang);
     })();
   </script>
 
