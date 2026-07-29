@@ -1690,16 +1690,14 @@
       align-items: center;
       isolation: isolate;
     }
-    /* Parallax image layer */
-    .contact-parallax-img {
+    /* Background video layer */
+    .contact-bg-video {
       position: absolute;
       inset: 0;
       width: 100%;
-      height: 130%;
-      top: -15%;
+      height: 100%;
       object-fit: cover;
-      object-position: 68% center;
-      will-change: transform;
+      object-position: center center;
       pointer-events: none;
       z-index: 0;
     }
@@ -1736,11 +1734,11 @@
     }
     @media (max-width: 860px) {
       .footer-cta-inner { padding: 72px 40px; }
-      .contact-parallax-img { object-position: 72% center; }
+      .contact-bg-video { object-position: center center; }
     }
     @media (max-width: 640px) {
       .footer-cta-inner { padding: 64px 20px; }
-      .contact-parallax-img { object-position: 75% center; height: 140%; top: -20%; }
+      .contact-bg-video { object-position: center center; }
     }
     .footer-cta-tag {
       font-family: 'DM Mono', monospace;
@@ -2184,7 +2182,7 @@
         <a class="hero-available" href="https://wa.me/56945128412" target="_blank" rel="noopener noreferrer">Disponible para nuevos proyectos</a>
         <div class="hero-btn-row">
           <a href="#showreel" class="btn-primary">Ver mi trabajo ↓</a>
-          <a href="cv-diegomanjarres/CV_Diego_Manjarres.pdf" download="CV_Diego_Manjarres.pdf" class="btn-secondary">Ver CV →</a>
+          <a href="cv-diegomanjarres/CV_Diego_Manjarres.pdf" target="_blank" rel="noopener noreferrer" class="btn-secondary">Ver CV →</a>
         </div>
       </div>
     </div>
@@ -2656,11 +2654,11 @@
          class="project-card-lumyn reveal" style="text-decoration:none;display:grid;">
         <div class="lumyn-visual">
           <img src="img/project-lumyn.jpg" alt="Lumyn.studio — agencia boutique de contenido IA" loading="lazy" />
-          <span class="lumyn-visual-badge">Proyecto propio · Estudio boutique</span>
+          <span class="lumyn-visual-badge">Estudio boutique</span>
         </div>
         <div class="lumyn-content">
           <div>
-            <div class="project-label">Proyecto propio · 2026 — presente</div>
+            <div class="project-label">2026 — presente</div>
             <h3 class="lumyn-name">Lumyn<span>.studio</span></h3>
             <p class="lumyn-tagline">Estudio boutique de contenido IA: product shots, virtual influencers y UGC sintético para marcas. Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1.</p>
           </div>
@@ -2812,13 +2810,16 @@
     <div class="wrapper">
 
       <div class="footer-cta-block reveal">
-        <img
-          src="img/contact-bg.png"
-          alt=""
+        <video
+          class="contact-bg-video"
+          src="img/Device_levitates_in_void_1080p_202607291234.mp4"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
           aria-hidden="true"
-          class="contact-parallax-img"
-          id="contact-parallax-img"
-        />
+        ></video>
         <div class="footer-cta-inner">
           <div class="footer-cta-tag">Contacto</div>
           <h2 class="footer-cta-title">Hablemos de tu <span>próximo proyecto</span></h2>
@@ -3411,34 +3412,6 @@
         translatePage();
       });
     })();
-  </script>
-
-  <!-- ── CONTACT PARALLAX (GSAP ScrollTrigger) ── -->
-  <script>
-  window.addEventListener('load', function () {
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    const img = document.getElementById('contact-parallax-img');
-    if (!img) return;
-
-    gsap.fromTo(img,
-      { y: '0%' },
-      {
-        y: '12%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: img.closest('.footer-cta-block'),
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        }
-      }
-    );
-  });
   </script>
 
   <!-- ── CONTACT FORM → mailto ── -->
