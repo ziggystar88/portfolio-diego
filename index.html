@@ -2136,9 +2136,14 @@
     /* Mid-section headings hardcoded #fff → true black */
     html.light .stat-number,
     html.light .wk-title,
+    html.light .showreel-title,
     html.light .exp-sidebar-title,
     html.light .timeline-company,
     html.light .about-text strong { color: #000; }
+
+    /* Particles caption + kill the white hero fade in light mode */
+    html.light .quotes-caption { color: #111; }
+    html.light .hero-fade-bottom { background: linear-gradient(to bottom, transparent 0%, #080808 100%); }
 
     /* Work category rows */
     html.light .wk-cats { border-top-color: rgba(0,0,0,0.12); }
@@ -2285,10 +2290,10 @@
     </div>
     <div class="hero-bottom">
       <div class="hero-actions">
-        <a class="hero-available" href="https://wa.me/56945128412" target="_blank" rel="noopener noreferrer">Disponible para nuevos proyectos</a>
+        <a class="hero-available" href="https://wa.me/56945128412" target="_blank" rel="noopener noreferrer" data-es="Disponible para nuevos proyectos" data-en="Available for new projects">Disponible para nuevos proyectos</a>
         <div class="hero-btn-row">
-          <a href="#showreel" class="btn-primary">Ver mi trabajo ↓</a>
-          <a href="cv-diegomanjarres/CV_Diego_Manjarres.pdf" target="_blank" rel="noopener noreferrer" class="btn-secondary">Ver CV →</a>
+          <a href="#showreel" class="btn-primary" data-es="Ver mi trabajo ↓" data-en="See my work ↓">Ver mi trabajo ↓</a>
+          <a href="cv-diegomanjarres/CV_Diego_Manjarres.pdf" target="_blank" rel="noopener noreferrer" class="btn-secondary" data-es="Ver CV →" data-en="View CV →">Ver CV →</a>
         </div>
       </div>
     </div>
@@ -2328,19 +2333,19 @@
         <div class="wk-cat-row active" data-cat="videos">
           <span class="wk-cat-num">01</span>
           <span class="wk-cat-name" data-es="Videos" data-en="Videos">Videos</span>
-          <span class="wk-cat-count">24 piezas</span>
+          <span class="wk-cat-count" data-es="24 piezas" data-en="24 pieces">24 piezas</span>
           <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
         <div class="wk-cat-row" data-cat="digital">
           <span class="wk-cat-num">02</span>
           <span class="wk-cat-name" data-es="Digital" data-en="Digital">Digital</span>
-          <span class="wk-cat-count">20 piezas</span>
+          <span class="wk-cat-count" data-es="20 piezas" data-en="20 pieces">20 piezas</span>
           <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
         <div class="wk-cat-row" data-cat="logos">
           <span class="wk-cat-num">03</span>
           <span class="wk-cat-name" data-es="Logotipos" data-en="Logos">Logotipos</span>
-          <span class="wk-cat-count">28 piezas</span>
+          <span class="wk-cat-count" data-es="28 piezas" data-en="28 pieces">28 piezas</span>
           <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
       </div>
@@ -2667,16 +2672,16 @@
          class="project-card-lumyn reveal" style="text-decoration:none;display:grid;">
         <div class="lumyn-visual">
           <img src="img/project-lumyn.jpg" alt="Lumyn.studio — agencia boutique de contenido IA" loading="lazy" />
-          <span class="lumyn-visual-badge">Estudio boutique</span>
+          <span class="lumyn-visual-badge" data-es="Estudio boutique" data-en="Boutique studio">Estudio boutique</span>
         </div>
         <div class="lumyn-content">
           <div>
-            <div class="project-label">2026 — presente</div>
+            <div class="project-label" data-es="2026 — presente" data-en="2026 — present">2026 — presente</div>
             <h3 class="lumyn-name">Lumyn<span>.studio</span></h3>
-            <p class="lumyn-tagline">Estudio boutique de contenido IA: product shots, virtual influencers y UGC sintético para marcas. Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1.</p>
+            <p class="lumyn-tagline" data-es="Estudio boutique de contenido IA: product shots, virtual influencers y UGC sintético para marcas. Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1." data-en="Boutique AI content studio: product shots, virtual influencers and synthetic UGC for brands. Image and video workflows with ComfyUI, Flux.1 and Wan2.1.">Estudio boutique de contenido IA: product shots, virtual influencers y UGC sintético para marcas. Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1.</p>
           </div>
           <div>
-            <span class="lumyn-btn">Ir a la web →</span>
+            <span class="lumyn-btn" data-es="Ir a la web →" data-en="Go to site →">Ir a la web →</span>
           </div>
         </div>
       </a>
@@ -2686,16 +2691,16 @@
          class="project-card-cyber reveal" style="text-decoration:none;display:grid;">
         <div class="cyber-visual">
           <img src="img/cyber-moto.jpg" alt="Cyberpunk Motorcycle — web demo" loading="lazy" />
-          <span class="cyber-visual-badge">Demo · Web de ejemplo</span>
+          <span class="cyber-visual-badge" data-es="Demo · Web de ejemplo" data-en="Demo · Sample site">Demo · Web de ejemplo</span>
         </div>
         <div class="cyber-content">
           <div>
-            <div class="project-label cyber-label">Proyecto propio · 2025 — concepto</div>
+            <div class="project-label cyber-label" data-es="Proyecto propio · 2025 — concepto" data-en="Own project · 2025 — concept">Proyecto propio · 2025 — concepto</div>
             <h3 class="cyber-name">Cyberpunk<br><span>Motorcycle</span></h3>
-            <p class="lumyn-tagline">Landing page de concepto para una marca ficticia de motos de alto rendimiento con estética cyberpunk. Desarrollada con Claude Code como demo de capacidades web — el producto no es real.</p>
+            <p class="lumyn-tagline" data-es="Landing page de concepto para una marca ficticia de motos de alto rendimiento con estética cyberpunk. Desarrollada con Claude Code como demo de capacidades web — el producto no es real." data-en="Concept landing page for a fictional high-performance motorcycle brand with cyberpunk aesthetics. Built with Claude Code as a web-capabilities demo — the product isn't real.">Landing page de concepto para una marca ficticia de motos de alto rendimiento con estética cyberpunk. Desarrollada con Claude Code como demo de capacidades web — el producto no es real.</p>
           </div>
           <div>
-            <span class="cyber-btn">Ir a la web →</span>
+            <span class="cyber-btn" data-es="Ir a la web →" data-en="Go to site →">Ir a la web →</span>
           </div>
         </div>
       </a>
@@ -2705,16 +2710,16 @@
          class="project-card-crypto reveal" style="text-decoration:none;display:grid;">
         <div class="crypto-visual">
           <img src="img/project-cryptostart.jpg" alt="CryptoStart — plataforma educativa Web3" loading="lazy" />
-          <span class="crypto-visual-badge">Demo · Plataforma Web3</span>
+          <span class="crypto-visual-badge" data-es="Demo · Plataforma Web3" data-en="Demo · Web3 Platform">Demo · Plataforma Web3</span>
         </div>
         <div class="crypto-content">
           <div>
-            <div class="project-label crypto-label">Proyecto propio · 2026 — concepto</div>
+            <div class="project-label crypto-label" data-es="Proyecto propio · 2026 — concepto" data-en="Own project · 2026 — concept">Proyecto propio · 2026 — concepto</div>
             <h3 class="crypto-name">Crypto<span>Start</span></h3>
-            <p class="lumyn-tagline">Plataforma educativa de Web3 en español: simulador de trading con $10.000 USD virtuales, precios de mercado en vivo, quizzes con recompensa de insignia NFT y planes de suscripción. Desarrollada con Claude Code como demo de producto SaaS — no custodia fondos reales.</p>
+            <p class="lumyn-tagline" data-es="Plataforma educativa de Web3 en español: simulador de trading con $10.000 USD virtuales, precios de mercado en vivo, quizzes con recompensa de insignia NFT y planes de suscripción. Desarrollada con Claude Code como demo de producto SaaS — no custodia fondos reales." data-en="Web3 educational platform in Spanish: trading simulator with $10,000 virtual USD, live market prices, quizzes rewarding an NFT badge and subscription plans. Built with Claude Code as a SaaS product demo — it doesn't hold real funds.">Plataforma educativa de Web3 en español: simulador de trading con $10.000 USD virtuales, precios de mercado en vivo, quizzes con recompensa de insignia NFT y planes de suscripción. Desarrollada con Claude Code como demo de producto SaaS — no custodia fondos reales.</p>
           </div>
           <div>
-            <span class="crypto-btn">Ir a la web →</span>
+            <span class="crypto-btn" data-es="Ir a la web →" data-en="Go to site →">Ir a la web →</span>
           </div>
         </div>
       </a>
@@ -2724,16 +2729,16 @@
          class="project-card-crypto reveal" style="text-decoration:none;display:grid;">
         <div class="crypto-visual">
           <img src="img/project-nexusbank.jpg" alt="Nexus Bank — dashboard bancario ficticio" loading="lazy" />
-          <span class="crypto-visual-badge">Demo · Dashboard Bancario</span>
+          <span class="crypto-visual-badge" data-es="Demo · Dashboard Bancario" data-en="Demo · Banking Dashboard">Demo · Dashboard Bancario</span>
         </div>
         <div class="crypto-content">
           <div>
-            <div class="project-label crypto-label">Proyecto propio · 2026 — concepto</div>
+            <div class="project-label crypto-label" data-es="Proyecto propio · 2026 — concepto" data-en="Own project · 2026 — concept">Proyecto propio · 2026 — concepto</div>
             <h3 class="crypto-name">Nexus<span> Bank</span></h3>
-            <p class="lumyn-tagline">Dashboard bancario ficticio: gestión de cuentas, gráficos de gastos e ingresos con Recharts, tarjetas virtuales y panel de transacciones. Prototipo de portafolio construido con React, Vite y Tailwind CSS — sin datos ni fondos reales.</p>
+            <p class="lumyn-tagline" data-es="Dashboard bancario ficticio: gestión de cuentas, gráficos de gastos e ingresos con Recharts, tarjetas virtuales y panel de transacciones. Prototipo de portafolio construido con React, Vite y Tailwind CSS — sin datos ni fondos reales." data-en="Fictional banking dashboard: account management, expense and income charts with Recharts, virtual cards and a transactions panel. Portfolio prototype built with React, Vite and Tailwind CSS — no real data or funds.">Dashboard bancario ficticio: gestión de cuentas, gráficos de gastos e ingresos con Recharts, tarjetas virtuales y panel de transacciones. Prototipo de portafolio construido con React, Vite y Tailwind CSS — sin datos ni fondos reales.</p>
           </div>
           <div>
-            <span class="crypto-btn">Ir a la web →</span>
+            <span class="crypto-btn" data-es="Ir a la web →" data-en="Go to site →">Ir a la web →</span>
           </div>
         </div>
       </a>
@@ -2744,10 +2749,10 @@
     <!-- ── SOBRE MÍ + STACK ── -->
   <section class="about-section" id="sobre-mi">
     <div class="wrapper">
-      <div class="section-label reveal">Sobre mí</div>
+      <div class="section-label reveal" data-es="Sobre mí" data-en="About me">Sobre mí</div>
       <div class="about-grid">
         <div class="reveal">
-          <p class="about-text">
+          <p class="about-text" data-es="Soy diseñador gráfico y digital con <strong>más de 10 años en agencias de publicidad</strong>, especializado en producción de contenido para <strong>Meta Ads y redes sociales</strong>.<br/><br/>Actualmente opero en la intersección entre diseño y tecnología IA — hago <strong>vibecoding</strong>, genero contenido con <strong>modelos de imagen y video generativa</strong>, y construyo flujos con <strong>Claude Code, Lovable y OpenClaw</strong>. Uso <strong>ComfyUI</strong> (generación de imágenes y video con IA mediante nodos visuales) y <strong>n8n</strong> para crear agentes y flujos automatizados.<br/><br/>Fundador de <strong>Lumyn.studio</strong>, estudio boutique de contenido IA para marcas." data-en="I'm a graphic and digital designer with <strong>over 10 years in advertising agencies</strong>, specialized in content production for <strong>Meta Ads and social media</strong>.<br/><br/>I currently work at the intersection of design and AI technology — I do <strong>vibecoding</strong>, generate content with <strong>generative image and video models</strong>, and build workflows with <strong>Claude Code, Lovable and OpenClaw</strong>. I use <strong>ComfyUI</strong> (AI image and video generation through visual nodes) and <strong>n8n</strong> to build agents and automated workflows.<br/><br/>Founder of <strong>Lumyn.studio</strong>, a boutique AI content studio for brands.">
             Soy diseñador gráfico y digital con <strong>más de 10 años en agencias de publicidad</strong>, especializado en producción de contenido para <strong>Meta Ads y redes sociales</strong>.<br/><br/>
             Actualmente opero en la intersección entre diseño y tecnología IA — hago <strong>vibecoding</strong>, genero contenido con <strong>modelos de imagen y video generativa</strong>, y construyo flujos con <strong>Claude Code, Lovable y OpenClaw</strong>. Uso <strong>ComfyUI</strong> (generación de imágenes y video con IA mediante nodos visuales) y <strong>n8n</strong> para crear agentes y flujos automatizados.<br/><br/>
             Fundador de <strong>Lumyn.studio</strong>, estudio boutique de contenido IA para marcas.
@@ -2755,7 +2760,7 @@
         </div>
         <div class="reveal reveal-d1">
           <div class="stack-group">
-            <div class="stack-group-label">IA &amp; Generación</div>
+            <div class="stack-group-label" data-es="IA &amp; Generación" data-en="AI &amp; Generation">IA &amp; Generación</div>
             <div class="tags-wrap">
               <span class="tag">ComfyUI</span>
               <span class="tag">Flux.1</span>
@@ -2765,7 +2770,7 @@
             </div>
           </div>
           <div class="stack-group">
-            <div class="stack-group-label">Build &amp; Automatización</div>
+            <div class="stack-group-label" data-es="Build &amp; Automatización" data-en="Build &amp; Automation">Build &amp; Automatización</div>
             <div class="tags-wrap">
               <span class="tag tag-green">Claude Code</span>
               <span class="tag tag-green">Lovable</span>
@@ -2775,7 +2780,7 @@
             </div>
           </div>
           <div class="stack-group">
-            <div class="stack-group-label">Diseño &amp; Producción</div>
+            <div class="stack-group-label" data-es="Diseño &amp; Producción" data-en="Design &amp; Production">Diseño &amp; Producción</div>
             <div class="tags-wrap">
               <span class="tag tag-neutral">Photoshop</span>
               <span class="tag tag-neutral">Illustrator</span>
@@ -2797,11 +2802,11 @@
       <div class="stats-grid">
         <div class="stat-block reveal" data-count="10">
           <div class="stat-number"><span class="count-num">0</span><span class="ac">+</span></div>
-          <div class="stat-desc">Años exp.</div>
+          <div class="stat-desc" data-es="Años exp." data-en="Years exp.">Años exp.</div>
         </div>
         <div class="stat-block reveal reveal-d1">
           <div class="stat-number"><span class="ac">∞</span></div>
-          <div class="stat-desc">Marcas</div>
+          <div class="stat-desc" data-es="Marcas" data-en="Brands">Marcas</div>
         </div>
         <div class="stat-block reveal reveal-d2">
           <div class="stat-number">AI<span class="ac">✦</span></div>
@@ -2831,7 +2836,7 @@
         </div>
       </div>
     </div>
-    <p class="quotes-caption">Pasa el cursor sobre las partículas y cobran vida</p>
+    <p class="quotes-caption" data-es="Pasa el cursor sobre las partículas y cobran vida" data-en="Hover over the particles to bring them to life">Pasa el cursor sobre las partículas y cobran vida</p>
   </section>
 
   <!-- ── EXPERIENCIA ── -->
@@ -2839,8 +2844,8 @@
     <div class="wrapper">
       <div class="exp-layout">
         <div class="exp-sidebar reveal">
-          <h2 class="exp-sidebar-title">Experiencia<br>profesional</h2>
-          <p class="exp-sidebar-desc"><strong>10+ años</strong> de carrera en agencias de publicidad, desde diseñador digital hasta productor creativo con IA.</p>
+          <h2 class="exp-sidebar-title" data-es="Experiencia<br>profesional" data-en="Professional<br>experience">Experiencia<br>profesional</h2>
+          <p class="exp-sidebar-desc" data-es="<strong>10+ años</strong> de carrera en agencias de publicidad, desde diseñador digital hasta productor creativo con IA." data-en="<strong>10+ years</strong> of career in advertising agencies, from digital designer to AI creative producer."><strong>10+ años</strong> de carrera en agencias de publicidad, desde diseñador digital hasta productor creativo con IA.</p>
         </div>
         <div class="timeline">
           <div class="timeline-line" aria-hidden="true"></div>
@@ -2849,13 +2854,13 @@
             <div class="timeline-dot"></div>
             <div class="timeline-header">
               <div class="timeline-company">Agencia Alike</div>
-              <div class="timeline-date">Ago 2024 – Ene 2026</div>
+              <div class="timeline-date" data-es="Ago 2024 – Ene 2026" data-en="Aug 2024 – Jan 2026">Ago 2024 – Ene 2026</div>
             </div>
             <div class="timeline-role">Paid Media Designer</div>
             <ul class="timeline-list">
-              <li>Producción de reels, carruseles y videos para Meta Ads con foco en conversión.</li>
-              <li>Integración de IA generativa (Google AI Studio) en flujos de producción.</li>
-              <li>Edición con After Effects, Premiere Pro, Photoshop e Illustrator.</li>
+              <li data-es="Producción de reels, carruseles y videos para Meta Ads con foco en conversión." data-en="Production of reels, carousels and videos for Meta Ads focused on conversion.">Producción de reels, carruseles y videos para Meta Ads con foco en conversión.</li>
+              <li data-es="Integración de IA generativa (Google AI Studio) en flujos de producción." data-en="Integration of generative AI (Google AI Studio) into production workflows.">Integración de IA generativa (Google AI Studio) en flujos de producción.</li>
+              <li data-es="Edición con After Effects, Premiere Pro, Photoshop e Illustrator." data-en="Editing with After Effects, Premiere Pro, Photoshop and Illustrator.">Edición con After Effects, Premiere Pro, Photoshop e Illustrator.</li>
             </ul>
           </div>
 
@@ -2863,13 +2868,13 @@
             <div class="timeline-dot"></div>
             <div class="timeline-header">
               <div class="timeline-company">Agencia Salvaje</div>
-              <div class="timeline-date">Ene 2020 – Sept 2022</div>
+              <div class="timeline-date" data-es="Ene 2020 – Sept 2022" data-en="Jan 2020 – Sep 2022">Ene 2020 – Sept 2022</div>
             </div>
-            <div class="timeline-role">Director de Arte</div>
+            <div class="timeline-role" data-es="Director de Arte" data-en="Art Director">Director de Arte</div>
             <ul class="timeline-list">
-              <li>Dirección creativa y supervisión de cuentas de redes sociales.</li>
-              <li>Marcas: American Express, Copec, Cruz Verde, Mahou.</li>
-              <li>Gestión del flujo creativo del equipo y aprobación de piezas finales.</li>
+              <li data-es="Dirección creativa y supervisión de cuentas de redes sociales." data-en="Creative direction and supervision of social media accounts.">Dirección creativa y supervisión de cuentas de redes sociales.</li>
+              <li data-es="Marcas: American Express, Copec, Cruz Verde, Mahou." data-en="Brands: American Express, Copec, Cruz Verde, Mahou.">Marcas: American Express, Copec, Cruz Verde, Mahou.</li>
+              <li data-es="Gestión del flujo creativo del equipo y aprobación de piezas finales." data-en="Management of the team's creative workflow and approval of final pieces.">Gestión del flujo creativo del equipo y aprobación de piezas finales.</li>
             </ul>
           </div>
 
@@ -2877,11 +2882,11 @@
             <div class="timeline-dot"></div>
             <div class="timeline-header">
               <div class="timeline-company">JVD Estudio</div>
-              <div class="timeline-date">Sept 2018 – Nov 2019</div>
+              <div class="timeline-date" data-es="Sept 2018 – Nov 2019" data-en="Sep 2018 – Nov 2019">Sept 2018 – Nov 2019</div>
             </div>
-            <div class="timeline-role">Diseñador Digital</div>
+            <div class="timeline-role" data-es="Diseñador Digital" data-en="Digital Designer">Diseñador Digital</div>
             <ul class="timeline-list">
-              <li>Diseño digital y producción gráfica para redes sociales y campañas.</li>
+              <li data-es="Diseño digital y producción gráfica para redes sociales y campañas." data-en="Digital design and graphic production for social media and campaigns.">Diseño digital y producción gráfica para redes sociales y campañas.</li>
             </ul>
           </div>
 
@@ -2889,21 +2894,21 @@
             <div class="timeline-dot"></div>
             <div class="timeline-header">
               <div class="timeline-company">Blokcom</div>
-              <div class="timeline-date">Jul 2016 – Ago 2018</div>
+              <div class="timeline-date" data-es="Jul 2016 – Ago 2018" data-en="Jul 2016 – Aug 2018">Jul 2016 – Ago 2018</div>
             </div>
-            <div class="timeline-role">Diseñador Digital</div>
+            <div class="timeline-role" data-es="Diseñador Digital" data-en="Digital Designer">Diseñador Digital</div>
             <ul class="timeline-list">
-              <li>Producción de piezas digitales para estrategias de contenido y campañas.</li>
+              <li data-es="Producción de piezas digitales para estrategias de contenido y campañas." data-en="Production of digital pieces for content strategies and campaigns.">Producción de piezas digitales para estrategias de contenido y campañas.</li>
             </ul>
           </div>
 
           <div class="timeline-item reveal reveal-d4">
             <div class="timeline-dot timeline-dot--muted"></div>
             <div class="timeline-header">
-              <div class="timeline-company">Otras agencias</div>
-              <div class="timeline-date">Ene 2014 – Jun 2016</div>
+              <div class="timeline-company" data-es="Otras agencias" data-en="Other agencies">Otras agencias</div>
+              <div class="timeline-date" data-es="Ene 2014 – Jun 2016" data-en="Jan 2014 – Jun 2016">Ene 2014 – Jun 2016</div>
             </div>
-            <div class="timeline-role">Diseñador Digital</div>
+            <div class="timeline-role" data-es="Diseñador Digital" data-en="Digital Designer">Diseñador Digital</div>
             <p class="timeline-other">Impryma Chile &nbsp;·&nbsp; Media Trends &nbsp;·&nbsp; Palco Comunic &nbsp;·&nbsp; iCrossing Latinoamérica &nbsp;·&nbsp; Blokcom</p>
           </div>
         </div>
@@ -2929,14 +2934,14 @@
           aria-hidden="true"
         ></video>
         <div class="footer-cta-inner">
-          <div class="footer-cta-tag">Contacto</div>
-          <h2 class="footer-cta-title">Hablemos de tu <span>próximo proyecto</span></h2>
-          <p class="footer-cta-sub">Cuéntame qué necesitas — dirección de arte, contenido con IA para Meta Ads, o súmame a tu equipo. Te respondo yo mismo, sin intermediarios.</p>
+          <div class="footer-cta-tag" data-es="Contacto" data-en="Contact">Contacto</div>
+          <h2 class="footer-cta-title" data-es="Hablemos de tu <span>próximo proyecto</span>" data-en="Let's talk about your <span>next project</span>">Hablemos de tu <span>próximo proyecto</span></h2>
+          <p class="footer-cta-sub" data-es="Cuéntame qué necesitas — dirección de arte, contenido con IA para Meta Ads, o súmame a tu equipo. Te respondo yo mismo, sin intermediarios." data-en="Tell me what you need — art direction, AI content for Meta Ads, or add me to your team. I reply personally, no middlemen.">Cuéntame qué necesitas — dirección de arte, contenido con IA para Meta Ads, o súmame a tu equipo. Te respondo yo mismo, sin intermediarios.</p>
 
           <form class="contact-form" id="contact-form">
             <div class="contact-form-row">
               <div class="contact-field">
-                <label for="cf-name">Nombre</label>
+                <label for="cf-name" data-es="Nombre" data-en="Name">Nombre</label>
                 <input type="text" id="cf-name" name="name" required />
               </div>
               <div class="contact-field">
@@ -2946,56 +2951,56 @@
             </div>
             <div class="contact-form-row">
               <div class="contact-field">
-                <label for="cf-company">Empresa / Marca</label>
+                <label for="cf-company" data-es="Empresa / Marca" data-en="Company / Brand">Empresa / Marca</label>
                 <input type="text" id="cf-company" name="company" />
               </div>
               <div class="contact-field">
-                <label for="cf-interest">Interés</label>
+                <label for="cf-interest" data-es="Interés" data-en="Interest">Interés</label>
                 <select id="cf-interest" name="interest">
-                  <option value="">Seleccionar...</option>
-                  <option>Dirección de Arte</option>
-                  <option>Contenido con IA / Meta Ads</option>
-                  <option>Oportunidad laboral</option>
-                  <option>Colaboración freelance</option>
-                  <option>Otro</option>
+                  <option value="" data-es="Seleccionar..." data-en="Select...">Seleccionar...</option>
+                  <option data-es="Dirección de Arte" data-en="Art Direction">Dirección de Arte</option>
+                  <option data-es="Contenido con IA / Meta Ads" data-en="AI Content / Meta Ads">Contenido con IA / Meta Ads</option>
+                  <option data-es="Oportunidad laboral" data-en="Job opportunity">Oportunidad laboral</option>
+                  <option data-es="Colaboración freelance" data-en="Freelance collaboration">Colaboración freelance</option>
+                  <option data-es="Otro" data-en="Other">Otro</option>
                 </select>
               </div>
             </div>
             <div class="contact-field">
-              <label for="cf-message">Mensaje</label>
+              <label for="cf-message" data-es="Mensaje" data-en="Message">Mensaje</label>
               <textarea id="cf-message" name="message" rows="4" required></textarea>
             </div>
             <label class="contact-checkbox">
               <input type="checkbox" id="cf-consent" required />
-              <span>Acepto que Diego me contacte por email para responder mi consulta.</span>
+              <span data-es="Acepto que Diego me contacte por email para responder mi consulta." data-en="I agree that Diego may contact me by email to answer my inquiry.">Acepto que Diego me contacte por email para responder mi consulta.</span>
             </label>
-            <button type="submit" class="btn-primary contact-submit">Enviar mensaje</button>
+            <button type="submit" class="btn-primary contact-submit" data-es="Enviar mensaje" data-en="Send message">Enviar mensaje</button>
           </form>
 
-          <p class="footer-cta-alt">O escríbeme directo a <a href="mailto:diego.manjarres88@gmail.com">diego.manjarres88@gmail.com</a></p>
+          <p class="footer-cta-alt"><span data-es="O escríbeme directo a" data-en="Or email me directly at">O escríbeme directo a</span> <a href="mailto:diego.manjarres88@gmail.com">diego.manjarres88@gmail.com</a></p>
         </div>
       </div>
 
       <div class="footer-columns reveal">
         <div class="footer-col">
           <img src="img/logo-footer.png" alt="Diego Manjarrés" class="footer-brand-logo" />
-          <p class="footer-brand-desc">
+          <p class="footer-brand-desc" data-es="<strong style='color:#fff;'>AI Creative Producer · Art Director</strong><br>Fundador de Lumyn.studio<br>Santiago, Chile · Nacionalidad chilena" data-en="<strong style='color:#fff;'>AI Creative Producer · Art Director</strong><br>Founder of Lumyn.studio<br>Santiago, Chile · Chilean nationality">
             <strong style="color:#fff;">AI Creative Producer · Art Director</strong><br>
             Fundador de Lumyn.studio<br>
             Santiago, Chile · Nacionalidad chilena
           </p>
         </div>
         <div class="footer-col">
-          <div class="footer-col-title">Navegación</div>
+          <div class="footer-col-title" data-es="Navegación" data-en="Navigation">Navegación</div>
           <ul class="footer-nav-list">
             <li><a href="#slides">Work</a></li>
-            <li><a href="#sobre-mi">Sobre mí</a></li>
-            <li><a href="#experiencia">Experiencia</a></li>
-            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="#sobre-mi" data-es="Sobre mí" data-en="About">Sobre mí</a></li>
+            <li><a href="#experiencia" data-es="Experiencia" data-en="Experience">Experiencia</a></li>
+            <li><a href="#contacto" data-es="Contacto" data-en="Contact">Contacto</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <div class="footer-col-title">Contacto</div>
+          <div class="footer-col-title" data-es="Contacto" data-en="Contact">Contacto</div>
           <div class="footer-contact-list">
             <a href="mailto:diego.manjarres88@gmail.com" class="footer-contact-item">diego.manjarres88@gmail.com</a>
             <a href="https://wa.me/56945128412" target="_blank" rel="noopener noreferrer" class="footer-contact-item">+569 4512 8412</a>
@@ -3006,8 +3011,8 @@
         <div class="footer-col">
           <div class="footer-col-title">CV & Links</div>
           <ul class="footer-nav-list">
-            <li><a href="cv-diegomanjarres/CV_Diego_Manjarres.pdf" download="CV_Diego_Manjarres.pdf">Descargar CV</a></li>
-            <li><a href="#slides">Ver trabajos</a></li>
+            <li><a href="cv-diegomanjarres/CV_Diego_Manjarres.pdf" download="CV_Diego_Manjarres.pdf" data-es="Descargar CV" data-en="Download CV">Descargar CV</a></li>
+            <li><a href="#slides" data-es="Ver trabajos" data-en="See work">Ver trabajos</a></li>
             <li><a href="https://wa.me/56945128412" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
           </ul>
         </div>
@@ -3019,7 +3024,7 @@
           <svg width="22" height="22" viewBox="0 0 1200 1200" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="Claude" role="img">
             <path d="M 233.959793 800.214905 L 468.644287 668.536987 L 472.590637 657.100647 L 468.644287 650.738403 L 457.208069 650.738403 L 417.986633 648.322144 L 283.892639 644.69812 L 167.597321 639.865845 L 54.926208 633.825623 L 26.577238 627.785339 L 3.3e-05 592.751709 L 2.73832 575.27533 L 26.577238 559.248352 L 60.724873 562.228149 L 136.187973 567.382629 L 249.422867 575.194763 L 331.570496 580.026978 L 453.261841 592.671082 L 472.590637 592.671082 L 475.328857 584.859009 L 468.724915 580.026978 L 463.570557 575.194763 L 346.389313 495.785217 L 219.543671 411.865906 L 153.100723 363.543762 L 117.181267 339.060425 L 99.060455 316.107361 L 91.248367 266.01355 L 123.865784 230.093994 L 167.677887 233.073853 L 178.872513 236.053772 L 223.248367 270.201477 L 318.040283 343.570496 L 441.825592 434.738342 L 459.946411 449.798706 L 467.194672 444.64447 L 468.080597 441.020203 L 459.946411 427.409485 L 392.617493 305.718323 L 320.778564 181.932983 L 288.80542 130.630859 L 280.348999 99.865845 C 277.369171 87.221436 275.194641 76.590698 275.194641 63.624268 L 312.322174 13.20813 L 332.8591 6.604126 L 382.389313 13.20813 L 403.248352 31.328979 L 434.013519 101.71814 L 483.865753 212.537048 L 561.181274 363.221497 L 583.812134 407.919434 L 595.892639 449.315491 L 600.40271 461.959839 L 608.214783 461.959839 L 608.214783 454.711609 L 614.577271 369.825623 L 626.335632 265.61084 L 637.771851 131.516846 L 641.718201 93.745117 L 660.402832 48.483276 L 697.530334 24.000122 L 726.52356 37.852417 L 750.362549 72 L 747.060486 94.067139 L 732.886047 186.201416 L 705.100708 330.52356 L 686.979919 427.167847 L 697.530334 427.167847 L 709.61084 415.087341 L 758.496704 350.174561 L 840.644348 247.490051 L 876.885925 206.738342 L 919.167847 161.71814 L 946.308838 140.29541 L 997.61084 140.29541 L 1035.38269 196.429626 L 1018.469849 254.416199 L 965.637634 321.422852 L 921.825562 378.201538 L 859.006714 462.765259 L 819.785278 530.41626 L 823.409424 535.812073 L 832.75177 534.92627 L 974.657776 504.724915 L 1051.328979 490.872559 L 1142.818848 475.167786 L 1184.214844 494.496582 L 1188.724854 514.147644 L 1172.456421 554.335693 L 1074.604126 578.496765 L 959.838989 601.449829 L 788.939636 641.879272 L 786.845764 643.409485 L 789.261841 646.389343 L 866.255127 653.637634 L 899.194702 655.409424 L 979.812134 655.409424 L 1129.932861 666.604187 L 1169.154419 692.537109 L 1192.671265 724.268677 L 1188.724854 748.429688 L 1128.322144 779.194641 L 1046.818848 759.865845 L 856.590759 714.604126 L 791.355774 698.335754 L 782.335693 698.335754 L 782.335693 703.731567 L 836.69812 756.885986 L 936.322205 846.845581 L 1061.073975 962.81897 L 1067.436279 991.490112 L 1051.409424 1014.120911 L 1034.496704 1011.704712 L 924.885986 929.234924 L 882.604126 892.107544 L 786.845764 811.48999 L 780.483276 811.48999 L 780.483276 819.946289 L 802.550415 852.241699 L 919.087341 1027.409424 L 925.127625 1081.127686 L 916.671204 1098.604126 L 886.469849 1109.154419 L 853.288696 1103.114136 L 785.073914 1007.355835 L 714.684631 899.516785 L 657.906067 802.872498 L 650.979858 806.81897 L 617.476624 1167.704834 L 601.771851 1186.147705 L 565.530212 1200 L 535.328857 1177.046997 L 519.302124 1139.919556 L 535.328857 1066.550537 L 554.657776 970.792053 L 570.362488 894.68457 L 584.536926 800.134277 L 592.993347 768.724976 L 592.429626 766.630859 L 585.503479 767.516968 L 514.22821 865.369263 L 405.825531 1011.865906 L 320.053711 1103.677979 L 299.516815 1111.812256 L 263.919525 1093.369263 L 267.221497 1060.429688 L 287.114136 1031.114136 L 405.825531 880.107361 L 477.422913 786.52356 L 523.651062 732.483276 L 523.328918 724.671265 L 520.590698 724.671265 L 205.288605 929.395935 L 149.154434 936.644409 L 124.993355 914.01355 L 127.973183 876.885986 L 139.409409 864.80542 L 234.201385 799.570435 Z"/>
           </svg>
-          Website creada con <strong>Claude Code</strong> + <strong>1humano</strong>
+          <span data-es="Website creada con <strong>Claude Code</strong> + <strong>1humano</strong>" data-en="Website built with <strong>Claude Code</strong> + <strong>1human</strong>">Website creada con <strong>Claude Code</strong> + <strong>1humano</strong></span>
         </a>
       </div>
     </div>
@@ -3137,7 +3142,7 @@
         slide.className = 'quote-slide state-right';
         const f = fontObj.font;
         slide.innerHTML = `
-          <p class="quote-es" style="font-family:${f.family};font-weight:${f.weight};font-style:${f.style}">${q.es}</p>
+          <p class="quote-es" style="font-family:${f.family};font-weight:${f.weight};font-style:${f.style}">${q[document.documentElement.lang] || q.es}</p>
           <div class="quote-attribution">— Brian Tracy</div>`;
         return slide;
       }
@@ -3473,28 +3478,12 @@
       // Elements with data-es / data-en already in markup
       function swapAttrElements() {
         document.querySelectorAll('[data-es][data-en]').forEach(el => {
-          el.textContent = el.dataset[lang];
+          el.innerHTML = el.dataset[lang];
         });
       }
 
-      // Fine-grained map: selector → { es, en } (innerHTML-safe)
-      const textMap = [
-        { sel: '.footer-cta-title',      es: '¿Trabajamos <span>juntos?</span>',              en: "Let's <span>Work Together?</span>" },
-        { sel: '.footer-cta-sub',        es: 'Si estás buscando alguien que entienda tanto de <strong>creatividad con tecnología IA</strong> — hablemos.', en: 'If you\'re looking for someone who understands both <strong>creativity and AI technology</strong> — let\'s talk.' },
-        { sel: '.hero-available',        es: 'Disponible para nuevos proyectos', en: 'Available for new projects' },
-        { sel: '.showreel-title',        es: 'Showreel',                          en: 'Showreel' },
-        { sel: '.slides-title',          es: 'Trabajos recientes',                en: 'Recent Work' },
-        { sel: '.footer-brand-name',     es: 'Diego <span>Manjarrés</span>.',     en: 'Diego <span>Manjarrés</span>.' },
-        { sel: '.footer-cta-tag',        es: 'Contacto',                          en: 'Contact' },
-      ];
-
       function translatePage() {
         swapAttrElements();
-        textMap.forEach(({ sel, es, en }) => {
-          const val = lang === 'en' ? en : es;
-          if (!val) return;
-          document.querySelectorAll(sel).forEach(el => { el.innerHTML = val; });
-        });
         document.documentElement.lang = lang;
         langBtns.forEach(b => b.classList.toggle('active', b.dataset.langVal === lang));
       }
