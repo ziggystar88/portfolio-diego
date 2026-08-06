@@ -972,6 +972,43 @@
     }
     .about-text strong { color: #fff; font-weight: 600; }
 
+    /* Retrato 1:1 sobre las aptitudes */
+    .about-portrait {
+      position: relative;
+      width: 100%;
+      max-width: 340px;
+      aspect-ratio: 1 / 1;
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 32px;
+      border: 1px solid rgba(124,58,255,0.28);
+      background:
+        radial-gradient(ellipse 90% 70% at 50% 110%, rgba(124,58,255,0.45) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 85% 15%, rgba(74,222,128,0.14) 0%, transparent 60%),
+        linear-gradient(160deg, #14142b 0%, #0b0b18 100%);
+      box-shadow: 0 0 40px rgba(124,58,255,0.14), 0 18px 40px rgba(0,0,0,0.35);
+    }
+    .about-portrait img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    /* grano sutil, coherente con el resto del sitio */
+    .about-portrait::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: 0.07;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
     .stack-group { margin-bottom: 24px; }
     .stack-group:last-child { margin-bottom: 0; }
     .stack-group-label {
@@ -2156,6 +2193,7 @@
     html.light .timeline-other { color: #555; }
     html.light .timeline-date { background: rgba(0,0,0,0.05); }
     html.light .tag-neutral { background: rgba(0,0,0,0.05); color: #444; }
+    html.light .about-portrait { box-shadow: 0 0 30px rgba(124,58,255,0.10), 0 14px 32px rgba(0,0,0,0.14); }
 
     /* Footer stays dark in both themes (sits over dark video / dark backdrop) */
     html.light .footer-section { background: #080808; }
@@ -2754,6 +2792,12 @@
           </p>
         </div>
         <div class="reveal reveal-d1">
+          <div class="about-portrait">
+            <picture>
+              <source srcset="img/retrato-about.webp" type="image/webp">
+              <img src="img/retrato-about.png" alt="Retrato de Diego Manjarres" loading="lazy" width="900" height="900">
+            </picture>
+          </div>
           <div class="stack-group">
             <div class="stack-group-label" data-es="IA &amp; Generación" data-en="AI &amp; Generation">IA &amp; Generación</div>
             <div class="tags-wrap">
