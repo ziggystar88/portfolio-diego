@@ -298,10 +298,11 @@
 
     /* giant name */
     .hero-title {
-      font-family: 'Big Shoulders Display', 'Poppins', sans-serif;
-      font-size: clamp(42px, 7vw, 126px);
-      letter-spacing: -0.01em;
-      line-height: 0.86;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: clamp(38px, 6.2vw, 108px);
+      letter-spacing: -0.02em;
+      line-height: 0.98;
       color: #fff;
       margin-bottom: 52px;
       overflow: visible;
@@ -321,21 +322,17 @@
     }
     .hero-title-line:nth-child(1) .hero-word {
       animation-delay: 0.05s;
-      font-weight: 200;
-      font-style: italic;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-style: normal;
       color: #fff;
     }
     .hero-title-line:nth-child(2) .hero-word {
       animation-delay: 0.2s;
-      font-weight: 200;
-      font-style: italic;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-style: normal;
       color: var(--accent-light);
-    }
-    .hero-title-line:nth-child(3) .hero-word {
-      animation-delay: 0.35s;
-      font-weight: 200;
-      font-style: italic;
-      color: rgba(157,106,255,0.72);
     }
 
     /* Hero logo PNG below title */
@@ -373,14 +370,14 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       object-position: center center;
       background: #000;
       z-index: 0;
       pointer-events: none;
     }
     @media (max-width: 1024px) and (min-width: 641px) {
-      .hero-bg-video { object-fit: contain; object-position: center center; }
+      .hero-bg-video { object-fit: cover; object-position: center center; }
     }
 
     /* Mobile role text (replaces DM logo) */
@@ -1311,8 +1308,8 @@
 
     /* Cyberpunk project card */
     .project-card-cyber {
-      background: linear-gradient(135deg, #100808 0%, #0e0d12 100%);
-      border: 1px solid rgba(255,70,40,0.2);
+      background: linear-gradient(135deg, #0a0a14 0%, #12081f 100%);
+      border: 1px solid rgba(124,58,255,0.2);
       border-radius: var(--radius);
       display: grid;
       grid-template-columns: 1fr 360px;
@@ -1322,15 +1319,15 @@
       margin-top: 24px;
     }
     .project-card-cyber:hover {
-      border-color: rgba(255,70,40,0.45);
+      border-color: rgba(124,58,255,0.5);
       transform: translateY(-5px);
-      box-shadow: 0 20px 60px rgba(220,50,30,0.1);
+      box-shadow: 0 20px 60px rgba(124,58,255,0.14);
     }
     .project-card-cyber::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 50% 50%, rgba(220,50,30,0.06) 0%, transparent 60%);
+      background: radial-gradient(ellipse at 50% 50%, rgba(124,58,255,0.08) 0%, transparent 60%);
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.4s;
@@ -1339,8 +1336,8 @@
     .cyber-visual {
       grid-column: 2;
       grid-row: 1;
-      background: #06050a;
-      border-left: 1px solid rgba(255,70,40,0.12);
+      background: #08060f;
+      border-left: 1px solid rgba(124,58,255,0.14);
       overflow: hidden;
       position: relative;
       min-height: 260px;
@@ -1351,12 +1348,12 @@
       object-fit: cover;
       object-position: center center;
       display: block;
-      transition: transform 0.5s ease;
-      filter: brightness(0.85) saturate(1.2);
+      transition: transform 0.5s ease, filter 0.5s ease;
+      filter: brightness(0.9) saturate(1.1);
     }
     .project-card-cyber:hover .cyber-visual img {
       transform: scale(1.04);
-      filter: brightness(0.95) saturate(1.3);
+      filter: brightness(1) saturate(1.2);
     }
     .cyber-visual-badge {
       position: absolute;
@@ -1366,9 +1363,9 @@
       font-size: 9px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(255,120,80,0.9);
+      color: var(--accent-light);
       background: rgba(0,0,0,0.65);
-      border: 1px solid rgba(255,70,40,0.3);
+      border: 1px solid rgba(124,58,255,0.35);
       border-radius: 4px;
       padding: 4px 8px;
       backdrop-filter: blur(6px);
@@ -1381,7 +1378,7 @@
       flex-direction: column;
       justify-content: space-between;
     }
-    .cyber-label { color: rgba(255,100,60,0.85); }
+    .cyber-label { color: var(--accent-light); }
     .cyber-name {
       font-size: 36px;
       font-weight: 900;
@@ -1390,28 +1387,28 @@
       line-height: 1.05;
       margin-bottom: 14px;
     }
-    .cyber-name span { color: rgba(255,100,60,0.9); }
+    .cyber-name span { color: var(--accent-light); }
     .cyber-btn {
       display: inline-block;
       padding: 11px 26px;
       border-radius: 100px;
-      background: rgba(255,70,40,0.12);
-      border: 1px solid rgba(255,70,40,0.4);
-      color: rgba(255,120,80,1);
+      background: rgba(124,58,255,0.12);
+      border: 1px solid rgba(124,58,255,0.4);
+      color: var(--accent-light);
       font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.01em;
       transition: background 0.25s, border-color 0.25s, color 0.25s, box-shadow 0.25s;
     }
     .project-card-cyber:hover .cyber-btn {
-      background: rgba(255,70,40,0.22);
-      border-color: rgba(255,70,40,0.7);
+      background: rgba(124,58,255,0.22);
+      border-color: rgba(124,58,255,0.7);
       color: #fff;
-      box-shadow: 0 0 18px rgba(255,70,40,0.25);
+      box-shadow: 0 0 18px rgba(124,58,255,0.25);
     }
     @media (max-width: 860px) {
       .project-card-cyber { grid-template-columns: 1fr; }
-      .cyber-visual { grid-column: 1; grid-row: 1; min-height: 180px; border-left: none; border-bottom: 1px solid rgba(255,70,40,0.12); }
+      .cyber-visual { grid-column: 1; grid-row: 1; min-height: 180px; border-left: none; border-bottom: 1px solid rgba(124,58,255,0.14); }
       .cyber-content { grid-column: 1; grid-row: 2; padding: 28px; }
     }
 
@@ -2038,7 +2035,7 @@
         padding: 11px 22px;
       }
       /* Mobile: video centrado, logo DM → texto */
-      .hero-bg-video { object-fit: cover; object-position: 72% center; }
+      .hero-bg-video { object-fit: cover; object-position: center center; }
       .hero-logo-svg { display: none; }
       .hero-role-mobile { display: block; }
       .hero > div[style] { max-width: 100% !important; }
@@ -2242,16 +2239,14 @@
   <section class="hero" id="inicio" aria-label="Hero">
 
     <!-- Video background -->
-    <video class="hero-bg-video" autoplay muted loop playsinline aria-hidden="true" poster="img/hero-poster.jpg">
-      <source src="https://res.cloudinary.com/disogf0sg/video/upload/v1777958285/mobile_hero-bg_ndw8au.mp4" media="(max-width: 768px)" type="video/mp4">
-      <source src="https://res.cloudinary.com/disogf0sg/video/upload/v1777958259/hero-bg_v0pqor.mp4" type="video/mp4">
+    <video class="hero-bg-video" autoplay muted loop playsinline aria-hidden="true" poster="img/hero-poster-new.jpg">
+      <source src="img/Animate_this_exact_still_image.mp4" type="video/mp4">
     </video>
 
     <div style="position:relative;z-index:4">
     <h1 class="hero-title">
       <span class="hero-title-line"><span class="hero-word">Diego</span></span>
       <span class="hero-title-line"><span class="hero-word">Manjarres</span></span>
-      <span class="hero-title-line"><span class="hero-word">Burgos.</span></span>
     </h1>
     <div class="hero-role-mobile">AI Creative Producer / Art Director</div>
     <div class="hero-logo-svg" style="display:none"><!-- placeholder -->
