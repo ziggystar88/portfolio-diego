@@ -22,3 +22,9 @@ cambios web/
 no usar_primero_portafolio-diego/
 reporte-lumyn.html
 cv_diego_v2.html
+
+# Documentos personales — no desplegar
+busqueda-empleos-*.md
+carta-postulacion-*.md
+perfil-diego-cv.md
+prompts-*.md

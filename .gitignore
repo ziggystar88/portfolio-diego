@@ -11,3 +11,9 @@ Thumbs.db
 index.backup-*.html
 cambios web_/
 no usar_primero_portafolio-diego/
+
+# ── Documentos personales de búsqueda de empleo (NO publicar) ──
+busqueda-empleos-*.md
+carta-postulacion-*.md
+perfil-diego-cv.md
+prompts-*.md

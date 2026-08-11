@@ -2,7 +2,7 @@
   "meta": {
     "title": "Diego Manjarrés — AI Creative Producer",
     "lang": "es",
-    "url": "https://diegomanjarres.netlify.app"
+    "url": "https://diegomanjarres.vercel.app"
   },
   "hero": {
     "available": true,
@@ -20,7 +20,7 @@
     "phone": "+569 4512 8412",
     "location": "Santiago, Chile",
     "nationality": "Chilena",
-    "website": "https://diegomanjarres.netlify.app"
+    "website": "https://diegomanjarres.vercel.app"
   },
   "stats": [
     { "value": "10+", "label": "Años exp." },
