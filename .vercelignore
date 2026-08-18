@@ -1,6 +1,10 @@
 # Large video files — host on CDN/Cloudinary instead
 video/
 
+# Originales pesados ya optimizados — no desplegar
+img/Person_using_MacBook_Pro_2K_202608111142.jpeg
+img/project-lumyn.jpeg
+
 # Unused hero image variants
 img/hero-2.png
 img/hero-4.png

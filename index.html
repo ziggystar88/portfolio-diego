@@ -7,6 +7,15 @@
   <meta name="description" content="Portafolio de Diego Manjarrés — Director de Arte y AI-Native Content Producer con 10+ años en agencias. Producción de contenido con IA generativa, Meta Ads y flujos con ComfyUI, Flux.1 y Claude Code." />
   <link rel="canonical" href="https://diegomanjarres.cl/" />
 
+  <!-- Tema: aplica la clase antes del primer render para evitar parpadeo -->
+  <script>
+    (function () {
+      var t = 'light';
+      try { t = localStorage.getItem('dm-theme') || 'light'; } catch (e) {}
+      if (t === 'light') document.documentElement.classList.add('light');
+    })();
+  </script>
+
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Diego Manjarrés" />
@@ -274,6 +283,28 @@
       pointer-events: none;
       z-index: 0;
     }
+    /* Left fade — mejora la legibilidad del texto del hero */
+    .hero-fade-left {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right,
+        rgba(0,0,0,0.88) 0%,
+        rgba(0,0,0,0.72) 18%,
+        rgba(0,0,0,0.45) 36%,
+        rgba(0,0,0,0.18) 52%,
+        transparent 66%);
+      z-index: 2;
+      pointer-events: none;
+    }
+    @media (max-width: 768px) {
+      .hero-fade-left {
+        background: linear-gradient(to right,
+          rgba(0,0,0,0.9) 0%,
+          rgba(0,0,0,0.7) 45%,
+          rgba(0,0,0,0.4) 80%,
+          rgba(0,0,0,0.25) 100%);
+      }
+    }
     /* Bottom fade — smooth transition to next section */
     .hero-fade-bottom {
       position: absolute;
@@ -319,7 +350,7 @@
       letter-spacing: -0.02em;
       line-height: 0.98;
       color: #fff;
-      margin-bottom: 52px;
+      margin-bottom: 16px;
       overflow: visible;
       text-transform: uppercase;
     }
@@ -347,7 +378,7 @@
       font-family: 'Poppins', sans-serif;
       font-weight: 700;
       font-style: normal;
-      color: var(--accent-light);
+      color: #fff;
     }
 
     /* Hero logo PNG below title */
@@ -557,13 +588,15 @@
     @media (max-width: 768px) { .wk-credit { font-size: 12px; margin-top: 12px; } }
     .hero-value {
       max-width: 560px;
-      margin: 14px 0 0;
-      font-size: clamp(14px, 1.5vw, 16px);
+      margin: 0 0 40px;
+      font-size: clamp(15px, 1.6vw, 17px);
       line-height: 1.6;
-      color: rgba(255,255,255,0.72);
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 2px 12px rgba(0,0,0,0.45);
     }
-    html.light .hero-value { color: rgba(0,0,0,0.68); }
-    @media (max-width: 768px) { .hero-value { font-size: 13px; margin-top: 10px; } }
+    /* el hero mantiene su fondo oscuro también en tema claro */
+    html.light .hero-value { color: #ffffff; text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 2px 12px rgba(0,0,0,0.45); }
+    @media (max-width: 768px) { .hero-value { font-size: 14px; margin-bottom: 28px; } }
     .section-label {
       font-family: 'DM Mono', monospace;
       font-size: 18px;
@@ -729,159 +762,199 @@
     .wk-cat-row:hover .wk-cat-chevron { color: #fff; }
 
     /* Carousel stage */
-    .wk-stage { margin-top: 52px; }
+    .wk-stage { margin-top: 44px; }
     .wk-carousel { display: none; position: relative; }
     .wk-carousel.active { display: block; }
 
-    /* Viewport */
+    /* Alineación con el wrapper (max-width 1160 + padding 64) */
+    .wk-gutter { padding-inline: max(64px, calc((100vw - 1160px) / 2 + 64px)); }
+
+    /* Viewport: fila horizontal con scroll-snap */
     .wk-viewport {
-      overflow-x: hidden;
-      overflow-y: visible;
-      position: relative;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      -webkit-overflow-scrolling: touch;
+      padding-block: 14px 20px;
+      scroll-padding-inline: max(64px, calc((100vw - 1160px) / 2 + 64px));
     }
-    .wk-carousel[data-cat="videos"]  .wk-viewport { height: 316px; }
-    .wk-carousel[data-cat="digital"] .wk-viewport { height: 310px; }
-    .wk-carousel[data-cat="logos"]   .wk-viewport { height: 290px; }
+    .wk-viewport::-webkit-scrollbar { display: none; }
 
     .wk-track {
-      position: relative;
-      width: 100%;
-      height: 100%;
+      display: flex;
+      gap: 18px;
+      width: max-content;
+      padding-inline: max(64px, calc((100vw - 1160px) / 2 + 64px));
     }
 
     /* Cards */
     .wk-card {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      position: relative;
+      flex: 0 0 auto;
+      scroll-snap-align: start;
       border-radius: 18px;
       overflow: hidden;
       cursor: pointer;
       outline: none;
-      will-change: transform, opacity;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #0b0b10;
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1),
+                  border-color 0.3s ease,
+                  box-shadow 0.45s ease;
+    }
+    .wk-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(124,58,255,0.45);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.55), 0 0 42px rgba(124,58,255,0.18);
     }
     .wk-card:focus-visible { box-shadow: 0 0 0 3px var(--accent-light); }
-    /* Visual states set by JS */
-
-    /* Video card (16:9) */
-    .wk-card-vid {
-      width: 500px; height: 281px;
-      background: linear-gradient(135deg, #080610 0%, #100820 100%);
-      display: flex; align-items: center; justify-content: center;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .wk-card-vid::before {
+    .wk-card img { transition: transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .wk-card:hover img { transform: scale(1.06); }
+    /* Velo inferior para que el texto se lea sobre la imagen */
+    .wk-card-vid::after,
+    .wk-card-dig::after {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 38% 58%, rgba(124,58,255,0.18) 0%, transparent 62%);
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.32) 42%, transparent 68%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Badge superior */
+    .wk-badge {
+      position: absolute; top: 12px; left: 12px; z-index: 3;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 10px;
+      border-radius: 100px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.88);
       pointer-events: none;
     }
+    .wk-badge i { font-style: normal; color: var(--accent-light); }
+
+    /* Video card (9:16 vertical) */
+    .wk-card-vid {
+      width: clamp(178px, 20vw, 232px);
+      aspect-ratio: 9 / 16;
+      background: linear-gradient(135deg, #080610 0%, #100820 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* Placeholder de vumbnail (16:9): rellena. Al llegar el thumbnail real 9:16
+       se marca .is-real y se muestra completo, sin recorte ni zoom. */
     .wk-vid-thumb {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
-      object-fit: cover; opacity: 0.65;
+      object-fit: cover;
+      z-index: 1;
     }
+    .wk-vid-thumb.is-real { object-fit: contain; }
+    /* Copia ampliada y desenfocada detrás, para rellenar en vez de dejar barras negras */
+    .wk-vid-blur {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: blur(24px) saturate(1.25);
+      transform: scale(1.18);
+      opacity: 0.5;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .wk-card:hover .wk-vid-blur { transform: scale(1.24); }
     .wk-play-btn {
-      width: 60px; height: 60px;
+      width: 54px; height: 54px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      border: 1.5px solid rgba(255,255,255,0.2);
+      background: rgba(124,58,255,0.55);
+      border: 1.5px solid rgba(124,58,255,0.8);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: 0 0 28px rgba(124,58,255,0.35);
       display: flex; align-items: center; justify-content: center;
-      position: relative; z-index: 2;
+      position: relative; z-index: 3;
       transition: background 0.25s, transform 0.25s, border-color 0.25s, box-shadow 0.25s;
     }
-    .wk-card.center .wk-play-btn {
-      background: rgba(124,58,255,0.52);
-      border-color: rgba(124,58,255,0.75);
-      box-shadow: 0 0 28px rgba(124,58,255,0.4);
+    .wk-card:hover .wk-play-btn {
+      transform: scale(1.12);
+      background: rgba(124,58,255,0.82);
+      box-shadow: 0 0 38px rgba(124,58,255,0.55);
     }
-    .wk-card.center:hover .wk-play-btn { transform: scale(1.12); }
-    .wk-play-btn svg { width: 20px; height: 20px; fill: #fff; margin-left: 3px; }
+    .wk-play-btn svg { width: 18px; height: 18px; fill: #fff; margin-left: 3px; }
     .wk-vid-label {
-      position: absolute; bottom: 12px; left: 16px; right: 16px;
-      font-family: 'DM Mono', monospace; font-size: 9px;
-      color: rgba(255,255,255,0.4); letter-spacing: 0.09em;
-      text-transform: uppercase; z-index: 2;
+      position: absolute; bottom: 14px; left: 14px; right: 14px;
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      color: #fff; letter-spacing: 0.06em;
+      text-transform: uppercase; z-index: 3; line-height: 1.35;
     }
 
-    /* Digital card (9:16) */
+    /* Digital card (9:16 vertical) */
     .wk-card-dig {
-      width: 480px; height: 270px;
-      border: 1px solid rgba(255,255,255,0.07);
+      width: clamp(178px, 20vw, 232px);
+      aspect-ratio: 9 / 16;
     }
     .wk-card-dig img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    /* Logo card */
+    /* Logo card (horizontal) */
     .wk-card-logo {
-      width: 360px; height: 252px;
+      width: clamp(210px, 24vw, 286px);
+      aspect-ratio: 4 / 3;
       background: #fff;
-      display: flex; align-items: center; justify-content: center;
-      padding: 0;
     }
     .wk-card-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    /* Nav: arrows + dots in one row */
+    /* Nav: dots a la izquierda, flechas a la derecha */
     .wk-nav {
       display: flex;
-      justify-content: center;
-      margin-top: 28px;
-    }
-    .wk-arrows-dots {
-      display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 16px;
+      margin-top: 22px;
+      padding-inline: max(64px, calc((100vw - 1160px) / 2 + 64px));
     }
     .wk-dots {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
+      flex-wrap: wrap;
     }
     .wk-dot {
-      height: 5px;
-      width: 5px;
+      height: 6px;
+      width: 8px;
       border-radius: 100px;
-      background: rgba(255,255,255,0.2);
-      transition: width 0.3s ease, background 0.3s ease, transform 0.2s;
+      background: rgba(255,255,255,0.22);
+      transition: width 0.3s ease, background 0.3s ease;
       border: none; padding: 0; cursor: pointer; flex-shrink: 0;
     }
-    .wk-dot.active { width: 18px; background: var(--accent-light); }
+    .wk-dot:hover { background: rgba(255,255,255,0.45); }
+    .wk-dot.active { width: 28px; background: var(--accent-light); }
+    .wk-arrows { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     .wk-arrow {
-      width: 46px; height: 46px;
+      width: 42px; height: 42px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.75);
-      font-size: 17px;
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      color: #fff;
+      font-size: 16px;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, border-color 0.2s, transform 0.12s;
+      box-shadow: 0 6px 20px rgba(124,58,255,0.35);
+      transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.12s;
     }
-    .wk-arrow:hover  { background: rgba(124,58,255,0.3); border-color: var(--accent-light); }
+    .wk-arrow:hover {
+      background: var(--accent-light);
+      border-color: var(--accent-light);
+      box-shadow: 0 8px 28px rgba(124,58,255,0.55);
+    }
     .wk-arrow:active { transform: scale(0.92); }
-    /* Flechas fuera del visor del carrusel — viven en el margen del wrapper, nunca sobre la imagen */
-    .wk-arrow-prev, .wk-arrow-next {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 20;
-      background: rgba(8,8,8,0.55);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-    }
-    .wk-arrow-prev:active, .wk-arrow-next:active { transform: translateY(-50%) scale(0.92); }
-    .wk-arrow-prev { left: -58px; }
-    .wk-arrow-next { right: -58px; }
-    /* Gutter del wrapper baja a 40px en este rango — achicamos la flecha para que siga sin tocar la imagen */
-    @media (max-width: 1024px) and (min-width: 861px) {
-      .wk-arrow-prev, .wk-arrow-next { width: 32px; height: 32px; font-size: 13px; }
-      .wk-arrow-prev { left: -38px; }
-      .wk-arrow-next { right: -38px; }
-    }
-    /* Debajo de 861px el gutter ya no alcanza — se navega con swipe + dots */
-    @media (max-width: 860px) {
-      .wk-arrow-prev, .wk-arrow-next { display: none; }
-    }
+    .wk-arrow[disabled] { opacity: 0.28; cursor: default; box-shadow: none; }
+    .wk-arrow[disabled]:hover { background: var(--accent); border-color: var(--accent); box-shadow: none; }
 
     /* Lightbox */
     .wk-lightbox {
@@ -912,13 +985,46 @@
     .wk-lb-video iframe { width: 100%; height: 100%; border: none; display: block; }
     .wk-lb-img {
       display: none;
-      max-width: 92vw; max-height: 92vh;
+      max-width: 92vw; max-height: 82vh;
       width: auto; height: auto;
       border-radius: 14px; object-fit: contain;
       box-shadow: 0 24px 80px rgba(0,0,0,0.7);
     }
     .wk-lightbox.img-mode .wk-lb-video { display: none; }
     .wk-lightbox.img-mode .wk-lb-img  { display: block; }
+    .wk-lb-stage {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      max-width: 100%;
+    }
+    .wk-lb-meta { margin-top: 16px; text-align: center; }
+    .wk-lb-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #fff; margin: 0 0 6px;
+    }
+    .wk-lb-count {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.45); margin: 0;
+    }
+    .wk-lb-nav {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s; z-index: 2001;
+    }
+    .wk-lb-nav:hover { background: rgba(124,58,255,0.45); border-color: var(--accent-light); }
+    .wk-lb-prev { left: 24px; }
+    .wk-lb-next { right: 24px; }
+    @media (max-width: 640px) {
+      .wk-lb-nav { width: 40px; height: 40px; }
+      .wk-lb-prev { left: 10px; }
+      .wk-lb-next { right: 10px; }
+    }
 
     /* Responsive */
     @media (max-width: 640px) {
@@ -926,23 +1032,29 @@
       .wk-title { font-size: clamp(40px, 13vw, 60px); }
       .wk-subtitle { margin-bottom: 32px; }
       .wk-cat-name { font-size: clamp(20px, 7vw, 32px); }
-      .wk-carousel[data-cat="videos"]  .wk-viewport { height: 196px; }
-      .wk-carousel[data-cat="digital"] .wk-viewport { height: 224px; }
-      .wk-carousel[data-cat="logos"]   .wk-viewport { height: 210px; }
-      .wk-card-vid { width: 300px; height: 169px; }
-      .wk-play-btn { width: 48px; height: 48px; }
-      .wk-play-btn svg { width: 16px; height: 16px; }
-      .wk-card-dig { width: 300px; height: 169px; }
-      .wk-card-logo { width: 270px; height: 189px; padding: 0; }
+      .wk-track { gap: 12px; padding-inline: 20px; }
+      .wk-viewport { scroll-padding-inline: 20px; }
+      .wk-nav { padding-inline: 20px; margin-top: 18px; }
+      .wk-card-vid, .wk-card-dig { width: 158px; }
+      .wk-card-logo { width: 208px; }
+      .wk-play-btn { width: 44px; height: 44px; }
+      .wk-play-btn svg { width: 15px; height: 15px; }
+      .wk-vid-label { font-size: 9px; bottom: 11px; left: 11px; right: 11px; }
+      .wk-badge { font-size: 8px; padding: 4px 8px; top: 9px; left: 9px; }
+      .wk-arrow { width: 36px; height: 36px; font-size: 13px; }
       .wk-lb-video { width: min(300px, 94vw); }
     }
     @media (max-width: 860px) and (min-width: 641px) {
-      .wk-carousel[data-cat="videos"]  .wk-viewport { height: 252px; }
-      .wk-carousel[data-cat="digital"] .wk-viewport { height: 268px; }
-      .wk-carousel[data-cat="logos"]   .wk-viewport { height: 252px; }
-      .wk-card-vid { width: 400px; height: 225px; }
-      .wk-card-dig { width: 380px; height: 214px; }
-      .wk-card-logo { width: 308px; height: 216px; }
+      .wk-track { gap: 14px; padding-inline: 28px; }
+      .wk-viewport { scroll-padding-inline: 28px; }
+      .wk-nav { padding-inline: 28px; }
+      .wk-card-vid, .wk-card-dig { width: 186px; }
+      .wk-card-logo { width: 240px; }
+    }
+    @media (max-width: 1160px) and (min-width: 861px) {
+      .wk-track { padding-inline: 40px; }
+      .wk-viewport { scroll-padding-inline: 40px; }
+      .wk-nav { padding-inline: 40px; }
     }
     .showreel-header {
       display: flex;
@@ -1298,6 +1410,7 @@
       overflow: hidden;
       min-height: 260px;
     }
+    .lumyn-visual picture { display: block; width: 100%; height: 100%; }
     .lumyn-visual img {
       width: 100%;
       height: 100%;
@@ -2111,7 +2224,7 @@
       .hero-role-mobile { display: block; }
       .hero > div[style] { max-width: 100% !important; }
       .hero { padding: 0 20px 60px; }
-      .hero-title { font-size: clamp(32px, 10vw, 56px); margin-bottom: 24px; }
+      .hero-title { font-size: clamp(32px, 10vw, 56px); margin-bottom: 12px; }
       .hero-logo-svg { max-width: 220px; margin-top: 12px; margin-bottom: 24px; }
       .hero-bottom { flex-direction: column; align-items: flex-start; gap: 20px; }
       .hero-actions { align-items: flex-start; }
@@ -2220,6 +2333,11 @@
     html.light .wk-cat-row.active .wk-cat-name,
     html.light .wk-cat-row:hover .wk-cat-name { color: #000; }
     html.light .wk-cat-row:hover .wk-cat-chevron { color: #000; }
+    html.light .wk-card { border-color: rgba(0,0,0,0.10); }
+    html.light .wk-card:hover { box-shadow: 0 22px 60px rgba(0,0,0,0.16), 0 0 42px rgba(124,58,255,0.14); }
+    html.light .wk-dot { background: rgba(0,0,0,0.18); }
+    html.light .wk-dot:hover { background: rgba(0,0,0,0.35); }
+    html.light .wk-arrow[disabled] { opacity: 0.22; }
 
     /* About + experience body text → dark, legible on light bg */
     html.light .about-text { color: #333; }
@@ -2315,13 +2433,16 @@
       <source src="img/Animate_this_exact_still_image.mp4" type="video/mp4">
     </video>
 
+    <!-- Degradado izquierdo para legibilidad del texto -->
+    <div class="hero-fade-left" aria-hidden="true"></div>
+
     <div style="position:relative;z-index:4">
     <h1 class="hero-title">
       <span class="hero-title-line"><span class="hero-word">Diego</span></span>
       <span class="hero-title-line"><span class="hero-word">Manjarrés</span></span>
     </h1>
     <div class="hero-role-mobile" data-es="Director de Arte &amp; AI-Native Content Producer" data-en="Art Director &amp; AI-Native Content Producer">Director de Arte &amp; AI-Native Content Producer</div>
-    <p class="hero-value" data-es="Produzco contenido de marca a escala con IA generativa. 10+ años de dirección de arte en agencias y más de 10 cuentas simultáneas de Meta Ads a mi cargo, con un pipeline que entrega en horas lo que antes tomaba semanas." data-en="I produce brand content at scale with generative AI. 10+ years of agency art direction and 10+ simultaneous Meta Ads accounts under my belt, with a pipeline that delivers in hours what used to take weeks.">Produzco contenido de marca a escala con IA generativa. 10+ años de dirección de arte en agencias y más de 10 cuentas simultáneas de Meta Ads a mi cargo, con un pipeline que entrega en horas lo que antes tomaba semanas.</p>
+    <p class="hero-value" data-es="Dirección de arte y contenido de marca con IA generativa. 10+ años en agencias. Lo que antes tomaba semanas, entregado en horas." data-en="Art direction and brand content powered by generative AI. 10+ years in agencies. What used to take weeks, delivered in hours.">Dirección de arte y contenido de marca con IA generativa. 10+ años en agencias. Lo que antes tomaba semanas, entregado en horas.</p>
     <div class="hero-logo-svg" style="display:none"><!-- placeholder -->
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 942.16 266.5" aria-label="DM logo" role="img" style="display:none">
         <defs><style>.cls-1{fill:#fff}</style></defs>
@@ -2431,110 +2552,110 @@
             <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
             <span class="wk-vid-label">Patagua 1/5 · Fashion</span>
           </div>
-          <div class="wk-card wk-card-vid" data-vid="1180621440" role="button" tabindex="0" aria-label="Patagua 2/5 · Fashion">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621440.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+          <div class="wk-card wk-card-vid" data-vid="1180617829" role="button" tabindex="0" aria-label="Micro 3/6 · Sports">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617829.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
             <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Patagua 2/5 · Fashion</span>
+            <span class="wk-vid-label">Micro 3/6 · Sports</span>
           </div>
-          <div class="wk-card wk-card-vid" data-vid="1180621458" role="button" tabindex="0" aria-label="Patagua 3/5 · Fashion">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621458.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Patagua 3/5 · Fashion</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180621477" role="button" tabindex="0" aria-label="Patagua 4/5 · Fashion">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621477.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Patagua 4/5 · Fashion</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180621490" role="button" tabindex="0" aria-label="Patagua 5/5 · Fashion">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621490.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Patagua 5/5 · Fashion</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180618644" role="button" tabindex="0" aria-label="Passe · Fashion">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180618644.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Passe · Fashion</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180617384" role="button" tabindex="0" aria-label="Helmlinger · Fashion">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617384.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Helmlinger · Fashion</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180580101" role="button" tabindex="0" aria-label="Grillo 1/3 · Food">
+          <div class="wk-card wk-card-vid" data-vid="1180580101" role="button" tabindex="0" aria-label="Grillo 1/3 · Home & Garden">
             <img class="wk-vid-thumb" src="https://vumbnail.com/1180580101.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
             <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Grillo 1/3 · Food</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180580151" role="button" tabindex="0" aria-label="Grillo 2/3 · Food">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180580151.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Grillo 2/3 · Food</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180580266" role="button" tabindex="0" aria-label="Grillo 3/3 · Food">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180580266.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Grillo 3/3 · Food</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180622009" role="button" tabindex="0" aria-label="Simply Sweet · Food">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180622009.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Simply Sweet · Food</span>
+            <span class="wk-vid-label">Grillo 1/3 · Home & Garden</span>
           </div>
           <div class="wk-card wk-card-vid" data-vid="1180618559" role="button" tabindex="0" aria-label="Nubetta 1/3 · Food">
             <img class="wk-vid-thumb" src="https://vumbnail.com/1180618559.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
             <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
             <span class="wk-vid-label">Nubetta 1/3 · Food</span>
           </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621477" role="button" tabindex="0" aria-label="Patagua 4/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621477.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 4/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617873" role="button" tabindex="0" aria-label="Micro 5/6 · Sports">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617873.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 5/6 · Sports</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180618644" role="button" tabindex="0" aria-label="Passe · Beauty">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180618644.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Passe · Beauty</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617384" role="button" tabindex="0" aria-label="Helmlinger · Jewelry">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617384.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Helmlinger · Jewelry</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180580266" role="button" tabindex="0" aria-label="Grillo 3/3 · Home & Garden">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180580266.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Grillo 3/3 · Home & Garden</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617499" role="button" tabindex="0" aria-label="Micro 1/6 · Sports">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617499.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 1/6 · Sports</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621440" role="button" tabindex="0" aria-label="Patagua 2/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621440.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 2/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617525" role="button" tabindex="0" aria-label="Micro 2/6 · Sports">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617525.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 2/6 · Sports</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621458" role="button" tabindex="0" aria-label="Patagua 3/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621458.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 3/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617842" role="button" tabindex="0" aria-label="Micro 4/6 · Sports">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617842.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 4/6 · Sports</span>
+          </div>
           <div class="wk-card wk-card-vid" data-vid="1180618584" role="button" tabindex="0" aria-label="Nubetta 2/3 · Food">
             <img class="wk-vid-thumb" src="https://vumbnail.com/1180618584.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
             <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
             <span class="wk-vid-label">Nubetta 2/3 · Food</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180617903" role="button" tabindex="0" aria-label="Micro 6/6 · Sports">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617903.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Micro 6/6 · Sports</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180621490" role="button" tabindex="0" aria-label="Patagua 5/5 · Fashion">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180621490.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Patagua 5/5 · Fashion</span>
+          </div>
+          <div class="wk-card wk-card-vid" data-vid="1180580151" role="button" tabindex="0" aria-label="Grillo 2/3 · Home & Garden">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180580151.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Grillo 2/3 · Home & Garden</span>
           </div>
           <div class="wk-card wk-card-vid" data-vid="1180618622" role="button" tabindex="0" aria-label="Nubetta 3/3 · Food">
             <img class="wk-vid-thumb" src="https://vumbnail.com/1180618622.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
             <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
             <span class="wk-vid-label">Nubetta 3/3 · Food</span>
           </div>
+          <div class="wk-card wk-card-vid" data-vid="1180622009" role="button" tabindex="0" aria-label="Simply Sweet · Food">
+            <img class="wk-vid-thumb" src="https://vumbnail.com/1180622009.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
+            <span class="wk-vid-label">Simply Sweet · Food</span>
+          </div>
           <div class="wk-card wk-card-vid" data-vid="1180580072" role="button" tabindex="0" aria-label="Ducati · Auto">
             <img class="wk-vid-thumb" src="https://vumbnail.com/1180580072.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
             <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
             <span class="wk-vid-label">Ducati · Auto</span>
           </div>
-          <div class="wk-card wk-card-vid" data-vid="1180621993" role="button" tabindex="0" aria-label="Rocas de Maitencillo">
+          <div class="wk-card wk-card-vid" data-vid="1180621993" role="button" tabindex="0" aria-label="Rocas de Maitencillo · Real Estate">
             <img class="wk-vid-thumb" src="https://vumbnail.com/1180621993.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
             <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Rocas de Maitencillo</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180617499" role="button" tabindex="0" aria-label="Micro 1/6 · Real Estate">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617499.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Micro 1/6 · Real Estate</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180617525" role="button" tabindex="0" aria-label="Micro 2/6 · Real Estate">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617525.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Micro 2/6 · Real Estate</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180617829" role="button" tabindex="0" aria-label="Micro 3/6 · Real Estate">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617829.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Micro 3/6 · Real Estate</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180617842" role="button" tabindex="0" aria-label="Micro 4/6 · Real Estate">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617842.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Micro 4/6 · Real Estate</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180617873" role="button" tabindex="0" aria-label="Micro 5/6 · Real Estate">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617873.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Micro 5/6 · Real Estate</span>
-          </div>
-          <div class="wk-card wk-card-vid" data-vid="1180617903" role="button" tabindex="0" aria-label="Micro 6/6 · Real Estate">
-            <img class="wk-vid-thumb" src="https://vumbnail.com/1180617903.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
-            <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
-            <span class="wk-vid-label">Micro 6/6 · Real Estate</span>
+            <span class="wk-vid-label">Rocas de Maitencillo · Real Estate</span>
           </div>
           <div class="wk-card wk-card-vid" data-vid="1180622084" role="button" tabindex="0" aria-label="Unibag">
             <img class="wk-vid-thumb" src="https://vumbnail.com/1180622084.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
@@ -2548,11 +2669,11 @@
           </div>
         </div>
       </div>
-      <button class="wk-arrow wk-arrow-prev" data-cat="videos" data-dir="-1" aria-label="Anterior">&#8592;</button>
-      <button class="wk-arrow wk-arrow-next" data-cat="videos" data-dir="1" aria-label="Siguiente">&#8594;</button>
       <div class="wk-nav">
-        <div class="wk-arrows-dots">
-          <div class="wk-dots" id="wk-dots-videos"></div>
+        <div class="wk-dots" id="wk-dots-videos"></div>
+        <div class="wk-arrows">
+          <button class="wk-arrow" data-cat="videos" data-dir="-1" aria-label="Anterior">&#8592;</button>
+          <button class="wk-arrow" data-cat="videos" data-dir="1" aria-label="Siguiente">&#8594;</button>
         </div>
       </div>
     </div>
@@ -2622,11 +2743,11 @@
           </div>
         </div>
       </div>
-      <button class="wk-arrow wk-arrow-prev" data-cat="digital" data-dir="-1" aria-label="Anterior">&#8592;</button>
-      <button class="wk-arrow wk-arrow-next" data-cat="digital" data-dir="1" aria-label="Siguiente">&#8594;</button>
       <div class="wk-nav">
-        <div class="wk-arrows-dots">
-          <div class="wk-dots" id="wk-dots-digital"></div>
+        <div class="wk-dots" id="wk-dots-digital"></div>
+        <div class="wk-arrows">
+          <button class="wk-arrow" data-cat="digital" data-dir="-1" aria-label="Anterior">&#8592;</button>
+          <button class="wk-arrow" data-cat="digital" data-dir="1" aria-label="Siguiente">&#8594;</button>
         </div>
       </div>
     </div>
@@ -2720,11 +2841,11 @@
           </div>
         </div>
       </div>
-      <button class="wk-arrow wk-arrow-prev" data-cat="logos" data-dir="-1" aria-label="Anterior">&#8592;</button>
-      <button class="wk-arrow wk-arrow-next" data-cat="logos" data-dir="1" aria-label="Siguiente">&#8594;</button>
       <div class="wk-nav">
-        <div class="wk-arrows-dots">
-          <div class="wk-dots" id="wk-dots-logos"></div>
+        <div class="wk-dots" id="wk-dots-logos"></div>
+        <div class="wk-arrows">
+          <button class="wk-arrow" data-cat="logos" data-dir="-1" aria-label="Anterior">&#8592;</button>
+          <button class="wk-arrow" data-cat="logos" data-dir="1" aria-label="Siguiente">&#8594;</button>
         </div>
       </div>
     </div>
@@ -2737,39 +2858,23 @@
       <div class="reveal" style="margin-bottom:48px">
         <div class="section-label" data-es="Websites" data-en="Websites">Websites</div>
       </div>
-      <a href="https://lumyn-studio-relanzamiento.vercel.app/" target="_blank" rel="noopener noreferrer"
+      <a href="https://www.lumynstudio.cl/" target="_blank" rel="noopener noreferrer"
          class="project-card-lumyn reveal" style="text-decoration:none;display:grid;">
         <div class="lumyn-visual">
-          <img src="img/project-lumyn.jpeg" alt="Lumyn.studio — agencia boutique de contenido IA" loading="lazy" />
+          <picture>
+            <source srcset="img/project-lumyn-v2.webp" type="image/webp" />
+            <img src="img/project-lumyn-v2.jpg" alt="Lumyn Studio — agencia de IA aplicada: webs, agentes, Meta Ads" loading="lazy" />
+          </picture>
           <span class="lumyn-visual-badge" data-es="Proyecto propio" data-en="Own project">Proyecto propio</span>
         </div>
         <div class="lumyn-content">
           <div>
-            <div class="project-label" data-es="2026 — en pre-lanzamiento" data-en="2026 — pre-launch">2026 — en pre-lanzamiento</div>
+            <div class="project-label" data-es="2026 — en operación" data-en="2026 — live">2026 — en operación</div>
             <h3 class="lumyn-name">Lumyn<span>.studio</span></h3>
-            <p class="lumyn-tagline" data-es="Estudio de contenido con IA que estoy desarrollando, en etapa de pre-lanzamiento: product shots, virtual influencers y UGC sintético. Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1." data-en="An AI content studio I&#39;m building, currently pre-launch: product shots, virtual influencers and synthetic UGC. Image and video workflows with ComfyUI, Flux.1 and Wan2.1.">Estudio de contenido con IA que estoy desarrollando, en etapa de pre-lanzamiento: product shots, virtual influencers y UGC sintético. Flujos de imagen y video con ComfyUI, Flux.1 y Wan2.1.</p>
+            <p class="lumyn-tagline" data-es="Agencia de IA aplicada que fundé y dirijo: sitios web, agentes de IA a medida, Meta Ads y producción creativa. Trato directo, precios publicados y entregas en semanas, no meses." data-en="An applied-AI agency I founded and run: websites, custom AI agents, Meta Ads and creative production. Direct contact, published pricing and delivery in weeks, not months.">Agencia de IA aplicada que fundé y dirijo: sitios web, agentes de IA a medida, Meta Ads y producción creativa. Trato directo, precios publicados y entregas en semanas, no meses.</p>
           </div>
           <div>
             <span class="lumyn-btn" data-es="Ir a la web →" data-en="Go to site →">Ir a la web →</span>
-          </div>
-        </div>
-      </a>
-
-      <!-- Cyberpunk Motorcycle — web demo -->
-      <a href="https://nothing-moto-deploy.vercel.app/" target="_blank" rel="noopener noreferrer"
-         class="project-card-cyber reveal" style="text-decoration:none;display:grid;">
-        <div class="cyber-visual">
-          <img src="img/mockup_cyberpunk%20motorcycle.jpeg" alt="Cyberpunk Motorcycle — web demo" loading="lazy" />
-          <span class="cyber-visual-badge" data-es="Demo · Web de ejemplo" data-en="Demo · Sample site">Demo · Web de ejemplo</span>
-        </div>
-        <div class="cyber-content">
-          <div>
-            <div class="project-label cyber-label" data-es="Proyecto propio · 2025 — concepto" data-en="Own project · 2025 — concept">Proyecto propio · 2025 — concepto</div>
-            <h3 class="cyber-name">Cyberpunk<br><span>Motorcycle</span></h3>
-            <p class="lumyn-tagline" data-es="Landing page de concepto para una marca ficticia de motos de alto rendimiento con estética cyberpunk. Desarrollada con Claude Code como demo de capacidades web — el producto no es real." data-en="Concept landing page for a fictional high-performance motorcycle brand with cyberpunk aesthetics. Built with Claude Code as a web-capabilities demo — the product isn't real.">Landing page de concepto para una marca ficticia de motos de alto rendimiento con estética cyberpunk. Desarrollada con Claude Code como demo de capacidades web — el producto no es real.</p>
-          </div>
-          <div>
-            <span class="cyber-btn" data-es="Ir a la web →" data-en="Go to site →">Ir a la web →</span>
           </div>
         </div>
       </a>
@@ -2812,6 +2917,25 @@
         </div>
       </a>
 
+      <!-- Cyberpunk Motorcycle — web demo -->
+      <a href="https://nothing-moto-deploy.vercel.app/" target="_blank" rel="noopener noreferrer"
+         class="project-card-cyber reveal" style="text-decoration:none;display:grid;">
+        <div class="cyber-visual">
+          <img src="img/mockup_cyberpunk%20motorcycle.jpeg" alt="Cyberpunk Motorcycle — web demo" loading="lazy" />
+          <span class="cyber-visual-badge" data-es="Demo · Web de ejemplo" data-en="Demo · Sample site">Demo · Web de ejemplo</span>
+        </div>
+        <div class="cyber-content">
+          <div>
+            <div class="project-label cyber-label" data-es="Proyecto propio · 2025 — concepto" data-en="Own project · 2025 — concept">Proyecto propio · 2025 — concepto</div>
+            <h3 class="cyber-name">Cyberpunk<br><span>Motorcycle</span></h3>
+            <p class="lumyn-tagline" data-es="Landing page de concepto para una marca ficticia de motos de alto rendimiento con estética cyberpunk. Desarrollada con Claude Code como demo de capacidades web — el producto no es real." data-en="Concept landing page for a fictional high-performance motorcycle brand with cyberpunk aesthetics. Built with Claude Code as a web-capabilities demo — the product isn't real.">Landing page de concepto para una marca ficticia de motos de alto rendimiento con estética cyberpunk. Desarrollada con Claude Code como demo de capacidades web — el producto no es real.</p>
+          </div>
+          <div>
+            <span class="cyber-btn" data-es="Ir a la web →" data-en="Go to site →">Ir a la web →</span>
+          </div>
+        </div>
+      </a>
+
     </div>
   </section>
 
@@ -2821,11 +2945,11 @@
       <div class="section-label reveal" data-es="Sobre mí" data-en="About me">Sobre mí</div>
       <div class="about-grid">
         <div class="reveal">
-          <p class="about-text" data-es="En Agencia Alike sostuve <strong>más de 10 cuentas simultáneas</strong> en siete rubros distintos, con <strong>hasta 80 piezas mensuales</strong> en los períodos de mayor demanda. No fue trabajando más horas: reconstruí mi flujo completo alrededor de IA generativa.<br/><br/>Soy director de arte y diseñador digital con <strong>más de 10 años en agencias de publicidad</strong>. Mi base es clásica —dirección de arte, branding, motion y campañas— y lo que cambió es el motor de producción: pipelines en <strong>ComfyUI</strong> con Flux.1 y Wan2.1, automatización con <strong>n8n</strong> y desarrollo web con <strong>Claude Code</strong>.<br/><br/>Entre 2021 y 2022 fundé y operé <strong>Holy Food</strong>, un emporio de alimentos premium: hice el naming, la identidad, la fachada, el interiorismo y las redes, además de buscar proveedores y atender el mesón. Volví a la publicidad sabiendo lo que se siente estar del otro lado del brief.<br/><br/>Actualmente desarrollo <strong>Lumyn.studio</strong>, estudio de contenido con IA, en etapa de pre-lanzamiento." data-en="At Agencia Alike I sustained <strong>10+ simultaneous accounts</strong> across seven different verticals, delivering <strong>up to 80 assets per month</strong> at peak demand. Not by working longer hours: I rebuilt my entire workflow around generative AI.<br/><br/>I&#39;m an art director and digital designer with <strong>over 10 years in advertising agencies</strong>. My foundation is classic —art direction, branding, motion and campaigns— and what changed is the production engine: <strong>ComfyUI</strong> pipelines with Flux.1 and Wan2.1, automation with <strong>n8n</strong> and web development with <strong>Claude Code</strong>.<br/><br/>Between 2021 and 2022 I founded and ran <strong>Holy Food</strong>, a premium food store: I did the naming, the identity, the storefront, the interior and the social media, and also sourced suppliers and worked the counter. I came back to advertising knowing what it feels like to be on the other side of the brief.<br/><br/>I&#39;m currently building <strong>Lumyn.studio</strong>, an AI content studio, currently pre-launch.">
+          <p class="about-text" data-es="En Agencia Alike sostuve <strong>más de 10 cuentas simultáneas</strong> en siete rubros distintos, con <strong>hasta 80 piezas mensuales</strong> en los períodos de mayor demanda. No fue trabajando más horas: reconstruí mi flujo completo alrededor de IA generativa.<br/><br/>Soy director de arte y diseñador digital con <strong>más de 10 años en agencias de publicidad</strong>. Mi base es clásica —dirección de arte, branding, motion y campañas— y lo que cambió es el motor de producción: pipelines en <strong>ComfyUI</strong> con Flux.1 y Wan2.1, automatización con <strong>n8n</strong> y desarrollo web con <strong>Claude Code</strong>.<br/><br/>Entre 2021 y 2022 fundé y operé <strong>Holy Food</strong>, un emporio de alimentos premium: hice el naming, la identidad, la fachada, el interiorismo y las redes, además de buscar proveedores y atender el mesón. Volví a la publicidad sabiendo lo que se siente estar del otro lado del brief.<br/><br/>Actualmente dirijo <strong>Lumyn Studio</strong>, agencia de IA aplicada: sitios web, agentes de IA a medida, Meta Ads y producción creativa." data-en="At Agencia Alike I sustained <strong>10+ simultaneous accounts</strong> across seven different verticals, delivering <strong>up to 80 assets per month</strong> at peak demand. Not by working longer hours: I rebuilt my entire workflow around generative AI.<br/><br/>I&#39;m an art director and digital designer with <strong>over 10 years in advertising agencies</strong>. My foundation is classic —art direction, branding, motion and campaigns— and what changed is the production engine: <strong>ComfyUI</strong> pipelines with Flux.1 and Wan2.1, automation with <strong>n8n</strong> and web development with <strong>Claude Code</strong>.<br/><br/>Between 2021 and 2022 I founded and ran <strong>Holy Food</strong>, a premium food store: I did the naming, the identity, the storefront, the interior and the social media, and also sourced suppliers and worked the counter. I came back to advertising knowing what it feels like to be on the other side of the brief.<br/><br/>I currently run <strong>Lumyn Studio</strong>, an applied-AI agency: websites, custom AI agents, Meta Ads and creative production.">
             En Agencia Alike sostuve <strong>más de 10 cuentas simultáneas</strong> en siete rubros distintos, con <strong>hasta 80 piezas mensuales</strong> en los períodos de mayor demanda. No fue trabajando más horas: reconstruí mi flujo completo alrededor de IA generativa.<br/><br/>
             Soy director de arte y diseñador digital con <strong>más de 10 años en agencias de publicidad</strong>. Mi base es clásica —dirección de arte, branding, motion y campañas— y lo que cambió es el motor de producción: pipelines en <strong>ComfyUI</strong> con Flux.1 y Wan2.1, automatización con <strong>n8n</strong> y desarrollo web con <strong>Claude Code</strong>.<br/><br/>
             Entre 2021 y 2022 fundé y operé <strong>Holy Food</strong>, un emporio de alimentos premium: hice el naming, la identidad, la fachada, el interiorismo y las redes, además de buscar proveedores y atender el mesón. Volví a la publicidad sabiendo lo que se siente estar del otro lado del brief.<br/><br/>
-            Actualmente desarrollo <strong>Lumyn.studio</strong>, estudio de contenido con IA, en etapa de pre-lanzamiento.
+            Actualmente dirijo <strong>Lumyn Studio</strong>, agencia de IA aplicada: sitios web, agentes de IA a medida, Meta Ads y producción creativa.
           </p>
         </div>
         <div class="reveal reveal-d1">
@@ -2936,7 +3060,7 @@
             <ul class="timeline-list">
               <li data-es="Especialización en producción con IA generativa: flujos de imagen y video en ComfyUI con Flux.1 y Wan2.1." data-en="Specialised in generative AI production: ComfyUI image and video workflows with Flux.1 and Wan2.1.">Especialización en producción con IA generativa: flujos de imagen y video en ComfyUI con Flux.1 y Wan2.1.</li>
               <li data-es="Desarrollo y publicación de 4 sitios web funcionales con Claude Code, JavaScript, React y Tailwind CSS." data-en="Built and shipped 4 functional websites with Claude Code, JavaScript, React and Tailwind CSS.">Desarrollo y publicación de 4 sitios web funcionales con Claude Code, JavaScript, React y Tailwind CSS.</li>
-              <li data-es="Fundación de Lumyn.studio, estudio de contenido con IA, en pre-lanzamiento." data-en="Founded Lumyn.studio, an AI content studio, currently pre-launch.">Fundación de Lumyn.studio, estudio de contenido con IA, en pre-lanzamiento.</li>
+              <li data-es="Fundación de Lumyn Studio, agencia de IA aplicada —sitios web, agentes de IA y Meta Ads—, hoy en operación." data-en="Founded Lumyn Studio, an applied-AI agency —websites, AI agents and Meta Ads—, now live.">Fundación de Lumyn Studio, agencia de IA aplicada —sitios web, agentes de IA y Meta Ads—, hoy en operación.</li>
             </ul>
           </div>
 
@@ -3118,9 +3242,9 @@
       <div class="footer-columns reveal">
         <div class="footer-col">
           <img src="img/logo-footer.png" alt="Diego Manjarrés" class="footer-brand-logo" />
-          <p class="footer-brand-desc" data-es="<strong style='color:#fff;'>Director de Arte · AI-Native Content Producer</strong><br>Lumyn.studio · en pre-lanzamiento<br>Santiago, Chile · Disponible para remoto e híbrido" data-en="<strong style='color:#fff;'>Art Director · AI-Native Content Producer</strong><br>Lumyn.studio · pre-launch<br>Santiago, Chile · Available for remote and hybrid">
+          <p class="footer-brand-desc" data-es="<strong style='color:#fff;'>Director de Arte · AI-Native Content Producer</strong><br>Lumyn Studio · agencia de IA aplicada<br>Santiago, Chile · Disponible para remoto e híbrido" data-en="<strong style='color:#fff;'>Art Director · AI-Native Content Producer</strong><br>Lumyn Studio · applied-AI agency<br>Santiago, Chile · Available for remote and hybrid">
             <strong style="color:#fff;">Director de Arte · AI-Native Content Producer</strong><br>
-            Lumyn.studio · en pre-lanzamiento<br>
+            Lumyn Studio · agencia de IA aplicada<br>
             Santiago, Chile · Disponible para remoto e híbrido
           </p>
         </div>
@@ -3169,8 +3293,16 @@
   <!-- ── WORK LIGHTBOX ── -->
   <div class="wk-lightbox" id="wk-lightbox" role="dialog" aria-modal="true" aria-label="Vista previa">
     <button class="wk-lb-close" id="wk-lb-close" aria-label="Cerrar">&#10005;</button>
-    <div class="wk-lb-video" id="wk-lb-video"></div>
-    <img class="wk-lb-img" id="wk-lb-img" src="" alt="Vista previa" />
+    <button class="wk-lb-nav wk-lb-prev" id="wk-lb-prev" aria-label="Anterior">&#8592;</button>
+    <div class="wk-lb-stage">
+      <div class="wk-lb-video" id="wk-lb-video"></div>
+      <img class="wk-lb-img" id="wk-lb-img" src="" alt="Vista previa" />
+      <div class="wk-lb-meta">
+        <p class="wk-lb-title" id="wk-lb-title"></p>
+        <p class="wk-lb-count" id="wk-lb-count"></p>
+      </div>
+    </div>
+    <button class="wk-lb-nav wk-lb-next" id="wk-lb-next" aria-label="Siguiente">&#8594;</button>
   </div>
 
     <!-- ══════════════════════════════════════
@@ -3443,11 +3575,142 @@
         placeStageAfter(row);
         if (stage) stage.style.display = '';
         if (!state[cat]) initCarousel(cat);
-        else go(cat, state[cat].current);
+        else buildDots(cat);
       });
     });
 
     placeStageAfter(document.querySelector('.wk-cat-row.active') || document.querySelector('.wk-cat-row'));
+
+    const BADGES = { videos: 'Video', digital: 'Digital', logos: 'Logo' };
+
+    /* ── Thumbnails 9:16 reales de Vimeo ──
+       vumbnail.com recorta a 16:9. La oEmbed de Vimeo devuelve el frame completo
+       en la proporción original del video. Se cachea en localStorage. */
+    const THUMB_CACHE = 'dm-vimeo-thumbs';
+    let thumbCache = {};
+    try { thumbCache = JSON.parse(localStorage.getItem(THUMB_CACHE) || '{}'); } catch (e) {}
+
+    function saveCache() {
+      try { localStorage.setItem(THUMB_CACHE, JSON.stringify(thumbCache)); } catch (e) {}
+    }
+
+    function applyThumb(card, url) {
+      const thumb = card.querySelector('.wk-vid-thumb');
+      const blur  = card.querySelector('.wk-vid-blur');
+      if (thumb) { thumb.src = url; thumb.style.display = ''; thumb.classList.add('is-real'); }
+      if (blur)  { blur.src = url; }
+    }
+
+    function loadThumb(card) {
+      const id = card.dataset.vid;
+      if (!id || card.dataset.thumbDone) return;
+      card.dataset.thumbDone = '1';
+
+      if (thumbCache[id]) { applyThumb(card, thumbCache[id]); return; }
+
+      fetch(`https://vimeo.com/api/oembed.json?url=https%3A//vimeo.com/${id}`)
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(d => {
+          if (!d.thumbnail_url) return;
+          // sube la resolución del thumbnail (por defecto viene en 200px)
+          const url = d.thumbnail_url.replace(/-d_\d+(x\d+)?/, '-d_640');
+          thumbCache[id] = url;
+          saveCache();
+          applyThumb(card, url);
+        })
+        .catch(() => {}); // si falla, se queda el de vumbnail
+    }
+
+    /* Solo pide el thumbnail de las tarjetas que se acercan al viewport */
+    const thumbObserver = ('IntersectionObserver' in window)
+      ? new IntersectionObserver((entries, obs) => {
+          entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            loadThumb(e.target);
+            obs.unobserve(e.target);
+          });
+        }, { root: null, rootMargin: '300px' })
+      : null;
+
+    /* Inserta el badge superior y, en videos, el fondo desenfocado (una sola vez) */
+    function decorate(cards, cat) {
+      const label = BADGES[cat] || '';
+      cards.forEach(card => {
+        if (card.querySelector('.wk-badge')) return;
+
+        const thumb = card.querySelector('.wk-vid-thumb');
+        if (thumb && !card.querySelector('.wk-vid-blur')) {
+          const blur = document.createElement('img');
+          blur.className = 'wk-vid-blur';
+          blur.src = thumb.src;          // misma URL: el navegador la reutiliza de caché
+          blur.alt = '';
+          blur.setAttribute('aria-hidden', 'true');
+          blur.loading = 'lazy';
+          blur.onerror = function () { this.style.display = 'none'; };
+          card.insertBefore(blur, card.firstChild);
+        }
+
+        const b = document.createElement('span');
+        b.className = 'wk-badge';
+        b.innerHTML = '<i>&#10022;</i>' + label;
+        card.appendChild(b);
+
+        if (card.dataset.vid) {
+          if (thumbCache[card.dataset.vid]) { card.dataset.thumbDone = '1'; applyThumb(card, thumbCache[card.dataset.vid]); }
+          else if (thumbObserver) thumbObserver.observe(card);
+          else loadThumb(card);
+        }
+      });
+    }
+
+    /* Ancho de un "paso" = tarjeta + gap */
+    function stepOf(s) {
+      const gap = parseFloat(getComputedStyle(s.track).columnGap || s.track.style.gap || 18) || 18;
+      return s.cards[0].getBoundingClientRect().width + gap;
+    }
+
+    /* Cuántas tarjetas caben completas en el visor (descontando los gutters) */
+    function perView(s) {
+      const cs  = getComputedStyle(s.track);
+      const pad = (parseFloat(cs.paddingInlineStart) || 0) + (parseFloat(cs.paddingInlineEnd) || 0);
+      const usable = s.viewport.clientWidth - pad;
+      return Math.max(1, Math.floor(usable / stepOf(s)));
+    }
+
+    function pageCount(s) {
+      return Math.max(1, Math.ceil(s.cards.length / perView(s)));
+    }
+
+    function buildDots(cat) {
+      const s = state[cat];
+      if (!s || !s.viewport.clientWidth) return; // carrusel oculto: se recalcula al abrirlo
+      const total = pageCount(s);
+      s.dotsEl.innerHTML = '';
+      for (let i = 0; i < total; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'wk-dot';
+        dot.setAttribute('aria-label', 'Página ' + (i + 1));
+        dot.addEventListener('click', () => go(cat, i));
+        s.dotsEl.appendChild(dot);
+      }
+      syncDots(cat);
+    }
+
+    /* Marca el dot activo y habilita/deshabilita flechas según el scroll real */
+    function syncDots(cat) {
+      const s = state[cat];
+      if (!s) return;
+      const step = stepOf(s) * perView(s);
+      const idx  = Math.round(s.viewport.scrollLeft / step);
+      s.current  = idx;
+      Array.from(s.dotsEl.children).forEach((d, i) => d.classList.toggle('active', i === idx));
+
+      const max = s.viewport.scrollWidth - s.viewport.clientWidth - 2;
+      const prev = document.querySelector(`.wk-arrow[data-cat="${cat}"][data-dir="-1"]`);
+      const next = document.querySelector(`.wk-arrow[data-cat="${cat}"][data-dir="1"]`);
+      if (prev) prev.disabled = s.viewport.scrollLeft <= 2;
+      if (next) next.disabled = s.viewport.scrollLeft >= max;
+    }
 
     function initCarousel(cat) {
       const carousel = document.querySelector(`.wk-carousel[data-cat="${cat}"]`);
@@ -3458,62 +3721,27 @@
       const cards    = Array.from(track.querySelectorAll('.wk-card'));
       if (!cards.length) return;
 
-      cards.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.className = 'wk-dot';
-        dot.setAttribute('aria-label', 'Slide ' + (i + 1));
-        dot.addEventListener('click', () => go(cat, i));
-        dotsEl.appendChild(dot);
-      });
-
+      decorate(cards, cat);
       state[cat] = { viewport, track, cards, dotsEl, current: 0 };
-      go(cat, 0);
+      buildDots(cat);
 
-      let tx = 0;
-      viewport.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
-      viewport.addEventListener('touchend',   e => {
-        const dx = e.changedTouches[0].clientX - tx;
-        if (Math.abs(dx) > 36) go(cat, state[cat].current + (dx < 0 ? 1 : -1));
+      let raf = null;
+      viewport.addEventListener('scroll', () => {
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => syncDots(cat));
       }, { passive: true });
+
+      window.addEventListener('resize', () => { buildDots(cat); });
     }
 
-    function go(cat, idx) {
+    /* Desplaza a una página concreta */
+    function go(cat, page) {
       const s = state[cat];
       if (!s) return;
-      idx = Math.max(0, Math.min(idx, s.cards.length - 1));
-      s.current = idx;
-
-      const cardW  = s.cards[0].offsetWidth;
-      const offset = Math.round(cardW * 0.62);
-
-      s.cards.forEach((card, i) => {
-        const pos  = i - idx;
-        const dist = Math.abs(pos);
-        const tx   = pos * offset;
-        const sc   = Math.max(0.48, 1 - dist * 0.13);
-        const op   = dist <= 2 ? 1 : 0;
-        const zi   = Math.max(1, 10 - dist);
-        const glow = dist === 0
-          ? '0 28px 80px rgba(0,0,0,0.65), 0 0 60px rgba(124,58,255,0.14), 0 0 120px rgba(124,58,255,0.07)'
-          : 'none';
-
-        card.style.transition    = pref ? 'none'
-          : 'transform 0.52s cubic-bezier(0.16,1,0.3,1), opacity 0.45s ease, box-shadow 0.45s ease';
-        card.style.transform     = `translate(calc(-50% + ${tx}px), -50%) scale(${sc.toFixed(3)})`;
-        card.style.opacity       = op.toFixed(2);
-        card.style.zIndex        = zi;
-        card.style.boxShadow     = glow;
-        card.style.pointerEvents = dist <= 2 ? 'auto' : 'none';
-
-        card.classList.remove('center', 'adjacent', 'hidden-card');
-        if (dist === 0)     card.classList.add('center');
-        else if (dist <= 2) card.classList.add('adjacent');
-        else                card.classList.add('hidden-card');
-      });
-
-      Array.from(s.dotsEl.querySelectorAll('.wk-dot')).forEach((d, i) => {
-        d.classList.toggle('active', i === idx);
-      });
+      const total = pageCount(s);
+      page = Math.max(0, Math.min(page, total - 1));
+      const step = stepOf(s) * perView(s);
+      s.viewport.scrollTo({ left: page * step, behavior: pref ? 'auto' : 'smooth' });
     }
 
     document.querySelectorAll('.wk-arrow[data-cat]').forEach(btn => {
@@ -3524,33 +3752,56 @@
       });
     });
 
+    /* ── Lightbox ── */
     const lightbox = document.getElementById('wk-lightbox');
     const lbVideo  = document.getElementById('wk-lb-video');
     const lbImg    = document.getElementById('wk-lb-img');
     const lbClose  = document.getElementById('wk-lb-close');
+    const lbPrev   = document.getElementById('wk-lb-prev');
+    const lbNext   = document.getElementById('wk-lb-next');
+    const lbTitle  = document.getElementById('wk-lb-title');
+    const lbCount  = document.getElementById('wk-lb-count');
+    let lbCat = null, lbIdx = 0;
+
+    function showLB(cat, idx) {
+      const s = state[cat];
+      if (!s) return;
+      const total = s.cards.length;
+      lbIdx = (idx + total) % total;
+      lbCat = cat;
+      const card   = s.cards[lbIdx];
+      const vidId  = card.dataset.vid;
+      const imgSrc = card.dataset.img;
+
+      if (vidId) {
+        lbVideo.innerHTML = `<iframe src="https://player.vimeo.com/video/${vidId}?autoplay=1&title=0&byline=0&portrait=0&dnt=1&color=7C3AFF" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+        lightbox.classList.remove('img-mode');
+      } else if (imgSrc) {
+        lbVideo.innerHTML = '';
+        lbImg.src = imgSrc;
+        lightbox.classList.add('img-mode');
+      }
+      lbTitle.textContent = card.getAttribute('aria-label') || '';
+      lbCount.textContent = (lbIdx + 1) + ' / ' + total;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
 
     document.querySelectorAll('.wk-stage').forEach(stage => {
       stage.addEventListener('click', e => {
         const card = e.target.closest('.wk-card');
         if (!card) return;
         const cat   = card.closest('.wk-carousel').dataset.cat;
-        const cards = Array.from(card.closest('.wk-track').querySelectorAll('.wk-card'));
-        const idx   = cards.indexOf(card);
         if (!state[cat]) return;
-
-        if (idx !== state[cat].current) { go(cat, idx); return; }
-
-        const vidId  = card.dataset.vid;
-        const imgSrc = card.dataset.img;
-        if (vidId) {
-          lbVideo.innerHTML = `<iframe src="https://player.vimeo.com/video/${vidId}?autoplay=1&title=0&byline=0&portrait=0&dnt=1&color=7C3AFF" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
-          lightbox.classList.remove('img-mode');
-        } else if (imgSrc) {
-          lbImg.src = imgSrc;
-          lightbox.classList.add('img-mode');
-        }
-        lightbox.classList.add('open');
-        document.body.style.overflow = 'hidden';
+        showLB(cat, state[cat].cards.indexOf(card));
+      });
+      stage.addEventListener('keydown', e => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const card = e.target.closest('.wk-card');
+        if (!card) return;
+        e.preventDefault();
+        const cat = card.closest('.wk-carousel').dataset.cat;
+        if (state[cat]) showLB(cat, state[cat].cards.indexOf(card));
       });
     });
 
@@ -3558,11 +3809,19 @@
       lightbox.classList.remove('open', 'img-mode');
       lbVideo.innerHTML = '';
       lbImg.src = '';
+      lbCat = null;
       document.body.style.overflow = '';
     }
     if (lbClose) lbClose.addEventListener('click', closeLB);
-    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+    if (lbPrev) lbPrev.addEventListener('click', e => { e.stopPropagation(); if (lbCat) showLB(lbCat, lbIdx - 1); });
+    if (lbNext) lbNext.addEventListener('click', e => { e.stopPropagation(); if (lbCat) showLB(lbCat, lbIdx + 1); });
+    lightbox.addEventListener('click', e => { if (e.target === lightbox || e.target.classList.contains('wk-lb-stage')) closeLB(); });
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLB();
+      if (e.key === 'ArrowLeft'  && lbCat) showLB(lbCat, lbIdx - 1);
+      if (e.key === 'ArrowRight' && lbCat) showLB(lbCat, lbIdx + 1);
+    });
 
     initCarousel('videos');
   })();
@@ -3603,8 +3862,8 @@
         try { localStorage.setItem('dm-theme', theme); } catch (e) {}
       }
       themeBtns.forEach(b => b.addEventListener('click', () => applyTheme(b.dataset.themeVal)));
-      let savedTheme = 'dark';
-      try { savedTheme = localStorage.getItem('dm-theme') || 'dark'; } catch (e) {}
+      let savedTheme = 'light';
+      try { savedTheme = localStorage.getItem('dm-theme') || 'light'; } catch (e) {}
       applyTheme(savedTheme);
 
       /* ---------- LANGUAGE ---------- */
