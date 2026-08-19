@@ -1104,6 +1104,7 @@
     .about-section {
       padding: 96px 0;
       border-bottom: 1px solid var(--border);
+      overflow-x: clip;
     }
     .about-grid {
       display: grid;
@@ -2155,6 +2156,43 @@
     .reveal-d3 { transition-delay: 0.30s; }
     .reveal-d4 { transition-delay: 0.40s; }
 
+    /* Entradas laterales: el texto llega por la izquierda, el retrato por la derecha */
+    .reveal-left  { transform: translate3d(-44px, 0, 0); }
+    .reveal-right { transform: translate3d(44px, 0, 0); }
+    .reveal-left.revealed,
+    .reveal-right.revealed { transform: translate3d(0, 0, 0); }
+
+    /* Aptitudes: cada grupo se despliega escalonado al entrar en pantalla */
+    .stack-group.reveal { opacity: 1; transform: none; transition: none; }
+    .stack-group .stack-group-label,
+    .stack-group .tag {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0) scale(0.96);
+      transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .stack-group.revealed .stack-group-label,
+    .stack-group.revealed .tag { opacity: 1; transform: none; }
+    .stack-group.revealed .stack-group-label { transition-delay: 0.02s; }
+    .stack-group.revealed .tag:nth-child(1) { transition-delay: 0.115s; }
+    .stack-group.revealed .tag:nth-child(2) { transition-delay: 0.170s; }
+    .stack-group.revealed .tag:nth-child(3) { transition-delay: 0.225s; }
+    .stack-group.revealed .tag:nth-child(4) { transition-delay: 0.280s; }
+    .stack-group.revealed .tag:nth-child(5) { transition-delay: 0.335s; }
+    .stack-group.revealed .tag:nth-child(6) { transition-delay: 0.390s; }
+    .stack-group.revealed .tag:nth-child(7) { transition-delay: 0.445s; }
+    .stack-group.revealed .tag:nth-child(8) { transition-delay: 0.500s; }
+
+    @media (max-width: 860px) {
+      .reveal-left  { transform: translate3d(-20px, 0, 0); }
+      .reveal-right { transform: translate3d(20px, 0, 0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal-left, .reveal-right,
+      .stack-group .stack-group-label,
+      .stack-group .tag { opacity: 1; transform: none; transition: none; }
+    }
+
     /* ══════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════ */
@@ -2488,6 +2526,63 @@
     </div>
     </div><!-- /z-index wrapper -->
     <div class="hero-fade-bottom" aria-hidden="true"></div>
+  </section>
+
+    <!-- ── SOBRE MÍ + STACK ── -->
+  <section class="about-section" id="sobre-mi">
+    <div class="wrapper">
+      <div class="section-label reveal reveal-left" data-es="Sobre mí" data-en="About me">Sobre mí</div>
+      <div class="about-grid">
+        <div class="reveal reveal-left">
+          <p class="about-text" data-es="En Agencia Alike sostuve <strong>más de 10 cuentas simultáneas</strong> en siete rubros distintos, con <strong>hasta 80 piezas mensuales</strong> en los períodos de mayor demanda. No fue trabajando más horas: reconstruí mi flujo completo alrededor de IA generativa.<br/><br/>Soy director de arte y diseñador digital con <strong>más de 10 años en agencias de publicidad</strong>. Mi base es clásica —dirección de arte, branding, motion y campañas— y lo que cambió es el motor de producción: pipelines en <strong>ComfyUI</strong> con Flux.1 y Wan2.1, automatización con <strong>n8n</strong> y desarrollo web con <strong>Claude Code</strong>.<br/><br/>Entre 2021 y 2022 fundé y operé <strong>Holy Food</strong>, un emporio de alimentos premium: hice el naming, la identidad, la fachada, el interiorismo y las redes, además de buscar proveedores y atender el mesón. Volví a la publicidad sabiendo lo que se siente estar del otro lado del brief.<br/><br/>Actualmente dirijo <strong>Lumyn Studio</strong>, agencia de IA aplicada: sitios web, agentes de IA a medida, Meta Ads y producción creativa." data-en="At Agencia Alike I sustained <strong>10+ simultaneous accounts</strong> across seven different verticals, delivering <strong>up to 80 assets per month</strong> at peak demand. Not by working longer hours: I rebuilt my entire workflow around generative AI.<br/><br/>I&#39;m an art director and digital designer with <strong>over 10 years in advertising agencies</strong>. My foundation is classic —art direction, branding, motion and campaigns— and what changed is the production engine: <strong>ComfyUI</strong> pipelines with Flux.1 and Wan2.1, automation with <strong>n8n</strong> and web development with <strong>Claude Code</strong>.<br/><br/>Between 2021 and 2022 I founded and ran <strong>Holy Food</strong>, a premium food store: I did the naming, the identity, the storefront, the interior and the social media, and also sourced suppliers and worked the counter. I came back to advertising knowing what it feels like to be on the other side of the brief.<br/><br/>I currently run <strong>Lumyn Studio</strong>, an applied-AI agency: websites, custom AI agents, Meta Ads and creative production.">
+            En Agencia Alike sostuve <strong>más de 10 cuentas simultáneas</strong> en siete rubros distintos, con <strong>hasta 80 piezas mensuales</strong> en los períodos de mayor demanda. No fue trabajando más horas: reconstruí mi flujo completo alrededor de IA generativa.<br/><br/>
+            Soy director de arte y diseñador digital con <strong>más de 10 años en agencias de publicidad</strong>. Mi base es clásica —dirección de arte, branding, motion y campañas— y lo que cambió es el motor de producción: pipelines en <strong>ComfyUI</strong> con Flux.1 y Wan2.1, automatización con <strong>n8n</strong> y desarrollo web con <strong>Claude Code</strong>.<br/><br/>
+            Entre 2021 y 2022 fundé y operé <strong>Holy Food</strong>, un emporio de alimentos premium: hice el naming, la identidad, la fachada, el interiorismo y las redes, además de buscar proveedores y atender el mesón. Volví a la publicidad sabiendo lo que se siente estar del otro lado del brief.<br/><br/>
+            Actualmente dirijo <strong>Lumyn Studio</strong>, agencia de IA aplicada: sitios web, agentes de IA a medida, Meta Ads y producción creativa.
+          </p>
+        </div>
+        <div class="reveal reveal-right reveal-d1">
+          <div class="about-portrait">
+            <picture>
+              <source srcset="img/retrato-about.webp" type="image/webp">
+              <img src="img/retrato-about.png" alt="Retrato de Diego Manjarres" loading="lazy" width="900" height="900">
+            </picture>
+          </div>
+          <div class="stack-group reveal">
+            <div class="stack-group-label" data-es="IA &amp; Generación" data-en="AI &amp; Generation">IA &amp; Generación</div>
+            <div class="tags-wrap">
+              <span class="tag">ComfyUI</span>
+              <span class="tag">Flux.1</span>
+              <span class="tag">Wan2.1</span>
+              <span class="tag">Midjourney</span>
+              <span class="tag">Higgsfield AI</span>
+            </div>
+          </div>
+          <div class="stack-group reveal">
+            <div class="stack-group-label" data-es="Build &amp; Automatización" data-en="Build &amp; Automation">Build &amp; Automatización</div>
+            <div class="tags-wrap">
+              <span class="tag tag-green">Claude Code</span>
+              <span class="tag tag-green">Lovable</span>
+              <span class="tag tag-green">OpenClaw</span>
+              <span class="tag tag-green">Antigravity</span>
+              <span class="tag tag-green">n8n</span>
+            </div>
+          </div>
+          <div class="stack-group reveal">
+            <div class="stack-group-label" data-es="Diseño &amp; Producción" data-en="Design &amp; Production">Diseño &amp; Producción</div>
+            <div class="tags-wrap">
+              <span class="tag tag-neutral">Photoshop</span>
+              <span class="tag tag-neutral">Illustrator</span>
+              <span class="tag tag-neutral">After Effects</span>
+              <span class="tag tag-neutral">Premiere Pro</span>
+              <span class="tag tag-neutral">Figma</span>
+              <span class="tag tag-neutral">Canva</span>
+              <span class="tag tag-neutral">CapCut</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ── SLIDES CAROUSEL ── -->
@@ -2919,63 +3014,6 @@
         </div>
       </a>
 
-    </div>
-  </section>
-
-    <!-- ── SOBRE MÍ + STACK ── -->
-  <section class="about-section" id="sobre-mi">
-    <div class="wrapper">
-      <div class="section-label reveal" data-es="Sobre mí" data-en="About me">Sobre mí</div>
-      <div class="about-grid">
-        <div class="reveal">
-          <p class="about-text" data-es="En Agencia Alike sostuve <strong>más de 10 cuentas simultáneas</strong> en siete rubros distintos, con <strong>hasta 80 piezas mensuales</strong> en los períodos de mayor demanda. No fue trabajando más horas: reconstruí mi flujo completo alrededor de IA generativa.<br/><br/>Soy director de arte y diseñador digital con <strong>más de 10 años en agencias de publicidad</strong>. Mi base es clásica —dirección de arte, branding, motion y campañas— y lo que cambió es el motor de producción: pipelines en <strong>ComfyUI</strong> con Flux.1 y Wan2.1, automatización con <strong>n8n</strong> y desarrollo web con <strong>Claude Code</strong>.<br/><br/>Entre 2021 y 2022 fundé y operé <strong>Holy Food</strong>, un emporio de alimentos premium: hice el naming, la identidad, la fachada, el interiorismo y las redes, además de buscar proveedores y atender el mesón. Volví a la publicidad sabiendo lo que se siente estar del otro lado del brief.<br/><br/>Actualmente dirijo <strong>Lumyn Studio</strong>, agencia de IA aplicada: sitios web, agentes de IA a medida, Meta Ads y producción creativa." data-en="At Agencia Alike I sustained <strong>10+ simultaneous accounts</strong> across seven different verticals, delivering <strong>up to 80 assets per month</strong> at peak demand. Not by working longer hours: I rebuilt my entire workflow around generative AI.<br/><br/>I&#39;m an art director and digital designer with <strong>over 10 years in advertising agencies</strong>. My foundation is classic —art direction, branding, motion and campaigns— and what changed is the production engine: <strong>ComfyUI</strong> pipelines with Flux.1 and Wan2.1, automation with <strong>n8n</strong> and web development with <strong>Claude Code</strong>.<br/><br/>Between 2021 and 2022 I founded and ran <strong>Holy Food</strong>, a premium food store: I did the naming, the identity, the storefront, the interior and the social media, and also sourced suppliers and worked the counter. I came back to advertising knowing what it feels like to be on the other side of the brief.<br/><br/>I currently run <strong>Lumyn Studio</strong>, an applied-AI agency: websites, custom AI agents, Meta Ads and creative production.">
-            En Agencia Alike sostuve <strong>más de 10 cuentas simultáneas</strong> en siete rubros distintos, con <strong>hasta 80 piezas mensuales</strong> en los períodos de mayor demanda. No fue trabajando más horas: reconstruí mi flujo completo alrededor de IA generativa.<br/><br/>
-            Soy director de arte y diseñador digital con <strong>más de 10 años en agencias de publicidad</strong>. Mi base es clásica —dirección de arte, branding, motion y campañas— y lo que cambió es el motor de producción: pipelines en <strong>ComfyUI</strong> con Flux.1 y Wan2.1, automatización con <strong>n8n</strong> y desarrollo web con <strong>Claude Code</strong>.<br/><br/>
-            Entre 2021 y 2022 fundé y operé <strong>Holy Food</strong>, un emporio de alimentos premium: hice el naming, la identidad, la fachada, el interiorismo y las redes, además de buscar proveedores y atender el mesón. Volví a la publicidad sabiendo lo que se siente estar del otro lado del brief.<br/><br/>
-            Actualmente dirijo <strong>Lumyn Studio</strong>, agencia de IA aplicada: sitios web, agentes de IA a medida, Meta Ads y producción creativa.
-          </p>
-        </div>
-        <div class="reveal reveal-d1">
-          <div class="about-portrait">
-            <picture>
-              <source srcset="img/retrato-about.webp" type="image/webp">
-              <img src="img/retrato-about.png" alt="Retrato de Diego Manjarres" loading="lazy" width="900" height="900">
-            </picture>
-          </div>
-          <div class="stack-group">
-            <div class="stack-group-label" data-es="IA &amp; Generación" data-en="AI &amp; Generation">IA &amp; Generación</div>
-            <div class="tags-wrap">
-              <span class="tag">ComfyUI</span>
-              <span class="tag">Flux.1</span>
-              <span class="tag">Wan2.1</span>
-              <span class="tag">Midjourney</span>
-              <span class="tag">Higgsfield AI</span>
-            </div>
-          </div>
-          <div class="stack-group">
-            <div class="stack-group-label" data-es="Build &amp; Automatización" data-en="Build &amp; Automation">Build &amp; Automatización</div>
-            <div class="tags-wrap">
-              <span class="tag tag-green">Claude Code</span>
-              <span class="tag tag-green">Lovable</span>
-              <span class="tag tag-green">OpenClaw</span>
-              <span class="tag tag-green">Antigravity</span>
-              <span class="tag tag-green">n8n</span>
-            </div>
-          </div>
-          <div class="stack-group">
-            <div class="stack-group-label" data-es="Diseño &amp; Producción" data-en="Design &amp; Production">Diseño &amp; Producción</div>
-            <div class="tags-wrap">
-              <span class="tag tag-neutral">Photoshop</span>
-              <span class="tag tag-neutral">Illustrator</span>
-              <span class="tag tag-neutral">After Effects</span>
-              <span class="tag tag-neutral">Premiere Pro</span>
-              <span class="tag tag-neutral">Figma</span>
-              <span class="tag tag-neutral">Canva</span>
-              <span class="tag tag-neutral">CapCut</span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
