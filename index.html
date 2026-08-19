@@ -2387,6 +2387,19 @@
     .wk-dot:hover { background: rgba(0,0,0,0.38); }
     .wk-arrow[disabled] { opacity: 0.24; }
 
+    /* Marcador de categoria sin contenido */
+    .wk-empty {
+      padding-inline: max(64px, calc((100vw - 1160px) / 2 + 64px));
+      padding-block: 52px 20px;
+      margin: 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.40);
+    }
+    html.light .wk-empty { color: rgba(255,255,255,0.40); }
+
     /* ── Tema oscuro: la seccion Stats va en blanco ── */
     .stats-section {
       background: #ffffff;
@@ -2648,22 +2661,34 @@
 
       <!-- Category rows -->
       <div class="wk-cats">
-        <div class="wk-cat-row active" data-cat="videos">
+        <div class="wk-cat-row active" data-cat="ia">
           <span class="wk-cat-num">01</span>
+          <span class="wk-cat-name" data-es="IA generativa" data-en="Generative AI">IA generativa</span>
+          <span class="wk-cat-count" data-es="Próximamente" data-en="Coming soon">Próximamente</span>
+          <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
+        </div>
+        <div class="wk-cat-row" data-cat="videos">
+          <span class="wk-cat-num">02</span>
           <span class="wk-cat-name" data-es="Videos" data-en="Videos">Videos</span>
           <span class="wk-cat-count" data-es="24 piezas" data-en="24 pieces">24 piezas</span>
           <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
         <div class="wk-cat-row" data-cat="digital">
-          <span class="wk-cat-num">02</span>
+          <span class="wk-cat-num">03</span>
           <span class="wk-cat-name" data-es="Digital" data-en="Digital">Digital</span>
           <span class="wk-cat-count" data-es="20 piezas" data-en="20 pieces">20 piezas</span>
           <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
         <div class="wk-cat-row" data-cat="logos">
-          <span class="wk-cat-num">03</span>
+          <span class="wk-cat-num">04</span>
           <span class="wk-cat-name" data-es="Logotipos" data-en="Logos">Logotipos</span>
           <span class="wk-cat-count" data-es="28 piezas" data-en="28 pieces">28 piezas</span>
+          <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
+        </div>
+        <div class="wk-cat-row" data-cat="redes">
+          <span class="wk-cat-num">05</span>
+          <span class="wk-cat-name" data-es="Redes sociales" data-en="Social media">Redes sociales</span>
+          <span class="wk-cat-count" data-es="Próximamente" data-en="Coming soon">Próximamente</span>
           <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
       </div>
@@ -2671,8 +2696,13 @@
 
     <!-- Carousels -->
     <div class="wk-stage">
+    <!-- IA carousel — pendiente de contenido -->
+    <div class="wk-carousel active" data-cat="ia">
+      <p class="wk-empty" data-es="Contenido en camino" data-en="Content on the way">Contenido en camino</p>
+    </div>
+
     <!-- VIDEOS carousel -->
-    <div class="wk-carousel  active" data-cat="videos">
+    <div class="wk-carousel" data-cat="videos">
       <div class="wk-viewport">
         <div class="wk-track" id="wk-track-videos">
           <div class="wk-card wk-card-vid" data-vid="1180618670" role="button" tabindex="0" aria-label="Patagua 1/5 · Fashion">
@@ -2977,6 +3007,12 @@
         </div>
       </div>
     </div>
+
+    <!-- REDES carousel — pendiente de contenido -->
+    <div class="wk-carousel" data-cat="redes">
+      <p class="wk-empty" data-es="Contenido en camino" data-en="Content on the way">Contenido en camino</p>
+    </div>
+
     </div>
   </section>
 
@@ -3652,7 +3688,7 @@
 
     placeStageAfter(document.querySelector('.wk-cat-row.active') || document.querySelector('.wk-cat-row'));
 
-    const BADGES = { videos: 'Video', digital: 'Digital', logos: 'Logo' };
+    const BADGES = { ia: 'IA', videos: 'Video', digital: 'Digital', logos: 'Logo', redes: 'Social' };
 
     /* ── Thumbnails 9:16 reales de Vimeo ──
        vumbnail.com recorta a 16:9. La oEmbed de Vimeo devuelve el frame completo
@@ -3789,6 +3825,7 @@
       const viewport = carousel.querySelector('.wk-viewport');
       const track    = carousel.querySelector('.wk-track');
       const dotsEl   = carousel.querySelector('.wk-dots');
+      if (!viewport || !track || !dotsEl) return;   // categoria aun sin contenido
       const cards    = Array.from(track.querySelectorAll('.wk-card'));
       if (!cards.length) return;
 
