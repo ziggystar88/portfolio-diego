@@ -584,7 +584,6 @@
       color: rgba(255,255,255,0.45);
       letter-spacing: 0.01em;
     }
-    html.light .wk-credit { color: rgba(0,0,0,0.50); }
     @media (max-width: 768px) { .wk-credit { font-size: 12px; margin-top: 12px; } }
     .hero-value {
       max-width: 560px;
@@ -2353,8 +2352,6 @@
 
     /* Mid-section headings hardcoded #fff → true black */
     html.light .stat-number,
-    html.light .wk-title,
-    html.light .showreel-title,
     html.light .exp-sidebar-title,
     html.light .timeline-company,
     html.light .about-text strong { color: #000; }
@@ -2363,18 +2360,56 @@
     html.light .quotes-caption { color: #111; }
     html.light .hero-fade-bottom { background: linear-gradient(to bottom, transparent 0%, #080808 100%); }
 
-    /* Work category rows */
-    html.light .wk-cats { border-top-color: rgba(0,0,0,0.12); }
-    html.light .wk-cat-row { border-bottom-color: rgba(0,0,0,0.12); }
-    html.light .wk-cat-name { color: rgba(0,0,0,0.30); }
+    /* ══════════════════════════════════════
+       WORK — banda invertida respecto al tema
+       Tema oscuro  → fondo blanco, tipografia en positivo
+       Tema claro   → fondo azul petroleo, tipografia en negativo
+    ══════════════════════════════════════ */
+
+    /* ── Tema oscuro: la seccion Work va en blanco ── */
+    .slides-section {
+      background: #ffffff;
+      transition: background 0.3s ease;
+    }
+    .wk-title { color: #0a0a0a; }
+    .wk-subtitle { color: #4a4a4a; }
+    .wk-credit { color: rgba(0,0,0,0.52); }
+    .wk-cats { border-top-color: rgba(0,0,0,0.14); }
+    .wk-cat-row { border-bottom-color: rgba(0,0,0,0.14); }
+    .wk-cat-name { color: rgba(0,0,0,0.28); }
+    .wk-cat-row.active .wk-cat-name,
+    .wk-cat-row:hover .wk-cat-name { color: #0a0a0a; }
+    .wk-cat-count { color: #4a4a4a; }
+    .wk-cat-chevron { color: #6a6a6a; }
+    .wk-cat-row:hover .wk-cat-chevron { color: #0a0a0a; }
+    .wk-card { border-color: rgba(0,0,0,0.12); }
+    .wk-card:hover { box-shadow: 0 22px 60px rgba(0,0,0,0.18), 0 0 42px rgba(124,58,255,0.16); }
+    .wk-dot { background: rgba(0,0,0,0.18); }
+    .wk-dot:hover { background: rgba(0,0,0,0.38); }
+    .wk-arrow[disabled] { opacity: 0.24; }
+
+    /* ── Tema claro: la seccion Work va en azul petroleo ── */
+    html.light .slides-section {
+      background: linear-gradient(135deg, #0e0818 0%, #0d0d14 100%);
+    }
+    html.light .wk-title { color: #ffffff; }
+    html.light .wk-subtitle { color: #9a9a9a; }
+    html.light .wk-credit { color: rgba(255,255,255,0.48); }
+    html.light .wk-cats { border-top-color: rgba(255,255,255,0.10); }
+    html.light .wk-cat-row { border-bottom-color: rgba(255,255,255,0.10); }
+    html.light .wk-cat-row.active { border-bottom-color: rgba(124,58,255,0.45); }
+    html.light .wk-cat-name { color: rgba(255,255,255,0.26); }
     html.light .wk-cat-row.active .wk-cat-name,
-    html.light .wk-cat-row:hover .wk-cat-name { color: #000; }
-    html.light .wk-cat-row:hover .wk-cat-chevron { color: #000; }
-    html.light .wk-card { border-color: rgba(0,0,0,0.10); }
-    html.light .wk-card:hover { box-shadow: 0 22px 60px rgba(0,0,0,0.16), 0 0 42px rgba(124,58,255,0.14); }
-    html.light .wk-dot { background: rgba(0,0,0,0.18); }
-    html.light .wk-dot:hover { background: rgba(0,0,0,0.35); }
-    html.light .wk-arrow[disabled] { opacity: 0.22; }
+    html.light .wk-cat-row:hover .wk-cat-name { color: #ffffff; }
+    html.light .wk-cat-count { color: #9a9a9a; }
+    html.light .wk-cat-chevron { color: #9a9a9a; }
+    html.light .wk-cat-row.active .wk-cat-chevron { color: var(--accent-light); }
+    html.light .wk-cat-row:hover .wk-cat-chevron { color: #ffffff; }
+    html.light .wk-card { border-color: rgba(255,255,255,0.10); }
+    html.light .wk-card:hover { box-shadow: 0 22px 60px rgba(0,0,0,0.55), 0 0 42px rgba(124,58,255,0.20); }
+    html.light .wk-dot { background: rgba(255,255,255,0.22); }
+    html.light .wk-dot:hover { background: rgba(255,255,255,0.48); }
+    html.light .wk-arrow[disabled] { opacity: 0.30; }
 
     /* About + experience body text → dark, legible on light bg */
     html.light .about-text { color: #333; }
