@@ -2351,7 +2351,6 @@
     html.light .seg-btn.active { background: var(--accent); color: #fff; }
 
     /* Mid-section headings hardcoded #fff → true black */
-    html.light .stat-number,
     html.light .exp-sidebar-title,
     html.light .timeline-company,
     html.light .about-text strong { color: #000; }
@@ -2361,7 +2360,7 @@
     html.light .hero-fade-bottom { background: linear-gradient(to bottom, transparent 0%, #080808 100%); }
 
     /* ══════════════════════════════════════
-       WORK — banda invertida respecto al tema
+       WORK + STATS — bandas invertidas respecto al tema
        Tema oscuro  → fondo blanco, tipografia en positivo
        Tema claro   → fondo azul petroleo, tipografia en negativo
     ══════════════════════════════════════ */
@@ -2388,6 +2387,15 @@
     .wk-dot:hover { background: rgba(0,0,0,0.38); }
     .wk-arrow[disabled] { opacity: 0.24; }
 
+    /* ── Tema oscuro: la seccion Stats va en blanco ── */
+    .stats-section {
+      background: #ffffff;
+      transition: background 0.3s ease;
+    }
+    .stat-number { color: #0a0a0a; }
+    .stat-number .ac { color: var(--accent); }
+    .stat-desc { color: #4a4a4a; }
+
     /* ── Tema claro: la seccion Work va en azul petroleo ── */
     html.light .slides-section {
       background: linear-gradient(135deg, #0e0818 0%, #0d0d14 100%);
@@ -2410,6 +2418,14 @@
     html.light .wk-dot { background: rgba(255,255,255,0.22); }
     html.light .wk-dot:hover { background: rgba(255,255,255,0.48); }
     html.light .wk-arrow[disabled] { opacity: 0.30; }
+
+    /* ── Tema claro: la seccion Stats va en azul petroleo ── */
+    html.light .stats-section {
+      background: linear-gradient(135deg, #0e0818 0%, #0d0d14 100%);
+    }
+    html.light .stat-number { color: #ffffff; }
+    html.light .stat-number .ac { color: var(--accent-light); }
+    html.light .stat-desc { color: #9a9a9a; }
 
     /* About + experience body text → dark, legible on light bg */
     html.light .about-text { color: #333; }
