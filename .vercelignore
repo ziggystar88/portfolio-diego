@@ -1,5 +1,10 @@
-# Large video files — host on CDN/Cloudinary instead
-video/
+# Videos pesados. Ojo: "video/" a secas tambien excluiria img/video/,
+# donde si viven los videos que el sitio necesita.
+/video/
+img/video/hero-bg.mp4
+img/video/imagenes ia_portafolio_2026.mp4
+img/video/rrsss_portafolio_2026.mp4
+img/video/video reels_portafolio_2026.mp4
 
 # Originales pesados ya optimizados — no desplegar
 img/Person_using_MacBook_Pro_2K_202608111142.jpeg

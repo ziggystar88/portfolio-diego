@@ -2360,6 +2360,106 @@
     html.light .hero-fade-bottom { background: linear-gradient(to bottom, transparent 0%, #080808 100%); }
 
     /* ══════════════════════════════════════
+       VIDEO IA — revelado por scroll
+       La seccion es alta y el panel queda pegado: mientras se recorre,
+       el video se abre desde una franja redondeada hasta el marco completo
+       y escala de 0.7 a 1. Sin librerias: clip-path + transform.
+    ══════════════════════════════════════ */
+    .rv-section {
+      position: relative;
+      height: 320vh;
+      background: #050509;
+    }
+    .rv-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      padding: 76px 24px 64px;
+      overflow: hidden;
+      background:
+        radial-gradient(50% 44% at 50% 14%, rgba(124,58,255,0.26) 0%, transparent 68%),
+        radial-gradient(64% 52% at 50% 112%, rgba(124,58,255,0.15) 0%, transparent 72%),
+        #050509;
+    }
+    .rv-head {
+      text-align: center;
+      max-width: 660px;
+      flex-shrink: 0;
+    }
+    /* Entrada con desenfoque que se disipa, como en la referencia */
+    .rv-head.reveal {
+      transform: translateY(18px);
+      filter: blur(10px);
+      transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+    }
+    .rv-head.reveal.revealed { transform: none; filter: blur(0px); }
+    .rv-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 16px;
+    }
+    .rv-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(30px, 4.4vw, 54px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+      color: #ffffff;
+      margin: 0 0 14px;
+    }
+    .rv-sub {
+      margin: 0;
+      font-size: clamp(13px, 1.35vw, 15px);
+      line-height: 1.65;
+      color: rgba(255,255,255,0.62);
+    }
+    /* El marco que se abre. Las unidades del inset son porcentaje de la caja. */
+    .rv-clip {
+      position: relative;
+      width: min(1160px, 100%);
+      aspect-ratio: 16 / 9;
+      max-height: 52vh;
+      overflow: hidden;
+      flex-shrink: 1;
+      clip-path: inset(45% 45% 45% 45% round 1000px);
+      will-change: clip-path;
+    }
+    .rv-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(0.7);
+      transform-origin: center;
+      will-change: transform;
+      background: #050509;
+    }
+    /* La seccion se mantiene oscura tambien en tema claro, igual que el hero y el pie */
+    html.light .rv-section,
+    html.light .rv-title { color: #ffffff; }
+    @media (max-width: 860px) {
+      .rv-section { height: 260vh; }
+      .rv-sticky { gap: 22px; padding: 64px 20px 52px; }
+      .rv-clip { max-height: 40vh; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .rv-section { height: auto; }
+      .rv-sticky { position: static; height: auto; min-height: 0; }
+      .rv-clip { clip-path: inset(0% 0% 0% 0% round 16px); }
+      .rv-video { transform: none; }
+      .rv-head.reveal { filter: none; transform: none; }
+    }
+
+    /* ══════════════════════════════════════
        WORK + STATS — bandas invertidas respecto al tema
        Tema oscuro  → fondo blanco, tipografia en positivo
        Tema claro   → fondo azul petroleo, tipografia en negativo
@@ -2396,9 +2496,9 @@
       font-size: 11px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: rgba(0,0,0,0.40);
+      color: rgba(0,0,0,0.62);
     }
-    html.light .wk-empty { color: rgba(255,255,255,0.40); }
+    html.light .wk-empty { color: rgba(255,255,255,0.60); }
 
     /* ── Tema oscuro: la seccion Stats va en blanco ── */
     .stats-section {
@@ -2644,6 +2744,24 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── VIDEO IA — revelado por scroll ── -->
+  <section class="rv-section" id="ia-video" aria-label="Producción generativa">
+    <div class="rv-sticky">
+      <div class="rv-head reveal">
+        <div class="rv-label" data-es="Producción generativa" data-en="Generative production">Producción generativa</div>
+        <h2 class="rv-title" data-es="Imágenes que nunca se fotografiaron" data-en="Images that were never photographed">Imágenes que nunca se fotografiaron</h2>
+        <p class="rv-sub" data-es="Product shots, personajes y escenas construidos íntegramente con ComfyUI, Flux.1 y Wan2.1." data-en="Product shots, characters and scenes built entirely with ComfyUI, Flux.1 and Wan2.1.">Product shots, personajes y escenas construidos íntegramente con ComfyUI, Flux.1 y Wan2.1.</p>
+      </div>
+      <div class="rv-clip">
+        <video class="rv-video" muted loop playsinline preload="none"
+               poster="img/video/ia-generativa-poster.webp"
+               aria-label="Reel de imágenes generadas con inteligencia artificial">
+          <source src="img/video/ia-generativa-1440.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
   </section>
@@ -3651,6 +3769,70 @@
       }, { threshold: 0.4 });
       items.forEach(el => obs.observe(el));
     })();
+  </script>
+
+  <!-- ── VIDEO IA — progreso de scroll ── -->
+  <script>
+  (function () {
+    const sec = document.getElementById('ia-video');
+    if (!sec) return;
+    const clip = sec.querySelector('.rv-clip');
+    const vid  = sec.querySelector('.rv-video');
+    if (!clip || !vid) return;
+
+    const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const acotar = v => v < 0 ? 0 : (v > 1 ? 1 : v);
+    const tramo = (p, ini, fin) => acotar((p - ini) / (fin - ini));
+
+    /* Progreso 0 cuando el inicio de la seccion llega al centro de la ventana,
+       1 cuando su final llega al borde inferior. */
+    function pintar() {
+      const r = sec.getBoundingClientRect();
+      const H = window.innerHeight;
+      const recorrido = r.height - H / 2;
+      if (recorrido <= 0) return;
+      const p = acotar((H / 2 - r.top) / recorrido);
+      const t = tramo(p, 0, 0.8);
+      const inset = lerp(45, 0, t);
+      const radio = lerp(1000, 16, t);   // llega al radio final justo cuando el marco termina de abrirse
+      clip.style.clipPath = 'inset(' + inset + '% ' + inset + '% ' + inset + '% ' + inset + '% round ' + radio + 'px)';
+      vid.style.transform = 'scale(' + lerp(0.7, 1, t) + ')';
+    }
+
+    if (reducido) {
+      clip.style.clipPath = 'inset(0% 0% 0% 0% round 16px)';
+      vid.style.transform = 'none';
+    } else {
+      let raf = null;
+      const pedir = () => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => { raf = null; pintar(); });
+      };
+      window.addEventListener('scroll', pedir, { passive: true });
+      window.addEventListener('resize', pedir);
+      pintar();
+    }
+
+    /* El video no se descarga hasta que la seccion se acerca, y se pausa al salir:
+       asi no pesa en la carga inicial ni gasta datos de fondo. */
+    if ('IntersectionObserver' in window) {
+      const obs = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) {
+          if (e.isIntersecting) {
+            if (!vid.dataset.cargado) { vid.dataset.cargado = '1'; vid.load(); }
+            const pr = vid.play();
+            if (pr && pr.catch) pr.catch(function () {});
+          } else if (!vid.paused) {
+            vid.pause();
+          }
+        });
+      }, { rootMargin: '250px 0px' });
+      obs.observe(sec);
+    } else {
+      vid.load();
+    }
+  })();
   </script>
 
   <!-- ── WORK CAROUSEL JS ── -->
