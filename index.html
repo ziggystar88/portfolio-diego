@@ -2782,7 +2782,7 @@
         <div class="wk-cat-row active" data-cat="ia">
           <span class="wk-cat-num">01</span>
           <span class="wk-cat-name" data-es="IA generativa" data-en="Generative AI">IA generativa</span>
-          <span class="wk-cat-count" data-es="Próximamente" data-en="Coming soon">Próximamente</span>
+          <span class="wk-cat-count" data-es="9 piezas" data-en="9 pieces">9 piezas</span>
           <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
         <div class="wk-cat-row" data-cat="videos">
@@ -2816,7 +2816,44 @@
     <div class="wk-stage">
     <!-- IA carousel — pendiente de contenido -->
     <div class="wk-carousel active" data-cat="ia">
-      <p class="wk-empty" data-es="Contenido en camino" data-en="Content on the way">Contenido en camino</p>
+      <div class="wk-viewport">
+        <div class="wk-track" id="wk-track-ia">
+          <div class="wk-card wk-card-dig" data-img="img/ia/ia-01.webp" role="button" tabindex="0" aria-label="Darth Vader pidiendo en un Burger King" data-aria-es="Darth Vader pidiendo en un Burger King" data-aria-en="Darth Vader ordering at a Burger King">
+            <img src="img/ia/ia-01.webp" alt="Darth Vader pidiendo en un Burger King" loading="lazy" width="768" height="1376">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/ia/ia-02.webp" role="button" tabindex="0" aria-label="Retrato de estudio de influencer virtual" data-aria-es="Retrato de estudio de influencer virtual" data-aria-en="Studio portrait of a virtual influencer">
+            <img src="img/ia/ia-02.webp" alt="Retrato de estudio de influencer virtual" loading="lazy" width="768" height="1376">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/ia/ia-03.webp" role="button" tabindex="0" aria-label="Pareja bailando en una calle iluminada" data-aria-es="Pareja bailando en una calle iluminada" data-aria-en="Couple dancing on a lit street">
+            <img src="img/ia/ia-03.webp" alt="Pareja bailando en una calle iluminada" loading="lazy" width="768" height="1376">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/ia/ia-04.webp" role="button" tabindex="0" aria-label="Tarjetas flotando entre monedas" data-aria-es="Tarjetas flotando entre monedas" data-aria-en="Cards floating among coins">
+            <img src="img/ia/ia-04.webp" alt="Tarjetas flotando entre monedas" loading="lazy" width="768" height="1376">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/ia/ia-05.webp" role="button" tabindex="0" aria-label="Publico de concierto bajo luces rojas" data-aria-es="Publico de concierto bajo luces rojas" data-aria-en="Concert crowd under red lights">
+            <img src="img/ia/ia-05.webp" alt="Publico de concierto bajo luces rojas" loading="lazy" width="768" height="1376">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/ia/ia-06.webp" role="button" tabindex="0" aria-label="Grabacion de podcast a dos camaras" data-aria-es="Grabacion de podcast a dos camaras" data-aria-en="Two-host podcast session">
+            <img src="img/ia/ia-06.webp" alt="Grabacion de podcast a dos camaras" loading="lazy" width="768" height="1376">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/ia/ia-07.webp" role="button" tabindex="0" aria-label="Motocicleta futurista entre anillos de neon" data-aria-es="Motocicleta futurista entre anillos de neon" data-aria-en="Futuristic motorcycle in neon rings">
+            <img src="img/ia/ia-07.webp" alt="Motocicleta futurista entre anillos de neon" loading="lazy" width="768" height="1376">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/ia/ia-08.webp" role="button" tabindex="0" aria-label="Look urbano en departamento con luz natural" data-aria-es="Look urbano en departamento con luz natural" data-aria-en="Street look in a sunlit apartment">
+            <img src="img/ia/ia-08.webp" alt="Look urbano en departamento con luz natural" loading="lazy" width="768" height="1376">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/ia/ia-09.webp" role="button" tabindex="0" aria-label="Set de podcast — Luna y Emma para Lumyn" data-aria-es="Set de podcast — Luna y Emma para Lumyn" data-aria-en="Podcast set — Luna and Emma for Lumyn">
+            <img src="img/ia/ia-09.webp" alt="Set de podcast — Luna y Emma para Lumyn" loading="lazy" width="768" height="1376">
+          </div>
+        </div>
+      </div>
+      <div class="wk-nav">
+        <div class="wk-dots" id="wk-dots-ia"></div>
+        <div class="wk-arrows">
+          <button class="wk-arrow" data-cat="ia" data-dir="-1" aria-label="Anterior">&#8592;</button>
+          <button class="wk-arrow" data-cat="ia" data-dir="1" aria-label="Siguiente">&#8594;</button>
+        </div>
+      </div>
     </div>
 
     <!-- VIDEOS carousel -->
@@ -4113,7 +4150,9 @@
       if (e.key === 'ArrowRight' && lbCat) showLB(lbCat, lbIdx + 1);
     });
 
-    initCarousel('videos');
+    /* Se inicializa la categoria abierta al cargar; el resto se inicializa al abrirla. */
+    const catInicial = (document.querySelector('.wk-cat-row.active') || {}).dataset;
+    initCarousel(catInicial && catInicial.cat ? catInicial.cat : 'videos');
   })();
   </script>
 
@@ -4164,6 +4203,12 @@
       function swapAttrElements() {
         document.querySelectorAll('[data-es][data-en]').forEach(el => {
           el.innerHTML = el.dataset[lang];
+        });
+        /* Etiquetas accesibles: van por atributo propio porque el bucle de arriba
+           reescribe el contenido, y estos elementos tienen hijos que hay que conservar. */
+        document.querySelectorAll('[data-aria-es][data-aria-en]').forEach(el => {
+          const texto = el.dataset[lang === 'en' ? 'ariaEn' : 'ariaEs'];
+          if (texto) { el.setAttribute('aria-label', texto); el.setAttribute('title', texto); }
         });
       }
 
