@@ -812,12 +812,14 @@
     .wk-card:focus-visible { box-shadow: 0 0 0 3px var(--accent-light); }
     .wk-card img { transition: transform 0.7s cubic-bezier(0.16,1,0.3,1); }
     .wk-card:hover img { transform: scale(1.06); }
-    /* Velo inferior para que el texto se lea sobre la imagen */
-    .wk-card-vid::after,
-    .wk-card-dig::after {
+    /* Velo inferior solo en las tarjetas de video, donde hay un titulo que leer.
+       Las de imagen no llevan texto encima, asi que van limpias. */
+    .wk-card-vid::after {
       content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.32) 42%, transparent 68%);
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 42%;
+      background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.28) 55%, transparent 100%);
       pointer-events: none;
       z-index: 2;
     }
