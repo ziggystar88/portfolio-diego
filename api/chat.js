@@ -11,9 +11,21 @@
 
 const NIM_URL = 'https://integrate.api.nvidia.com/v1/chat/completions'
 
-// El id del modelo se define por variable de entorno para poder cambiarlo sin
-// tocar el código. Este es el mismo que quedó funcionando en el sitio de Lumyn.
-const DEFAULT_MODEL = 'z-ai/glm-5.2'
+// Cadena de modelos. NVIDIA jubila modelos sin aviso —el anterior, z-ai/glm-5.2,
+// llegó a su fin de vida el 2026-08-21 y tumbó el chat sin que nada en el código
+// cambiara—, así que si uno ya no existe se pasa al siguiente en vez de fallar.
+// NVIDIA_MODEL, si está definida, va primero: sirve para forzar uno sin desplegar.
+const MODELOS = [
+  'meta/llama-3.3-70b-instruct',
+  'nvidia/llama-3.3-nemotron-super-49b-v1.5',
+  'openai/gpt-oss-120b',
+  'mistralai/mistral-large-2-instruct',
+]
+
+function candidatos() {
+  const forzado = process.env.NVIDIA_MODEL
+  return forzado ? [forzado, ...MODELOS.filter((m) => m !== forzado)] : MODELOS
+}
 
 // ── Límites (la capa gratuita da ~1.000 créditos y 40 solicitudes/minuto) ──
 const MAX_MSG_CHARS = 500
@@ -147,26 +159,44 @@ module.exports = async function handler(req, res) {
         ? '\n\nEl sitio está en inglés en este momento: si el mensaje no indica otra cosa, responde en inglés.'
         : '')
 
-    const upstream = await fetch(NIM_URL, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        Accept: 'text/event-stream',
-      },
-      body: JSON.stringify({
-        model: process.env.NVIDIA_MODEL || DEFAULT_MODEL,
-        messages: [{ role: 'system', content: system }, ...messages],
-        temperature: 0.6,
-        top_p: 0.9,
-        max_tokens: 600,
-        stream: true,
-      }),
-    })
+    // Se prueba cada modelo en orden hasta que uno responda. Un 404 o un 410
+    // significan "ese modelo ya no está": se pasa al siguiente sin ruido.
+    let upstream = null
+    let ultimoFallo = ''
 
-    if (!upstream.ok || !upstream.body) {
-      const detail = await upstream.text().catch(() => '')
-      console.error('[CHAT] Error de NVIDIA NIM:', upstream.status, detail.slice(0, 400))
+    for (const modelo of candidatos()) {
+      const intento = await fetch(NIM_URL, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          Accept: 'text/event-stream',
+        },
+        body: JSON.stringify({
+          model: modelo,
+          messages: [{ role: 'system', content: system }, ...messages],
+          temperature: 0.6,
+          top_p: 0.9,
+          max_tokens: 600,
+          stream: true,
+        }),
+      }).catch((e) => ({ ok: false, status: 0, body: null, _err: String(e) }))
+
+      if (intento.ok && intento.body) {
+        upstream = intento
+        break
+      }
+
+      const detail = intento.text ? await intento.text().catch(() => '') : intento._err || ''
+      ultimoFallo = `${modelo} -> ${intento.status} ${detail.slice(0, 200)}`
+      console.error('[CHAT] Modelo descartado:', ultimoFallo)
+
+      // Un 401/403 es problema de la clave, no del modelo: reintentar no ayuda.
+      if (intento.status === 401 || intento.status === 403) break
+    }
+
+    if (!upstream) {
+      console.error('[CHAT] Ningun modelo respondio. Ultimo fallo:', ultimoFallo)
       return res.status(502).json({ ok: false, error: 'upstream' })
     }
 
