@@ -908,6 +908,31 @@
     }
     .wk-card-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+    /* ── Tarjetas de video en reproduccion continua ──
+       Son piezas de entrada del carrusel: se reproducen solas, sin controles
+       y sin abrir el lightbox. Por eso no llevan cursor de mano ni foco. */
+    .wk-card-inline {
+      width: clamp(178px, 20vw, 232px);
+      aspect-ratio: 9 / 16;
+      cursor: default;
+      background: #0b0b10;
+    }
+    .wk-card-inline video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #0b0b10;
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .wk-card-inline:hover video { transform: scale(1.04); }
+    /* Version horizontal: conserva 16:9 y no se estira al alto de la fila */
+    .wk-card-inline.wk-card-wide {
+      width: clamp(300px, 46vw, 600px);
+      aspect-ratio: 16 / 9;
+      align-self: center;
+    }
+
     /* Nav: dots a la izquierda, flechas a la derecha */
     .wk-nav {
       display: flex;
@@ -2782,13 +2807,13 @@
         <div class="wk-cat-row active" data-cat="ia">
           <span class="wk-cat-num">01</span>
           <span class="wk-cat-name" data-es="IA generativa" data-en="Generative AI">IA generativa</span>
-          <span class="wk-cat-count" data-es="9 piezas" data-en="9 pieces">9 piezas</span>
+          <span class="wk-cat-count" data-es="10 piezas" data-en="10 pieces">10 piezas</span>
           <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
         <div class="wk-cat-row" data-cat="videos">
           <span class="wk-cat-num">02</span>
-          <span class="wk-cat-name" data-es="Videos" data-en="Videos">Videos</span>
-          <span class="wk-cat-count" data-es="24 piezas" data-en="24 pieces">24 piezas</span>
+          <span class="wk-cat-name" data-es="Videos social media" data-en="Social media videos">Videos social media</span>
+          <span class="wk-cat-count" data-es="25 piezas" data-en="25 pieces">25 piezas</span>
           <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
         <div class="wk-cat-row" data-cat="digital">
@@ -2806,7 +2831,7 @@
         <div class="wk-cat-row" data-cat="redes">
           <span class="wk-cat-num">05</span>
           <span class="wk-cat-name" data-es="Redes sociales" data-en="Social media">Redes sociales</span>
-          <span class="wk-cat-count" data-es="Próximamente" data-en="Coming soon">Próximamente</span>
+          <span class="wk-cat-count" data-es="18 piezas" data-en="18 pieces">18 piezas</span>
           <span class="wk-cat-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,6 8,10 12,6"/></svg></span>
         </div>
       </div>
@@ -2820,6 +2845,13 @@
         <div class="wk-track" id="wk-track-ia">
           <div class="wk-card wk-card-dig" data-img="img/ia/ia-01.webp" role="button" tabindex="0" aria-label="Darth Vader pidiendo en un Burger King" data-aria-es="Darth Vader pidiendo en un Burger King" data-aria-en="Darth Vader ordering at a Burger King">
             <img src="img/ia/ia-01.webp" alt="Darth Vader pidiendo en un Burger King" loading="lazy" width="768" height="1376">
+          </div>
+          <div class="wk-card wk-card-inline" data-inline="1"
+               aria-label="Podcast de Lumyn con presentadoras generadas por IA" data-aria-es="Podcast de Lumyn con presentadoras generadas por IA" data-aria-en="Lumyn podcast with AI-generated hosts">
+            <video class="wk-inline-video" muted loop playsinline preload="none" disablepictureinpicture
+                   poster="img/video/podcast-lumyn-poster.webp" width="720" height="1296" aria-hidden="true" tabindex="-1">
+              <source src="img/video/podcast-lumyn-720.mp4" type="video/mp4">
+            </video>
           </div>
           <div class="wk-card wk-card-dig" data-img="img/ia/ia-02.webp" role="button" tabindex="0" aria-label="Retrato de estudio de influencer virtual" data-aria-es="Retrato de estudio de influencer virtual" data-aria-en="Studio portrait of a virtual influencer">
             <img src="img/ia/ia-02.webp" alt="Retrato de estudio de influencer virtual" loading="lazy" width="768" height="1376">
@@ -2860,6 +2892,13 @@
     <div class="wk-carousel" data-cat="videos">
       <div class="wk-viewport">
         <div class="wk-track" id="wk-track-videos">
+          <div class="wk-card wk-card-inline wk-card-wide" data-inline="1"
+               aria-label="Reel de videos para redes sociales" data-aria-es="Reel de videos para redes sociales" data-aria-en="Social media video reel">
+            <video class="wk-inline-video" muted loop playsinline preload="none" disablepictureinpicture
+                   poster="img/video/social-media-poster.webp" width="1280" height="720" aria-hidden="true" tabindex="-1">
+              <source src="img/video/social-media-720.mp4" type="video/mp4">
+            </video>
+          </div>
           <div class="wk-card wk-card-vid" data-vid="1180618670" role="button" tabindex="0" aria-label="Patagua 1/5 · Fashion">
             <img class="wk-vid-thumb" src="https://vumbnail.com/1180618670.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
             <div class="wk-play-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,2 14,8 5,14"/></svg></div>
@@ -3165,7 +3204,92 @@
 
     <!-- REDES carousel — pendiente de contenido -->
     <div class="wk-carousel" data-cat="redes">
-      <p class="wk-empty" data-es="Contenido en camino" data-en="Content on the way">Contenido en camino</p>
+      <div class="wk-viewport">
+        <div class="wk-track" id="wk-track-redes">
+          <div class="wk-card wk-card-inline wk-card-wide" data-inline="1"
+               aria-label="Reel de piezas para redes sociales" data-aria-es="Reel de piezas para redes sociales" data-aria-en="Social media pieces reel">
+            <video class="wk-inline-video" muted loop playsinline preload="none" disablepictureinpicture
+                   poster="img/video/redes-reel-poster.webp" width="1280" height="720" aria-hidden="true" tabindex="-1">
+              <source src="img/video/redes-reel-720.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-01.webp" role="button" tabindex="0"
+               aria-label="Local Burger — campaña #MoodLocal" data-aria-es="Local Burger — campaña #MoodLocal" data-aria-en="Local Burger — #MoodLocal campaign">
+            <img src="img/rs/rs-01.webp" alt="Local Burger — campaña #MoodLocal" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-02.webp" role="button" tabindex="0"
+               aria-label="Aromalma — lanzamiento del cóctel MIA" data-aria-es="Aromalma — lanzamiento del cóctel MIA" data-aria-en="Aromalma — MIA cocktail launch">
+            <img src="img/rs/rs-02.webp" alt="Aromalma — lanzamiento del cóctel MIA" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-03.webp" role="button" tabindex="0"
+               aria-label="Le Cuisinier — Día del Padre" data-aria-es="Le Cuisinier — Día del Padre" data-aria-en="Le Cuisinier — Father's Day">
+            <img src="img/rs/rs-03.webp" alt="Le Cuisinier — Día del Padre" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-04.webp" role="button" tabindex="0"
+               aria-label="RE. — mochila Roller Paseo" data-aria-es="RE. — mochila Roller Paseo" data-aria-en="RE. — Roller Paseo backpack">
+            <img src="img/rs/rs-04.webp" alt="RE. — mochila Roller Paseo" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-05.webp" role="button" tabindex="0"
+               aria-label="Gracielo con American Express — 50% en restaurantes" data-aria-es="Gracielo con American Express — 50% en restaurantes" data-aria-en="Gracielo with American Express — 50% off restaurants">
+            <img src="img/rs/rs-05.webp" alt="Gracielo con American Express — 50% en restaurantes" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-06.webp" role="button" tabindex="0"
+               aria-label="Local Burger — lanzamiento Big Local" data-aria-es="Local Burger — lanzamiento Big Local" data-aria-en="Local Burger — Big Local launch">
+            <img src="img/rs/rs-06.webp" alt="Local Burger — lanzamiento Big Local" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-07.webp" role="button" tabindex="0"
+               aria-label="LaLiga con Mahou — El Clásico" data-aria-es="LaLiga con Mahou — El Clásico" data-aria-en="LaLiga with Mahou — El Clásico">
+            <img src="img/rs/rs-07.webp" alt="LaLiga con Mahou — El Clásico" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-08.webp" role="button" tabindex="0"
+               aria-label="Promo antiage — mascarillas de hidrogel" data-aria-es="Promo antiage — mascarillas de hidrogel" data-aria-en="Anti-age promo — hydrogel masks">
+            <img src="img/rs/rs-08.webp" alt="Promo antiage — mascarillas de hidrogel" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-09.webp" role="button" tabindex="0"
+               aria-label="It Was All A Dream — Glenlivet, Monkey 47 y Absolut" data-aria-es="It Was All A Dream — Glenlivet, Monkey 47 y Absolut" data-aria-en="It Was All A Dream — Glenlivet, Monkey 47 and Absolut">
+            <img src="img/rs/rs-09.webp" alt="It Was All A Dream — Glenlivet, Monkey 47 y Absolut" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-10.webp" role="button" tabindex="0"
+               aria-label="Holy Fish — camarones apanados en descuento" data-aria-es="Holy Fish — camarones apanados en descuento" data-aria-en="Holy Fish — breaded shrimp discount">
+            <img src="img/rs/rs-10.webp" alt="Holy Fish — camarones apanados en descuento" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-11.webp" role="button" tabindex="0"
+               aria-label="Santander con Corralco — tickets y restaurantes de montaña" data-aria-es="Santander con Corralco — tickets y restaurantes de montaña" data-aria-en="Santander with Corralco — mountain tickets and dining">
+            <img src="img/rs/rs-11.webp" alt="Santander con Corralco — tickets y restaurantes de montaña" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-12.webp" role="button" tabindex="0"
+               aria-label="Cypress Hill — anuncio del 29 de septiembre" data-aria-es="Cypress Hill — anuncio del 29 de septiembre" data-aria-en="Cypress Hill — September 29 announcement">
+            <img src="img/rs/rs-12.webp" alt="Cypress Hill — anuncio del 29 de septiembre" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-13.webp" role="button" tabindex="0"
+               aria-label="Local Burger — The Classic, promo de los martes" data-aria-es="Local Burger — The Classic, promo de los martes" data-aria-en="Local Burger — The Classic, Tuesday promo">
+            <img src="img/rs/rs-13.webp" alt="Local Burger — The Classic, promo de los martes" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-14.webp" role="button" tabindex="0"
+               aria-label="Los Parra — nueva imagen de marca" data-aria-es="Los Parra — nueva imagen de marca" data-aria-en="Los Parra — brand refresh">
+            <img src="img/rs/rs-14.webp" alt="Los Parra — nueva imagen de marca" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-15.webp" role="button" tabindex="0"
+               aria-label="Holy Food — lasañas Le Cannelé" data-aria-es="Holy Food — lasañas Le Cannelé" data-aria-en="Holy Food — Le Cannelé lasagnas">
+            <img src="img/rs/rs-15.webp" alt="Holy Food — lasañas Le Cannelé" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-16.webp" role="button" tabindex="0"
+               aria-label="Monoï Challenge — Tiki Tahiti" data-aria-es="Monoï Challenge — Tiki Tahiti" data-aria-en="Monoï Challenge — Tiki Tahiti">
+            <img src="img/rs/rs-16.webp" alt="Monoï Challenge — Tiki Tahiti" loading="lazy" width="900" height="1600">
+          </div>
+          <div class="wk-card wk-card-dig" data-img="img/rs/rs-17.webp" role="button" tabindex="0"
+               aria-label="Le Cuisinier — Día Nacional de Francia" data-aria-es="Le Cuisinier — Día Nacional de Francia" data-aria-en="Le Cuisinier — Bastille Day">
+            <img src="img/rs/rs-17.webp" alt="Le Cuisinier — Día Nacional de Francia" loading="lazy" width="900" height="1600">
+          </div>
+        </div>
+      </div>
+      <div class="wk-nav">
+        <div class="wk-dots" id="wk-dots-redes"></div>
+        <div class="wk-arrows">
+          <button class="wk-arrow" data-cat="redes" data-dir="-1" aria-label="Anterior">&#8592;</button>
+          <button class="wk-arrow" data-cat="redes" data-dir="1" aria-label="Siguiente">&#8594;</button>
+        </div>
+      </div>
     </div>
 
     </div>
@@ -3992,7 +4116,11 @@
     /* Ancho de un "paso" = tarjeta + gap */
     function stepOf(s) {
       const gap = parseFloat(getComputedStyle(s.track).columnGap || s.track.style.gap || 18) || 18;
-      return s.cards[0].getBoundingClientRect().width + gap;
+      /* Las filas pueden mezclar tarjetas verticales con una horizontal de entrada.
+         El paso se toma de la mas angosta para que la paginacion siga siendo pareja. */
+      const anchos = s.cards.map(c => c.getBoundingClientRect().width).filter(w => w > 0);
+      const base = anchos.length ? Math.min.apply(null, anchos) : 0;
+      return base + gap;
     }
 
     /* Cuántas tarjetas caben completas en el visor (descontando los gutters) */
@@ -4090,13 +4218,23 @@
     const lbCount  = document.getElementById('wk-lb-count');
     let lbCat = null, lbIdx = 0;
 
-    function showLB(cat, idx) {
+    function showLB(cat, idx, paso) {
       const s = state[cat];
       if (!s) return;
       const total = s.cards.length;
       lbIdx = (idx + total) % total;
       lbCat = cat;
-      const card   = s.cards[lbIdx];
+      let card = s.cards[lbIdx];
+      /* Las piezas de video continuo no tienen nada que mostrar en el lightbox:
+         se saltan en la direccion en la que se venia navegando. */
+      if (card.dataset.inline) {
+        const dir = paso === -1 ? -1 : 1;
+        for (let n = 0; n < total && card.dataset.inline; n++) {
+          lbIdx = (lbIdx + dir + total) % total;
+          card = s.cards[lbIdx];
+        }
+        if (card.dataset.inline) return;
+      }
       const vidId  = card.dataset.vid;
       const imgSrc = card.dataset.img;
 
@@ -4117,7 +4255,7 @@
     document.querySelectorAll('.wk-stage').forEach(stage => {
       stage.addEventListener('click', e => {
         const card = e.target.closest('.wk-card');
-        if (!card) return;
+        if (!card || card.dataset.inline) return;
         const cat   = card.closest('.wk-carousel').dataset.cat;
         if (!state[cat]) return;
         showLB(cat, state[cat].cards.indexOf(card));
@@ -4125,7 +4263,7 @@
       stage.addEventListener('keydown', e => {
         if (e.key !== 'Enter' && e.key !== ' ') return;
         const card = e.target.closest('.wk-card');
-        if (!card) return;
+        if (!card || card.dataset.inline) return;
         e.preventDefault();
         const cat = card.closest('.wk-carousel').dataset.cat;
         if (state[cat]) showLB(cat, state[cat].cards.indexOf(card));
@@ -4140,19 +4278,42 @@
       document.body.style.overflow = '';
     }
     if (lbClose) lbClose.addEventListener('click', closeLB);
-    if (lbPrev) lbPrev.addEventListener('click', e => { e.stopPropagation(); if (lbCat) showLB(lbCat, lbIdx - 1); });
-    if (lbNext) lbNext.addEventListener('click', e => { e.stopPropagation(); if (lbCat) showLB(lbCat, lbIdx + 1); });
+    if (lbPrev) lbPrev.addEventListener('click', e => { e.stopPropagation(); if (lbCat) showLB(lbCat, lbIdx - 1, -1); });
+    if (lbNext) lbNext.addEventListener('click', e => { e.stopPropagation(); if (lbCat) showLB(lbCat, lbIdx + 1, 1); });
     lightbox.addEventListener('click', e => { if (e.target === lightbox || e.target.classList.contains('wk-lb-stage')) closeLB(); });
     document.addEventListener('keydown', e => {
       if (!lightbox.classList.contains('open')) return;
       if (e.key === 'Escape') closeLB();
-      if (e.key === 'ArrowLeft'  && lbCat) showLB(lbCat, lbIdx - 1);
-      if (e.key === 'ArrowRight' && lbCat) showLB(lbCat, lbIdx + 1);
+      if (e.key === 'ArrowLeft'  && lbCat) showLB(lbCat, lbIdx - 1, -1);
+      if (e.key === 'ArrowRight' && lbCat) showLB(lbCat, lbIdx + 1, 1);
     });
 
     /* Se inicializa la categoria abierta al cargar; el resto se inicializa al abrirla. */
     const catInicial = (document.querySelector('.wk-cat-row.active') || {}).dataset;
     initCarousel(catInicial && catInicial.cat ? catInicial.cat : 'videos');
+
+    /* ── Piezas de video que se reproducen solas ──
+       Se descargan y arrancan cuando su categoria se abre y quedan a la vista,
+       y se pausan al salir. No tienen controles a proposito: son piezas de
+       entrada del carrusel, no reproductores. */
+    const vidObs = ('IntersectionObserver' in window)
+      ? new IntersectionObserver(function (entradas) {
+          entradas.forEach(function (e) {
+            const v = e.target;
+            if (e.isIntersecting) {
+              if (!v.dataset.cargado) { v.dataset.cargado = '1'; v.load(); }
+              const pr = v.play();
+              if (pr && pr.catch) pr.catch(function () {});
+            } else if (!v.paused) {
+              v.pause();
+            }
+          });
+        }, { rootMargin: '150px' })
+      : null;
+    document.querySelectorAll('.wk-inline-video').forEach(function (v) {
+      if (vidObs) vidObs.observe(v);
+      else { v.load(); v.play().catch(function () {}); }
+    });
   })();
   </script>
 
