@@ -11,15 +11,25 @@
 
 const NIM_URL = 'https://integrate.api.nvidia.com/v1/chat/completions'
 
-// Cadena de modelos. NVIDIA jubila modelos sin aviso —el anterior, z-ai/glm-5.2,
-// llegó a su fin de vida el 2026-08-21 y tumbó el chat sin que nada en el código
-// cambiara—, así que si uno ya no existe se pasa al siguiente en vez de fallar.
-// NVIDIA_MODEL, si está definida, va primero: sirve para forzar uno sin desplegar.
+// Cadena de modelos, ordenada por latencia medida contra la capa gratuita
+// (prueba del 2026-08-25 con scripts/probar-modelos.mjs). En un chat en vivo la
+// velocidad pesa tanto como la calidad. Si un modelo ya no existe se pasa al
+// siguiente: z-ai/glm-5.2 llego a su fin de vida el 2026-08-21 y tumbo el chat
+// sin que nada del codigo cambiara.
+//
+//   gpt-oss-20b          1,8-2,7s  respeta los datos del prompt y el tono
+//   nemotron-nano-9b-v2  3,4-8,0s  buen español, algun desliz de comprension
+//   llama-3.1-8b         1,1-3,1s  muy rapido pero a veces ignora datos del prompt
+//   llama-3.3-70b        53s+      ultimo recurso: se encola y devuelve 503
+//
+// Descartados a proposito: nemotron-3.5-lightning (escupe su cadena de
+// razonamiento en ingles como si fuera la respuesta) y los modelos gigantes.
+// NVIDIA_MODEL, si esta definida, va primero: sirve para forzar uno sin desplegar.
 const MODELOS = [
+  'openai/gpt-oss-20b',
+  'nvidia/nvidia-nemotron-nano-9b-v2',
+  'meta/llama-3.1-8b-instruct',
   'meta/llama-3.3-70b-instruct',
-  'nvidia/llama-3.3-nemotron-super-49b-v1.5',
-  'openai/gpt-oss-120b',
-  'mistralai/mistral-large-2-instruct',
 ]
 
 function candidatos() {
@@ -32,6 +42,51 @@ const MAX_MSG_CHARS = 500
 const MAX_HISTORY = 10
 const RATE_MAX = 10                     // mensajes por IP...
 const RATE_WINDOW_MS = 10 * 60 * 1000   // ...en esta ventana
+
+/* Algunos modelos escupen su cadena de razonamiento antes de la respuesta,
+   envuelta en <think>...</think>. Nunca debe llegar al visitante. Este filtro
+   va emitiendo lo que sí es respuesta y retiene los últimos caracteres por si
+   un tag viene partido entre dos trozos del stream. */
+function crearFiltro(escribir) {
+  const ABRE = '<think>'
+  const CIERRA = '</think>'
+  let pensando = false
+  let pendiente = ''
+
+  return {
+    empujar(trozo) {
+      pendiente += trozo
+      for (;;) {
+        if (pensando) {
+          const fin = pendiente.indexOf(CIERRA)
+          if (fin === -1) {
+            pendiente = pendiente.slice(-(CIERRA.length - 1))
+            return
+          }
+          pendiente = pendiente.slice(fin + CIERRA.length)
+          pensando = false
+          continue
+        }
+        const ini = pendiente.indexOf(ABRE)
+        if (ini === -1) {
+          const corte = pendiente.length - (ABRE.length - 1)
+          if (corte > 0) {
+            escribir(pendiente.slice(0, corte))
+            pendiente = pendiente.slice(corte)
+          }
+          return
+        }
+        if (ini > 0) escribir(pendiente.slice(0, ini))
+        pendiente = pendiente.slice(ini + ABRE.length)
+        pensando = true
+      }
+    },
+    cerrar() {
+      if (!pensando && pendiente) escribir(pendiente)
+      pendiente = ''
+    },
+  }
+}
 
 // Conteo en memoria. Cada instancia de la función tiene la suya y Vercel las
 // recicla, así que esto frena ráfagas pero no es un límite global estricto.
@@ -208,6 +263,7 @@ module.exports = async function handler(req, res) {
       'X-Accel-Buffering': 'no',
     })
 
+    const filtro = crearFiltro((t) => res.write(t))
     const reader = upstream.body.getReader()
     const decoder = new TextDecoder()
     let buffer = ''
@@ -232,13 +288,14 @@ module.exports = async function handler(req, res) {
         try {
           const json = JSON.parse(payload)
           const delta = json.choices?.[0]?.delta?.content
-          if (delta) res.write(delta)
+          if (delta) filtro.empujar(delta)
         } catch {
           // Trozo incompleto: se ignora y sigue acumulando
         }
       }
     }
 
+    filtro.cerrar()
     return res.end()
   } catch (err) {
     console.error('[CHAT] Error inesperado:', err)
