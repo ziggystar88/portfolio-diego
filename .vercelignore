@@ -43,3 +43,7 @@ img/imagenes IA/
 img/video/podcast_lumyn.mp4
 img/video/video_social media.mp4
 img/video/nebula-loop_00001.mp4
+
+# ── Archivos de trabajo local, no publicar ──
+_to_delete/
+*.skill
